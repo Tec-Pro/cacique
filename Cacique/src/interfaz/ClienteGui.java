@@ -8,6 +8,7 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -43,6 +44,8 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         this.verHistorial.addActionListener(lis);
         this.ver.addActionListener(lis);
         this.realizarEntrega.addActionListener(lis);
+        this.autos.addActionListener(lis);
+        this.presupuestos.addActionListener(lis);
     }
 
         public void habilitarCamposVentas(boolean b) {
@@ -57,6 +60,11 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         nombre.setEnabled(b);
         telefono.setEnabled(b);
         celular.setEnabled(b);
+        email.setEnabled(b);
+        facebook.setEnabled(b);
+        dni.setEnabled(b);
+        nacimiento.setEnabled(b);
+        direccion.setEnabled(b);
         }
         
         public void limpiarCampos() {
@@ -66,6 +74,12 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         celular.setText("");
         ventasDefault.setRowCount(0);
         adeuda.setText("");
+        adeudaActual.setText("");
+        facebook.setText("");
+        dni.setText("");
+        nacimiento.setDateFormatString("12-12-9999");
+        direccion.setText("");
+        email.setText("");
         }
         
         public void CargarCampos(Cliente cliente) {
@@ -73,19 +87,41 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         nombre.setText(cliente.getString("nombre"));
         telefono.setText(cliente.getString("telefono"));
         celular.setText(cliente.getString("celular"));
+        facebook.setText(cliente.getString("facebook"));
+        dni.setText(cliente.getString("dni"));
+        nacimiento.setDate(cliente.getDate("nacimiento"));
+        direccion.setText(cliente.getString("direccion"));
+        email.setText(cliente.getString("email"));
         }
 
     public DefaultTableModel getClientes() {
         return clientes;
     }
 
-    public DefaultTableModel getCobrosDefault() {
+   public DefaultTableModel getCobrosDefault() {
         return cobrosDefault;
+    }
+
+    public void setCobrosDefault(DefaultTableModel cobrosDefault) {
+        this.cobrosDefault = cobrosDefault;
     }
 
     public DefaultTableModel getVentasDefault() {
         return ventasDefault;
     }
+
+    public void setVentasDefault(DefaultTableModel ventasDefault) {
+        this.ventasDefault = ventasDefault;
+    }
+    
+      public JTable getVentasRealizadas() {
+        return ventasRealizadas;
+    }
+
+    public void setVentasRealizadas(JTable ventasRealizadas) {
+        this.ventasRealizadas = ventasRealizadas;
+    }
+
 
     public JButton getAutos() {
         return autos;
@@ -167,9 +203,6 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         return telefono;
     }
 
-    public JTable getVentasRealizadas() {
-        return ventasRealizadas;
-    }
 
     public JComboBox getVer() {
         return ver;
@@ -177,6 +210,14 @@ public class ClienteGui extends javax.swing.JInternalFrame {
 
     public JButton getVerHistorial() {
         return verHistorial;
+    }
+
+    public JLabel getAdeuda() {
+        return adeuda;
+    }
+
+    public JLabel getAdeudaActual() {
+        return adeudaActual;
     }
         
         
@@ -234,7 +275,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         autos = new javax.swing.JButton();
         presupuestos = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
-        adeuda1 = new javax.swing.JLabel();
+        adeudaActual = new javax.swing.JLabel();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -242,12 +283,11 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setTitle("Gestión de Clientes");
-        setMinimumSize(new java.awt.Dimension(836, 480));
-        setPreferredSize(new java.awt.Dimension(847, 510));
-        getContentPane().setLayout(new java.awt.GridLayout());
+        setPreferredSize(new java.awt.Dimension(830, 515));
+        getContentPane().setLayout(new java.awt.GridLayout(1, 0));
 
         scroolClientes.setName(""); // NOI18N
-        scroolClientes.setPreferredSize(new java.awt.Dimension(847, 475));
+        scroolClientes.setPreferredSize(new java.awt.Dimension(855, 480));
         scroolClientes.setRequestFocusEnabled(false);
 
         panelEnteroClientes.setPreferredSize(new java.awt.Dimension(825, 475));
@@ -278,7 +318,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        tablaClientes.setSelectionMode();
+        tablaClientes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(tablaClientes);
 
         busqueda.setToolTipText("Búsqueda personalizada");
@@ -370,20 +410,19 @@ public class ClienteGui extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel3)
-                                        .addComponent(jLabel1))
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel6)
+                                .addGap(37, 37, 37)
+                                .addComponent(jLabel3))
+                            .addComponent(jLabel4)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel7)
-                                    .addComponent(jLabel5))
-                                .addGap(14, 14, 14))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                    .addComponent(jLabel6))
+                                .addComponent(jLabel1)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(celular)
                             .addComponent(nombre)
@@ -399,7 +438,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
                         .addComponent(jLabel9)
                         .addGap(49, 49, 49)
                         .addComponent(nacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 80, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -409,31 +448,29 @@ public class ClienteGui extends javax.swing.JInternalFrame {
                     .addComponent(jLabel3)
                     .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(nombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addGap(1, 1, 1)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(dni, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
                 .addGap(0, 0, 0)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(celular, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
-                        .addComponent(telefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(celular, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(0, 0, 0)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(telefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(0, 0, 0)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(direccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7)
-                    .addComponent(email, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
                 .addGap(0, 0, 0)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(facebook, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -445,7 +482,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jPanel4.setLayout(new java.awt.GridLayout());
+        jPanel4.setLayout(new java.awt.GridLayout(1, 0));
 
         borrar.setFont(new java.awt.Font("Cantarell", 0, 12)); // NOI18N
         borrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/borrar.png"))); // NOI18N
@@ -514,7 +551,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
             }
         });
         ventasRealizadas.setToolTipText("Realice doble click sobre la compra para verla en datalle");
-        ventasRealizadas.setSelectionMode();
+        ventasRealizadas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane5.setViewportView(ventasRealizadas);
 
         eliminarVenta.setFont(new java.awt.Font("Cantarell", 0, 12)); // NOI18N
@@ -542,9 +579,12 @@ public class ClienteGui extends javax.swing.JInternalFrame {
 
         jLabel11.setText("Cta.cte:");
 
-        autos.setText("Autos");
+        autos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/auto.png"))); // NOI18N
+        autos.setText(" ");
+        autos.setEnabled(false);
 
         presupuestos.setText("Presupuestos");
+        presupuestos.setEnabled(false);
         presupuestos.setPreferredSize(new java.awt.Dimension(72, 28));
 
         jLabel12.setText("Actual:");
@@ -571,7 +611,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel12)
                 .addGap(0, 0, 0)
-                .addComponent(adeuda1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(adeudaActual, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addComponent(autos, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
@@ -581,28 +621,27 @@ public class ClienteGui extends javax.swing.JInternalFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(ver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel10)
-                                .addComponent(jLabel11)
-                                .addComponent(adeuda, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(adeuda1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, 0))
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(ver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel10)
+                        .addComponent(jLabel11)
+                        .addComponent(adeuda, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(adeudaActual, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(autos, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
+                    .addComponent(autos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(presupuestos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, 0)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(verHistorial, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
                     .addComponent(eliminarVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cobrarFactura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(verHistorial, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(cobrarFactura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, 0))))
         );
 
         javax.swing.GroupLayout panelEnteroClientesLayout = new javax.swing.GroupLayout(panelEnteroClientes);
@@ -636,7 +675,6 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         getContentPane().add(scroolClientes);
         scroolClientes.getAccessibleContext().setAccessibleName("Panel");
         scroolClientes.getAccessibleContext().setAccessibleDescription("");
-        scroolClientes.getAccessibleContext().setAccessibleParent(null);
 
         getAccessibleContext().setAccessibleName("clienteGui");
 
@@ -669,7 +707,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel adeuda;
-    private javax.swing.JLabel adeuda1;
+    private javax.swing.JLabel adeudaActual;
     private javax.swing.JButton autos;
     private javax.swing.JButton borrar;
     private javax.swing.JTextField busqueda;

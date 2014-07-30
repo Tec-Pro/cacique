@@ -518,7 +518,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
 
         realizarEntrega.setFont(new java.awt.Font("Cantarell", 0, 12)); // NOI18N
         realizarEntrega.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/pagar.png"))); // NOI18N
-        realizarEntrega.setToolTipText("Realizar pago a proveedor");
+        realizarEntrega.setToolTipText("Realizar entrega");
         realizarEntrega.setEnabled(false);
         realizarEntrega.setPreferredSize(new java.awt.Dimension(55, 33));
         jPanel4.add(realizarEntrega);
@@ -532,14 +532,14 @@ public class ClienteGui extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "ID", "Fecha", "Monto", "Abonado"
+                "ID", "Fecha", "Monto", "Monto Actual", "Abonado"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -581,6 +581,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
 
         autos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/auto.png"))); // NOI18N
         autos.setText(" ");
+        autos.setToolTipText("Ver autos del cliente");
         autos.setEnabled(false);
 
         presupuestos.setText("Presupuestos");
@@ -639,9 +640,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(verHistorial, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
                     .addComponent(eliminarVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(cobrarFactura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(0, 0, 0))))
+                    .addComponent(cobrarFactura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout panelEnteroClientesLayout = new javax.swing.GroupLayout(panelEnteroClientes);

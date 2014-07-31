@@ -77,7 +77,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         adeudaActual.setText("");
         facebook.setText("");
         dni.setText("");
-        nacimiento.setDateFormatString("12-12-9999");
+        nacimiento.setDateFormatString("9999-1-1");
         direccion.setText("");
         email.setText("");
         }

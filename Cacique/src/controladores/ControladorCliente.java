@@ -168,7 +168,6 @@ public class ControladorCliente implements ActionListener {
         }
     }
 
-    
     // Carga todos los clientes
     public void cargarTodos() {
         abrirBase();
@@ -198,6 +197,7 @@ public class ControladorCliente implements ActionListener {
             cargarVentas();
             clienteGui.habilitarCamposVentas(true);
             calcularCtaCte();
+            calcularCtaCteActual();
         }
     }
 
@@ -260,7 +260,7 @@ public class ControladorCliente implements ActionListener {
             } else {
                 JOptionPane.showMessageDialog(clienteGui, "No se seleccionó un cliente");
             }
-        } 
+        }
         if (e.getSource() == clienteGui.getModificar()) { //modificar cliente
             System.out.println("Boton modificar pulsado");
             clienteGui.habilitarCampos(true);
@@ -296,11 +296,12 @@ public class ControladorCliente implements ActionListener {
         }
         if (e.getSource() == clienteGui.getRealizarEntrega()) {
             PagoFacturaGui pagoFacturaGui = new PagoFacturaGui();
-            RealizarPagoVentaControlador rpvc = new RealizarPagoVentaControlador(pagoFacturaGui, cliente, calcularCtaCte(), aplicacionGui);
+            RealizarPagoVentaControlador rpvc = new RealizarPagoVentaControlador(pagoFacturaGui, cliente, calcularCtaCte(), calcularCtaCteActual(), aplicacionGui);
             aplicacionGui.getContenedor().add(pagoFacturaGui);
             pagoFacturaGui.setVisible(true);
             pagoFacturaGui.toFront();
             calcularCtaCte();
+            calcularCtaCteActual();
         }
         if (e.getSource() == clienteGui.getEliminarVenta()) {
             int row = tablaVentas.getSelectedRow();
@@ -408,12 +409,14 @@ public class ControladorCliente implements ActionListener {
         }
     }
 
+    
+    // calcula la cuenta corriente con precios viejos
     private BigDecimal calcularCtaCte() {
         abrirBase();
         BigDecimal aux;
         BigDecimal total = new BigDecimal(0);
         for (int i = 0; i < tablaVentas.getRowCount(); i++) {
-            if (!(((String) tablaVentas.getValueAt(i, 3)).equals("Si"))) {
+            if (!(((String) tablaVentas.getValueAt(i, 4)).equals("Si"))) {
                 aux = new BigDecimal((String) tablaVentas.getValueAt(i, 2));
                 total = total.add(aux);;
             }
@@ -429,6 +432,33 @@ public class ControladorCliente implements ActionListener {
         } else {
             clienteGui.getAdeuda().setForeground(Color.black);
             clienteGui.getAdeuda().setText(cta.toString());
+            return cta;
+        }
+    }
+    
+    
+    //calcula la cuenta corriente con precios actuales
+     private BigDecimal calcularCtaCteActual() {
+        abrirBase();
+        BigDecimal aux;
+        BigDecimal total = new BigDecimal(0);
+        for (int i = 0; i < tablaVentas.getRowCount(); i++) {
+            if (!(((String) tablaVentas.getValueAt(i, 4)).equals("Si"))) {
+                aux = new BigDecimal((String) tablaVentas.getValueAt(i, 3));
+                total = total.add(aux);;
+            }
+        }
+        BigDecimal cta = cliente.getBigDecimal("cuenta");
+        cta = cta.subtract(total).setScale(2, RoundingMode.CEILING);
+        if (cta.signum() == -1) {
+            clienteGui.getAdeudaActual().setForeground(Color.red);
+            cta = cta.negate();
+            clienteGui.getAdeudaActual().setText(cta.toString());
+            cta = cta.negate();
+            return cta;
+        } else {
+            clienteGui.getAdeudaActual().setForeground(Color.black);
+            clienteGui.getAdeudaActual().setText(cta.toString());
             return cta;
         }
     }
@@ -465,23 +495,47 @@ public class ControladorCliente implements ActionListener {
             ret = false;
             JOptionPane.showMessageDialog(clienteGui, "Error en el celular", "Error!", JOptionPane.ERROR_MESSAGE);
         }
-
+        try {
+            String facebook = TratamientoString.eliminarTildes(clienteGui.getFacebook().getText());
+            c.set("facebook", facebook);
+        } catch (ClassCastException e) {
+            ret = false;
+            JOptionPane.showMessageDialog(clienteGui, "Error en el facebook", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
+        try {
+            String direccion = TratamientoString.eliminarTildes(clienteGui.getDireccion().getText());
+            c.set("direccion", direccion);
+        } catch (ClassCastException e) {
+            ret = false;
+            JOptionPane.showMessageDialog(clienteGui, "Error en el direccion", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
+        try {
+            String dni = TratamientoString.eliminarTildes(clienteGui.getDni().getText());
+            c.set("dni", dni);
+        } catch (ClassCastException e) {
+            ret = false;
+            JOptionPane.showMessageDialog(clienteGui, "Error en el dni", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
         return ret;
     }
 
+    
+    //carga las ventas realizadas al cliente en la tabla
     public void cargarVentas() {
         abrirBase();
         tablaVentasDefault.setRowCount(0);
         Iterator<Venta> itr = busqueda.filtroVenta(cliente.getString("id"), "0-0-0", "9999-0-0").iterator();
         while (itr.hasNext()) {
             Venta v = itr.next();
-            Object row[] = new String[4];
+            Object row[] = new String[5];
             row[0] = v.getString("id");
             row[1] = v.getDate("fecha").toString();
             if (v.getBoolean("pago")) {
                 row[2] = v.get("monto").toString();
-                row[3] = "Si";
+                row[3] = v.get("monto").toString();
+                row[4] = "Si";
             } else {
+                row[2] = v.get("monto").toString();
                 BigDecimal montox = null;
                 BigDecimal cuenta;
                 System.out.println(v.getString("id") + " " + v.getDate("fecha").toString() + " " + v.getBoolean("pago"));
@@ -501,8 +555,8 @@ public class ControladorCliente implements ActionListener {
                     }
                 }
                 montox.setScale(2, RoundingMode.CEILING);
-                row[2] = montox.toString();
-                row[3] = "No";
+                row[3] = montox.toString();
+                row[4] = "No";
             }
             if (ver.getSelectedIndex() == 0) {
                 tablaVentasDefault.addRow(row);

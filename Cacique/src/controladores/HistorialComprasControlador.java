@@ -47,13 +47,14 @@ public class HistorialComprasControlador implements ActionListener {
     private JTable tablaHistorial;
     private Cliente cliente;
     private BigDecimal ctaCte;
+    private BigDecimal ctaCteActual;
     private Busqueda busqueda;
     private String desde;
     private String hasta;
     private JDateChooser calenDesde;
     private JDateChooser calenHasta;
 
-    public HistorialComprasControlador(AplicacionGui apgui, HistorialComprasGui historialCompras, ClienteGui clienteGui, Cliente cliente, BigDecimal ctaCte) {
+    public HistorialComprasControlador(AplicacionGui apgui, HistorialComprasGui historialCompras, ClienteGui clienteGui, Cliente cliente, BigDecimal ctaCte,BigDecimal ctaCteActual) {
         abrirBase();
         this.apgui = apgui;
         this.historialComprasGui = historialCompras;

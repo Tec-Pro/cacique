@@ -374,7 +374,7 @@ public class VentaGui extends javax.swing.JInternalFrame {
         labelBusquedaCodigo.setText("Código");
 
         labelBusquedaNombre.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
-        labelBusquedaNombre.setText("Fram");
+        labelBusquedaNombre.setText("Equivalencia");
 
         busquedaCodigoArticulo.setToolTipText("Filtrar por código");
 
@@ -391,7 +391,7 @@ public class VentaGui extends javax.swing.JInternalFrame {
                     .addComponent(labelBusquedaCodigo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(busquedaCodigoArticulo, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+                    .addComponent(busquedaCodigoArticulo, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
                     .addComponent(busquedaFram)))
             .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
@@ -449,7 +449,7 @@ public class VentaGui extends javax.swing.JInternalFrame {
             .addGroup(panelClientesLayout.createSequentialGroup()
                 .addComponent(labelApellido)
                 .addGap(17, 17, 17)
-                .addComponent(busquedaNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE))
+                .addComponent(busquedaNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE))
             .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         panelClientesLayout.setVerticalGroup(
@@ -492,7 +492,7 @@ public class VentaGui extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "ID", "Cantidad", "Articulo","Descripcion", "Precio","Sin IVA" ,"Importe"
+                "ID", "Cantidad", "Articulo","Descripcion", "Precio","Stock" ,"Importe"
             }
         ) {
             Class[] types = new Class [] {
@@ -539,7 +539,7 @@ public class VentaGui extends javax.swing.JInternalFrame {
         panelFactura.setLayout(panelFacturaLayout);
         panelFacturaLayout.setHorizontalGroup(
             panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
+            .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE)
             .addGroup(panelFacturaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelCliente)
@@ -631,7 +631,7 @@ public class VentaGui extends javax.swing.JInternalFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
 
@@ -645,9 +645,9 @@ public class VentaGui extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 407, Short.MAX_VALUE)
+            .addGap(0, 412, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE))
         );
 
         pack();

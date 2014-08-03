@@ -42,27 +42,7 @@ public class ABMVenta {
             ultimoIdVenta = idVenta;
             resultOp = resultOp && cargarProductosVendidos(idVenta, v.getProductos(), v.getPreciosFinales());//guardo los productos vendidos
             resultOp = resultOp && actualizarAdquisicionCliente(idCliente, v.getProductos());//actualizo la tabla de productos adquiridos por clientes
-
-        }
-        Base.commitTransaction();
-        return resultOp;
-    }
-
-    //FUNCIONA CORRECTAMENTE
-    /*Elimino una venta y los productos ligados a ella, sin hacer devolucion de stock,
-     * ni actualizacion de tablas de adquisicion ni tabla de productos_vendidos
-     */
-    public boolean baja(Venta v) {
-        Base.openTransaction();
-        boolean resultOp = true;
-        Integer idVenta = v.getInteger("id");//saco el idVenta
-        Venta venta = Venta.findById(idVenta);//la busco en BD y la traigo
-
-        if (venta == null) {
-            resultOp = false;
-        } else {
-            ArticulosVentas.delete("venta_id = ?", idVenta);//elimino todos los productosvendidos
-            resultOp = resultOp && venta.delete();//elimino la venta
+            resultOp = resultOp && actualizarStock(v.getProductos());//actualizo el stock de productos vendidos
         }
         Base.commitTransaction();
         return resultOp;
@@ -79,6 +59,7 @@ public class ABMVenta {
         } else {
             Integer idCliente = (Integer) venta.get("cliente_id");//saco el idcliente de esa venta
             LinkedList<Pair> viejosProductos = buscarProductosVendidos(idVenta); //saco los viejos productos de la venta
+            resultOp = resultOp && devolucionStock(viejosProductos);//actualizo el stock por haber sacado los viejos productos
             resultOp = resultOp && eliminarAdquisicionCliente(idCliente, viejosProductos);//actualizo los productos adquiridos quitando los viejos productos
             ArticulosVentas.delete("venta_id = ?", idVenta);//elimino todos los productosvendidos
             resultOp = resultOp && venta.delete(); //elimino la venta
@@ -86,6 +67,7 @@ public class ABMVenta {
         Base.commitTransaction();
         return resultOp;
     }
+
 
     /*Funcion que calcula el precio actual de los productos que se fiaron y
      * paga la cuenta.
@@ -253,5 +235,50 @@ public class ABMVenta {
 
     public int getUltimoIdVenta() {
         return ultimoIdVenta;
+    }
+
+    //FUNCIONA CORRECTAMENTE   // VER LAS MOVIDAS DEL BIGDECIMAL
+    //Actualiza el stock de los productos vendidos 
+    private boolean actualizarStock(LinkedList<Pair> productos) {
+        boolean resultOp = true;
+        Iterator itr = productos.iterator();
+        Articulo prodViejo;
+        Pair par;
+        BigDecimal cant;
+        while (itr.hasNext()) {
+            par = (Pair) itr.next(); //saco el par de la lista
+            prodViejo = (Articulo) par.first(); //saco el producto del par
+            cant = (BigDecimal) par.second();//saco la cantidad del par
+            cant = prodViejo.getBigDecimal("stock_actual").subtract(cant);//asigno a cant el valor nuevo del stock
+            resultOp = resultOp && prodViejo.setBigDecimal("stock_actual", cant).saveIt();//actualizo el stock del producto
+            if (Articulo.findById(prodViejo.get("proveedor_id")) != null) {
+                Articulo.findById(prodViejo.get("proveedor_id")).add(prodViejo);//creo la relacion
+            }
+        }
+        return resultOp;
+    }
+
+    //FUNCIONA CORRECTAMENTE
+    /*Actualiza el stock de los productos vendidos cuando se da de baja una venta
+     * o cuando se modifica (incrementando el stock nuevamente)
+     */
+    public boolean devolucionStock(LinkedList<Pair> productos) {
+        boolean resultOp = true;
+        Iterator itr = productos.iterator();
+        Articulo prodViejo;
+        Pair par;
+        BigDecimal cant;
+        while (itr.hasNext()) {
+            par = null;
+            par = (Pair) itr.next(); //saco el par de la lista
+            prodViejo = (Articulo) par.first(); //saco el producto del par
+            cant = ( BigDecimal) par.second();//saco la cantidad del par
+            cant = prodViejo.getBigDecimal("stock_actual").add(cant);//devuelvo el stock anterior a la venta del producto
+            resultOp = resultOp && prodViejo.setInteger("stock_actual", cant).saveIt();//actualizo el stock del producto
+            if (Articulo.findById(prodViejo.get("proveedor_id")) != null) {
+                Articulo.findById(prodViejo.get("proveedor_id")).add(prodViejo);//creo la relacion
+            }
+        }
+        return resultOp;
     }
 }

@@ -13,7 +13,6 @@ CREATE  TABLE `cacique`.`clientes` (
   `facebook` VARCHAR(60) NULL ,
   `email` VARCHAR(60) NULL ,
   `dni` VARCHAR(45) NULL ,
-	cuenta FLOAT NULL DEFAULT 0,
   PRIMARY KEY (`id`) );
 
 CREATE  TABLE `cacique`.`proveedors` (
@@ -32,8 +31,8 @@ CREATE  TABLE `cacique`.`articulos` (
   `codigo` VARCHAR(45) NOT NULL ,
   `nombre` VARCHAR(45) NULL ,
   `marca` VARCHAR(45) NULL ,
-  `stock_actual` FLOAT NULL DEFAULT 0 ,
-  `stock_minimo` FLOAT NULL DEFAULT 0 ,
+  `stock_actual` INT NULL DEFAULT 0 ,
+  `stock_minimo` INT NULL DEFAULT 0 ,
   `precio_compra` FLOAT NULL DEFAULT 0 ,
   `precio_venta` FLOAT NULL DEFAULT 0 ,
   `descripcion` VARCHAR(200) NULL ,
@@ -85,7 +84,7 @@ ALTER TABLE `cacique`.`envios` ADD COLUMN `id` INT NOT NULL AUTO_INCREMENT  AFTE
 
 ALTER TABLE `cacique`.`envios` CHANGE COLUMN `enviado` `enviado` INT NULL DEFAULT NULL  ;
 
-create table cacique.ventas (
+create table lubricentro.ventas (
     id integer not null auto_increment,
     monto float,
     cliente_id integer,
@@ -94,7 +93,7 @@ create table cacique.ventas (
 	pago_id INT NULL DEFAULT NULL,
     PRIMARY KEY (`id`) );
 
-create table cacique.compras (
+create table lubricentro.compras (
     id integer not null auto_increment,
     monto float,
     proveedor_id integer,
@@ -136,13 +135,4 @@ create table articulos_compras (
 	check (cantidad>0),
 	check (precio_final>0),
     primary key(id));
-
-CREATE  TABLE `cacique`.`pagos` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `fecha` DATE NULL DEFAULT NULL,
-  `monto` FLOAT NULL ,
-  `proveedor_id` INT NULL ,
-	cliente_id INT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) );
-
 

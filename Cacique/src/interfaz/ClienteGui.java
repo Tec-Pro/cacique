@@ -6,6 +6,8 @@ package interfaz;
 
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.util.Calendar;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -20,9 +22,9 @@ import modelos.Cliente;
  */
 public class ClienteGui extends javax.swing.JInternalFrame {
 
-   private DefaultTableModel clientes;
-        private DefaultTableModel cobrosDefault;
-        private DefaultTableModel ventasDefault;//Tabla Default para tener las opciones de instar y elimnar filas
+    private DefaultTableModel clientes;
+    private DefaultTableModel cobrosDefault;
+    private DefaultTableModel ventasDefault;//Tabla Default para tener las opciones de instar y elimnar filas
 
     /**
      * Creates new form ProveedorGui
@@ -30,11 +32,10 @@ public class ClienteGui extends javax.swing.JInternalFrame {
     public ClienteGui() {
         initComponents();
         clientes = (DefaultTableModel) tablaClientes.getModel(); //convierto la tabla;
-        ventasDefault=(DefaultTableModel) ventasRealizadas.getModel();
-
+        ventasDefault = (DefaultTableModel) ventasRealizadas.getModel();
     }
-    
-       public void setActionListener(ActionListener lis) {
+
+    public void setActionListener(ActionListener lis) {
         this.guardar.addActionListener(lis);
         this.borrar.addActionListener(lis);
         this.nuevo.addActionListener(lis);
@@ -48,15 +49,14 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         this.presupuestos.addActionListener(lis);
     }
 
-        public void habilitarCamposVentas(boolean b) {
+    public void habilitarCamposVentas(boolean b) {
         cobrarFactura.setEnabled(b);
         eliminarVenta.setEnabled(b);
         verHistorial.setEnabled(b);
         ver.setEnabled(b);
-        }
-        
-    
-        public void habilitarCampos(boolean b) {
+    }
+
+    public void habilitarCampos(boolean b) {
         nombre.setEnabled(b);
         telefono.setEnabled(b);
         celular.setEnabled(b);
@@ -65,9 +65,16 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         dni.setEnabled(b);
         nacimiento.setEnabled(b);
         direccion.setEnabled(b);
+        if (b) {
+            Calendar miCalendario = Calendar.getInstance();
+            int diaHoy = miCalendario.get(Calendar.DAY_OF_MONTH);
+            int mes = miCalendario.get(Calendar.MONTH);
+            int anio = miCalendario.get(Calendar.YEAR);
+            nacimiento.setDate(Date.valueOf(anio + "-" + (mes + 1) + "-" + diaHoy));
         }
-        
-        public void limpiarCampos() {
+    }
+
+    public void limpiarCampos() {
         id.setText("");
         nombre.setText("");
         telefono.setText("");
@@ -77,12 +84,18 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         adeudaActual.setText("");
         facebook.setText("");
         dni.setText("");
-        nacimiento.setDateFormatString("9999-1-1");
-        direccion.setText("");
+        nacimiento.setDateFormatString(" ");
         email.setText("");
-        }
-        
-        public void CargarCampos(Cliente cliente) {
+        Calendar miCalendario = Calendar.getInstance();
+        java.util.Date eldia = miCalendario.getTime();
+        int diaHoy = miCalendario.get(Calendar.DAY_OF_MONTH);
+        int mes = miCalendario.get(Calendar.MONTH);
+        int anio = miCalendario.get(Calendar.YEAR);
+        nacimiento.setDate(Date.valueOf(anio + "-" + (mes + 1) + "-" + diaHoy));
+
+    }
+
+    public void CargarCampos(Cliente cliente) {
         id.setText(cliente.getString("id"));
         nombre.setText(cliente.getString("nombre"));
         telefono.setText(cliente.getString("telefono"));
@@ -92,13 +105,13 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         nacimiento.setDate(cliente.getDate("nacimiento"));
         direccion.setText(cliente.getString("direccion"));
         email.setText(cliente.getString("email"));
-        }
+    }
 
     public DefaultTableModel getClientes() {
         return clientes;
     }
 
-   public DefaultTableModel getCobrosDefault() {
+    public DefaultTableModel getCobrosDefault() {
         return cobrosDefault;
     }
 
@@ -113,15 +126,14 @@ public class ClienteGui extends javax.swing.JInternalFrame {
     public void setVentasDefault(DefaultTableModel ventasDefault) {
         this.ventasDefault = ventasDefault;
     }
-    
-      public JTable getVentasRealizadas() {
+
+    public JTable getVentasRealizadas() {
         return ventasRealizadas;
     }
 
     public void setVentasRealizadas(JTable ventasRealizadas) {
         this.ventasRealizadas = ventasRealizadas;
     }
-
 
     public JButton getAutos() {
         return autos;
@@ -203,7 +215,6 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         return telefono;
     }
 
-
     public JComboBox getVer() {
         return ver;
     }
@@ -219,8 +230,10 @@ public class ClienteGui extends javax.swing.JInternalFrame {
     public JLabel getAdeudaActual() {
         return adeudaActual;
     }
-        
-        
+
+    public JTextField getCalenFacturaText() {
+        return ((JTextField) nacimiento.getDateEditor().getUiComponent());
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -283,7 +296,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setTitle("Gestión de Clientes");
-        setPreferredSize(new java.awt.Dimension(830, 515));
+        setPreferredSize(new java.awt.Dimension(835, 520));
         getContentPane().setLayout(new java.awt.GridLayout(1, 0));
 
         scroolClientes.setName(""); // NOI18N
@@ -399,6 +412,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         });
 
         nacimiento.setDateFormatString("yyyy-MM-dd");
+        nacimiento.setEnabled(false);
 
         jLabel9.setText("Nacimiento");
 
@@ -703,7 +717,6 @@ public class ClienteGui extends javax.swing.JInternalFrame {
     private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_modificarActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel adeuda;
     private javax.swing.JLabel adeudaActual;

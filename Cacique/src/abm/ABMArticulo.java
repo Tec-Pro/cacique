@@ -19,7 +19,6 @@ public class ABMArticulo {
         return Articulo.first("codigo =?", p.get("codigo"));
     }
 
-    
     //existe  el articulo?
     public boolean findArticulo(Articulo p) {
         return (Articulo.first("codigo = ?", p.get("codigo")) != null);
@@ -29,24 +28,23 @@ public class ABMArticulo {
         if (!findArticulo(art)) {
             Base.openTransaction();
             Articulo nuevo = Articulo.create(
-"codigo",art.get("codigo"),
-"nombre",art.get("nombre"),
-"marca",art.get("marca"),
-"stock_actual",art.get("stock_actual"),
-"stock_minimo",art.get("stock_minimo"),
-"precio_compra",art.get("precio_compra"),
-"precio_venta",art.get("precio_venta"),
-"descripcion",art.get("descripcion")
-//"ultima_compra",art.get("ultima_compra"), // es al pedo que vaya, no tiene compra todavía
-//"proveedor_id",art.get("proveedor_id")
-);
-Proveedor p= Proveedor.findFirst("nombre =?", art.getNombreProv());
-            if(p!=null){
-                    p.add(nuevo);
+                    "codigo", art.get("codigo"),
+                    "nombre", art.get("nombre"),
+                    "marca", art.get("marca"),
+                    "stock_actual", art.get("stock_actual"),
+                    "stock_minimo", art.get("stock_minimo"),
+                    "precio_compra", art.get("precio_compra"),
+                    "precio_venta", art.get("precio_venta"),
+                    "descripcion", art.get("descripcion") //"ultima_compra",art.get("ultima_compra"), // es al pedo que vaya, no tiene compra todavía
+                    //"proveedor_id",art.get("proveedor_id")
+                    );
+            Proveedor p = Proveedor.findFirst("nombre =?", art.getNombreProv());
+            if (p != null) {
+                p.add(nuevo);
             }
-            
+
             nuevo.saveIt();
-            
+
             Base.commitTransaction();
             return true;
         } else {
@@ -70,23 +68,22 @@ Proveedor p= Proveedor.findFirst("nombre =?", art.getNombreProv());
         Articulo viejo = Articulo.findFirst("codigo = ?", art.get("codigo"));
         if (viejo != null) {
             Base.openTransaction();
-             viejo.set(
-"codigo",art.get("codigo"),
-"nombre",art.get("nombre"),
-"marca",art.get("marca"),
-"sotck_actual",art.get("stock_actual"),
-"stock_minimo",art.get("stock_minimo"),
-"precio_compra",art.get("precio_compra"),
-"precio_venta",art.get("precio_venta"),
-"descripcion",art.get("descripcion")
-//"ultima_compra",art.get("ultima_compra"), // es al pedo que vaya, no tiene compra todavía
-);
-        ret= art.saveIt();     
-            Proveedor p= Proveedor.findFirst("nombre =?", art.getNombreProv());
-            if(p!=null){
-                    p.add(art);
+            viejo.set(
+                    "codigo", art.get("codigo"),
+                    "nombre", art.get("nombre"),
+                    "marca", art.get("marca"),
+                    "sotck_actual", art.get("stock_actual"),
+                    "stock_minimo", art.get("stock_minimo"),
+                    "precio_compra", art.get("precio_compra"),
+                    "precio_venta", art.get("precio_venta"),
+                    "descripcion", art.get("descripcion") //"ultima_compra",art.get("ultima_compra"), // es al pedo que vaya, no tiene compra todavía
+                    );
+            ret = art.saveIt();
+            Proveedor p = Proveedor.findFirst("nombre =?", art.getNombreProv());
+            if (p != null) {
+                p.add(art);
             }
-            
+
             Base.commitTransaction();
         }
         return ret;

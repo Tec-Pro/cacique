@@ -11,11 +11,11 @@ import interfaz.CambiarUsuarioGui;
 //import interfaz.CambiarUsuarioGui;
 import interfaz.CargarDatosEmail;
 import interfaz.ClienteGui;
-//import interfaz.CompraGui;
+import interfaz.CompraGui;
 import interfaz.ConfigurarServerGui;
 import interfaz.EnviarManualGui;
 //import interfaz.ImportarExcelGui;
-//import interfaz.PagoFacturaGui;
+import interfaz.PagoFacturaGui;
 //import interfaz.ProveedorGui;
 import interfaz.VentaGui;
 import java.awt.Cursor;
@@ -47,17 +47,18 @@ public class ControladorApliacion implements ActionListener {
 //    private ProveedorGui proveedorGui;
 //    private ImportarExcelGui importarGui;
     private ClienteGui clienteGui;
-//    private ControladorCliente controladorCliente;
+    private ControladorCliente controladorCliente;
     private CargarDatosEmail emailGui;
     private ControladorLogin log;
     private File archivoBackup;
     private int selecEnviarBack = 0;
     private Modulo modulo;
     private EnvioEmailControlador envioEmailControlador;
-//    private ControladorCompra controladorCompra;
-//    private ControladorVenta controladorVenta;
-//    private CompraGui compraGui;
+    private ControladorCompra controladorCompra;
+    private ControladorVenta controladorVenta;
+    private CompraGui compraGui;
     private VentaGui ventaGui;
+
     public ControladorApliacion() throws JRException, ClassNotFoundException, SQLException {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
@@ -73,73 +74,72 @@ public class ControladorApliacion implements ActionListener {
         articuloGui = new ArticuloGui();
 //        proveedorGui = new ProveedorGui();
         clienteGui = new ClienteGui();
-//        compraGui = new CompraGui();
-        ventaGui = new VentaGui();        
-//        controladorCompra = new ControladorCompra(compraGui, aplicacionGui);
-//        controladorVenta = new ControladorVenta(ventaGui, aplicacionGui);
+        compraGui = new CompraGui();
+        ventaGui = new VentaGui();
+        controladorVenta = new ControladorVenta(ventaGui, aplicacionGui);
 //        controladorProveedor = new ControladorProveedor(proveedorGui, aplicacionGui, articuloGui, compraGui);
         controladorArticulo = new ControladorArticulo(articuloGui);
-//        controladorCliente = new ControladorCliente(clienteGui, aplicacionGui, ventaGui);
+        controladorCliente = new ControladorCliente(clienteGui, aplicacionGui, ventaGui);
 //        importarGui = new ImportarExcelGui();
 //        controladorImportarGui = new controladorImportarGui(importarGui);
 //        aplicacionGui.getContenedor().add(proveedorGui);
         aplicacionGui.getContenedor().add(articuloGui);
 //        aplicacionGui.getContenedor().add(importarGui);
         aplicacionGui.getContenedor().add(clienteGui);
-//        aplicacionGui.getContenedor().add(compraGui);
+        aplicacionGui.getContenedor().add(compraGui);
         aplicacionGui.getContenedor().add(ventaGui);
         aplicacionGui.setCursor(Cursor.DEFAULT_CURSOR);
 
     }
 
     public static void main(String[] args) throws InterruptedException, ClassNotFoundException, SQLException, JRException {
-        ManejoIp manejoIp=new ManejoIp();
+        ManejoIp manejoIp = new ManejoIp();
         if (!Base.hasConnection()) {
             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/cacique", "tecpro", "tecpro");
         }
         manejoIp.crearIp();
         manejoIp.conseguirDatos();
         System.out.println("consegui todo wacho");
-                if (Base.hasConnection()) {
+        if (Base.hasConnection()) {
             Base.close();
         }
-                
-                    if (!Base.hasConnection()) {
-                        try{
-            Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://"+ManejoIp.ipServer+"/cacique", "tecpro", "tecpro");
-            }catch(Exception e){
-                JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n "+e.getMessage(),null,JOptionPane.ERROR_MESSAGE);
+
+        if (!Base.hasConnection()) {
+            try {
+                Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://" + ManejoIp.ipServer + "/cacique", "tecpro", "tecpro");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n " + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
                 new ConfigurarServerGui(null, true).setVisible(true);
-                JOptionPane.showMessageDialog(null,"Se cerrará el programa",null,JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Se cerrará el programa", null, JOptionPane.ERROR_MESSAGE);
                 System.exit(1);
-                    
-                }
+
+            }
         }
-                    ControladorApliacion controladorAplicacion = new ControladorApliacion();
+        ControladorApliacion controladorAplicacion = new ControladorApliacion();
 
     }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == aplicacionGui.getArticulos()) {
-        //    controladorArticulo.cargarTodos();
+            //    controladorArticulo.cargarTodos();
             articuloGui.setVisible(true);
             articuloGui.toFront();
         }
         if (ae.getSource() == aplicacionGui.getProveedores()) {
-        //    controladorProveedor.cargarTodos();
+            //    controladorProveedor.cargarTodos();
 //            proveedorGui.setVisible(true);
 //            proveedorGui.toFront();
         }
         if (ae.getSource() == aplicacionGui.getImportar()) {
-        //    controladorImportarGui.cargarProveedores();
+//            controladorImportarGui.cargarProveedores();
 //            importarGui.setVisible(true);
 //            importarGui.toFront();
         }
         if (ae.getSource() == aplicacionGui.getClientes()) {
-          //  controladorCliente.cargarTodos();
-//            clienteGui.setVisible(true);
-//            clienteGui.toFront();
+            controladorCliente.cargarTodos();
+            clienteGui.setVisible(true);
+            clienteGui.toFront();
         }
         if (ae.getSource() == aplicacionGui.getCrearBackup()) {
             modulo = new Modulo();
@@ -208,16 +208,16 @@ public class ControladorApliacion implements ActionListener {
 
         }
         if (ae.getSource() == aplicacionGui.getRegistrarCompra()) {
-          //  controladorCompra.cargarTodos();
-//            compraGui.setVisible(true);
-//            compraGui.toFront();
+            controladorCompra.cargarTodos();
+            compraGui.setVisible(true);
+            compraGui.toFront();
         }
         if (ae.getSource() == aplicacionGui.getRegistrarVenta()) {
-         //   controladorVenta.cargarTodos();
+            controladorVenta.cargarTodos();
             ventaGui.setVisible(true);
             ventaGui.toFront();
         }
-        if(ae.getSource()== aplicacionGui.getConfigServer()){
+        if (ae.getSource() == aplicacionGui.getConfigServer()) {
             new ConfigurarServerGui(aplicacionGui, true).setVisible(true);
         }
     }

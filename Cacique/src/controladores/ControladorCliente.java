@@ -294,7 +294,7 @@ public class ControladorCliente implements ActionListener {
         }
         if (e.getSource() == clienteGui.getRealizarEntrega()) {
             PagoFacturaGui pagoFacturaGui = new PagoFacturaGui();
-            RealizarPagoVentaControlador rpvc = new RealizarPagoVentaControlador(pagoFacturaGui, cliente, calcularCtaCte(), calcularCtaCteActual(), aplicacionGui);
+            RealizarPagoVentaControlador rpvc = new RealizarPagoVentaControlador(pagoFacturaGui, cliente, calcularCtaCte(), calcularCtaCteActual(), aplicacionGui, this);
             aplicacionGui.getContenedor().add(pagoFacturaGui);
             pagoFacturaGui.setVisible(true);
             pagoFacturaGui.toFront();
@@ -325,7 +325,7 @@ public class ControladorCliente implements ActionListener {
         }
         if ((e.getSource() == clienteGui.getVerHistorial())) {
             HistorialComprasGui hcg = new HistorialComprasGui();
-            HistorialComprasControlador hcc = new HistorialComprasControlador(aplicacionGui, hcg, clienteGui, cliente, calcularCtaCte(), calcularCtaCteActual());
+            HistorialComprasControlador hcc = new HistorialComprasControlador(aplicacionGui, hcg, clienteGui, cliente);
             aplicacionGui.getContenedor().add(hcg);
             hcg.setVisible(true);
             hcg.toFront();
@@ -335,50 +335,56 @@ public class ControladorCliente implements ActionListener {
             if (row > -1) {
                 String p = (String) tablaVentas.getValueAt(row, 0);
                 if (p.equals("Si")) {
+                    JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, la venta ya ha sido abonada", "Error!", JOptionPane.ERROR_MESSAGE);
                 } else {
                     int reply = JOptionPane.showConfirmDialog(null, "¿Desea cobrar la factura con el precio actual?", "¿Cuanto Cobrar?", JOptionPane.YES_NO_OPTION);
-                    boolean cobroNuevo = false;
-                    if (reply == JOptionPane.YES_OPTION) {
-                        cobroNuevo = true;
-                    }
-                    abrirBase();
-                    String id = (String) tablaVentas.getValueAt(row, 0);
-                    BigDecimal monto = null;
-                    if (cobroNuevo) {
-                        monto = new BigDecimal((String) tablaVentas.getValueAt(row, 3));
-                    } else {
-                        monto = new BigDecimal((String) tablaVentas.getValueAt(row, 2));
-
-                    }
-                    Venta v = Venta.findById(id);
-                    ABMVenta ambV = new ABMVenta();
-                    if (cobroNuevo) {
-                        v.set("pago", true);
-                        v.set("monto", monto);
+                    if (reply == JOptionPane.YES_OPTION || reply == JOptionPane.NO_OPTION) {
+                        boolean cobroNuevo = false;
+                        if (reply == JOptionPane.YES_OPTION) {
+                            cobroNuevo = true;
+                        }
+                        abrirBase();
+                        String id = (String) tablaVentas.getValueAt(row, 0);
+                        BigDecimal monto = null;
+                        if (cobroNuevo) {
+                            monto = new BigDecimal((String) tablaVentas.getValueAt(row, 3));
+                        } else {
+                            monto = new BigDecimal((String) tablaVentas.getValueAt(row, 2));
+                        }
+                        Venta v = Venta.findById(id);
+                        ABMVenta ambV = new ABMVenta();
+                        if (cobroNuevo) {
+                            v.set("pago", true);
+                            v.set("monto", monto);
+                            v.saveIt();
+                        } else {
+                            ambV.pagar(v, monto);
+                        }
+                        String clienteId = clienteGui.getId().getText();
+                        int idCliente2 = Integer.parseInt(clienteId);
+                        Calendar c = Calendar.getInstance();
+                        c.setTime(new Date());
+                        String d = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH + 1 ) + "-" + c.get(Calendar.DATE);
+                        Base.openTransaction();
+                        Pago pago = Pago.createIt("fecha", d, "monto", monto, "cliente_id", idCliente2);
+                        pago.saveIt();
+                        String pagoId = pago.getString("id");//Pago.findFirst("fecha = ? and monto = ? and cliente_id = ?", d, monto, idCliente2).getString("id");
+                        v.set("pago_id", pagoId);
                         v.saveIt();
+                        Base.commitTransaction();
+                        JOptionPane.showMessageDialog(clienteGui, "¡Cobro registrado exitosamente!");
+                        cargarVentas();
+                        calcularCtaCte();
+                        calcularCtaCteActual();
+                        cerrarBase();
                     } else {
-                        ambV.pagar(v, monto);
+                        JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, el cobro no ha sido registrado", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
-                    String clienteId = clienteGui.getId().getText();
-                    int idCliente2 = Integer.parseInt(clienteId);
-                    Calendar c = Calendar.getInstance();
-                    c.setTime(new Date());
-                    String d = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.DATE);
-                    Base.openTransaction();
-                    Pago pago = Pago.createIt("fecha", d, "monto", monto, "cliente_id", idCliente2);
-                    Base.commitTransaction();
-                    pago.saveIt();
-                    String pagoId = pago.getString("id");//Pago.findFirst("fecha = ? and monto = ? and cliente_id = ?", d, monto, idCliente2).getString("id");
-                    v.set("pago_id", pagoId);
-                    v.saveIt();
-                    JOptionPane.showMessageDialog(clienteGui, "¡Cobro registrado exitosamente!");
-                    cargarVentas();
-                    calcularCtaCte();
-                    calcularCtaCteActual();
-                    cerrarBase();
                 }
+
             } else {
                 JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, el cobro no ha sido registrado", "Error!", JOptionPane.ERROR_MESSAGE);
+
             }
         }
     }
@@ -430,7 +436,7 @@ public class ControladorCliente implements ActionListener {
     }
 
     // calcula la cuenta corriente con precios viejos
-    private BigDecimal calcularCtaCte() {
+    public BigDecimal calcularCtaCte() {
         abrirBase();
         BigDecimal aux;
         BigDecimal total = new BigDecimal(0);
@@ -456,7 +462,7 @@ public class ControladorCliente implements ActionListener {
     }
 
     //calcula la cuenta corriente con precios actuales
-    private BigDecimal calcularCtaCteActual() {
+    public BigDecimal calcularCtaCteActual() {
         abrirBase();
         BigDecimal aux;
         BigDecimal total = new BigDecimal(0);
@@ -534,7 +540,9 @@ public class ControladorCliente implements ActionListener {
             ret = false;
             JOptionPane.showMessageDialog(clienteGui, "Error en el dni", "Error!", JOptionPane.ERROR_MESSAGE);
         }
-        c.set("nacimiento", clienteGui.getCalenFacturaText().getText()); //saco la fecha);
+        String laFecha = clienteGui.getCalenText().getText();
+        Date date = clienteGui.getNacimiento().getDate();
+        c.set("nacimiento", date); //saco la fecha);
         c.set("email", clienteGui.getEmail().getText());
         return ret;
     }

@@ -44,23 +44,23 @@ public class HistorialComprasControlador implements ActionListener {
     private HistorialComprasGui historialComprasGui;
     private ClienteGui clienteGui;
     private DefaultTableModel tablaHistorialDef;
-    private JTable tablaHistorial;
+//    private JTable tablaHistorial;
     private Cliente cliente;
     private BigDecimal ctaCte;
-    private BigDecimal ctaCteActual;
+//    private BigDecimal ctaCteActual;
     private Busqueda busqueda;
     private String desde;
     private String hasta;
     private JDateChooser calenDesde;
     private JDateChooser calenHasta;
 
-    public HistorialComprasControlador(AplicacionGui apgui, HistorialComprasGui historialCompras, ClienteGui clienteGui, Cliente cliente, BigDecimal ctaCte,BigDecimal ctaCteActual) {
+    public HistorialComprasControlador(AplicacionGui apgui, HistorialComprasGui historialCompras, ClienteGui clienteGui, Cliente cliente) {
         abrirBase();
         this.apgui = apgui;
         this.historialComprasGui = historialCompras;
         this.clienteGui = clienteGui;
         this.cliente = cliente;
-        this.ctaCte = ctaCte;
+//        this.ctaCte = ctaCte;
         busqueda = new Busqueda();
         CargarDatosCli();
         tablaHistorialDef = historialCompras.getTablaHistorialDefault();
@@ -112,14 +112,14 @@ public class HistorialComprasControlador implements ActionListener {
 
     private void CargarDatosCli() {
         historialComprasGui.setNombre(cliente.getString("nombre"));
-        historialComprasGui.setCuenta(ctaCte.toString());
-        if (ctaCte.signum() == -1) {
-            historialComprasGui.getCuenta().setForeground(Color.red);
-            historialComprasGui.setCuenta(ctaCte.abs().toString());
-        } else {
-            historialComprasGui.getCuenta().setForeground(Color.black);
-            historialComprasGui.setCuenta(ctaCte.toString());
-        }
+//        historialComprasGui.setCuenta(ctaCte.toString());
+//        if (ctaCte.signum() == -1) {
+//            historialComprasGui.getCuenta().setForeground(Color.red);
+//            historialComprasGui.setCuenta(ctaCte.abs().toString());
+//        } else {
+//            historialComprasGui.getCuenta().setForeground(Color.black);
+//            historialComprasGui.setCuenta(ctaCte.toString());
+//        }
     }
 
     private void cargarHistorial() {

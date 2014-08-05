@@ -33,6 +33,12 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         initComponents();
         clientes = (DefaultTableModel) tablaClientes.getModel(); //convierto la tabla;
         ventasDefault = (DefaultTableModel) ventasRealizadas.getModel();
+        Calendar miCalendario = Calendar.getInstance();
+        java.util.Date eldia = miCalendario.getTime();
+        int diaHoy = miCalendario.get(Calendar.DAY_OF_MONTH);
+        int mes = miCalendario.get(Calendar.MONTH);
+        int anio = miCalendario.get(Calendar.YEAR);
+        nacimiento.setDate(Date.valueOf(anio + "-" + (mes + 1) + "-" + diaHoy));
     }
 
     public void setActionListener(ActionListener lis) {
@@ -84,7 +90,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         adeudaActual.setText("");
         facebook.setText("");
         dni.setText("");
-        nacimiento.setDateFormatString(" ");
+        direccion.setText("");
         email.setText("");
         Calendar miCalendario = Calendar.getInstance();
         java.util.Date eldia = miCalendario.getTime();
@@ -231,7 +237,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         return adeudaActual;
     }
 
-    public JTextField getCalenFacturaText() {
+    public JTextField getCalenText() {
         return ((JTextField) nacimiento.getDateEditor().getUiComponent());
     }
 
@@ -267,8 +273,8 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         telefono = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         facebook = new javax.swing.JTextField();
-        nacimiento = new com.toedter.calendar.JDateChooser();
         jLabel9 = new javax.swing.JLabel();
+        nacimiento = new com.toedter.calendar.JDateChooser();
         jPanel4 = new javax.swing.JPanel();
         borrar = new javax.swing.JButton();
         nuevo = new javax.swing.JButton();
@@ -411,10 +417,9 @@ public class ClienteGui extends javax.swing.JInternalFrame {
             }
         });
 
-        nacimiento.setDateFormatString("yyyy-MM-dd");
-        nacimiento.setEnabled(false);
-
         jLabel9.setText("Nacimiento");
+
+        nacimiento.setEnabled(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -442,7 +447,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
                             .addComponent(nombre)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addGap(0, 180, Short.MAX_VALUE))
                             .addComponent(dni)
                             .addComponent(facebook)
                             .addComponent(direccion)
@@ -450,9 +455,9 @@ public class ClienteGui extends javax.swing.JInternalFrame {
                             .addComponent(email)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel9)
-                        .addGap(49, 49, 49)
-                        .addComponent(nacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 80, Short.MAX_VALUE)))
+                        .addGap(55, 55, 55)
+                        .addComponent(nacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -491,8 +496,9 @@ public class ClienteGui extends javax.swing.JInternalFrame {
                     .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(nacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9)))
+                    .addComponent(jLabel9)
+                    .addComponent(nacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, 0))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));

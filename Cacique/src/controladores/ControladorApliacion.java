@@ -15,7 +15,6 @@ import interfaz.CompraGui;
 import interfaz.ConfigurarServerGui;
 import interfaz.EnviarManualGui;
 //import interfaz.ImportarExcelGui;
-import interfaz.PagoFacturaGui;
 //import interfaz.ProveedorGui;
 import interfaz.VentaGui;
 import java.awt.Cursor;

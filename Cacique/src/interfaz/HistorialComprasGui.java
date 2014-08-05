@@ -49,17 +49,17 @@ public class HistorialComprasGui extends javax.swing.JInternalFrame {
         cliente.setText(c);
     }
 
-    public void setCuenta(String c) {
-        cuenta.setText(c);
-    }
+//    public void setCuenta(String c) {
+//        cuenta.setText(c);
+//    }
 
     public DefaultTableModel getTablaHistorialDefault() {
         return tablaHistorialD;
     }
 
-    public JLabel getCuenta() {
-        return cuenta;
-    }
+//    public JLabel getCuenta() {
+//        return cuenta;
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -77,11 +77,9 @@ public class HistorialComprasGui extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         desde = new com.toedter.calendar.JDateChooser();
         hasta = new com.toedter.calendar.JDateChooser();
         cliente = new javax.swing.JLabel();
-        cuenta = new javax.swing.JLabel();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -124,15 +122,11 @@ public class HistorialComprasGui extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Hasta");
 
-        jLabel4.setText("Cta Cte:");
-
         desde.setDateFormatString("yyyy-MM-dd");
 
         hasta.setDateFormatString("yyyy-MM-dd");
 
         cliente.setText("X");
-
-        cuenta.setText("X");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -153,11 +147,7 @@ public class HistorialComprasGui extends javax.swing.JInternalFrame {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(hasta, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(115, 115, 115))
+                .addGap(115, 470, Short.MAX_VALUE))
             .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanel2Layout.setVerticalGroup(
@@ -170,12 +160,9 @@ public class HistorialComprasGui extends javax.swing.JInternalFrame {
                     .addComponent(jLabel3)
                     .addComponent(hasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(21, 21, 21)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2)
-                        .addComponent(cliente)
-                        .addComponent(cuenta)))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(cliente))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
                 .addGap(56, 56, 56))
@@ -198,13 +185,11 @@ public class HistorialComprasGui extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel cliente;
-    private javax.swing.JLabel cuenta;
     private com.toedter.calendar.JDateChooser desde;
     private com.toedter.calendar.JDateChooser hasta;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

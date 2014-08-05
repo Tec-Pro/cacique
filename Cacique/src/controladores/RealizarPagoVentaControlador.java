@@ -38,8 +38,9 @@ public class RealizarPagoVentaControlador implements ActionListener {
     private BigDecimal ctaCteActual;
     private Busqueda busqueda;
     private AplicacionGui apgui;
+    private ControladorCliente cl;
 
-    public RealizarPagoVentaControlador(PagoFacturaGui pagoFacturaGui, Cliente cli, BigDecimal ctaCte, BigDecimal ctaCteActual, AplicacionGui apgui) {
+    public RealizarPagoVentaControlador(PagoFacturaGui pagoFacturaGui, Cliente cli, BigDecimal ctaCte, BigDecimal ctaCteActual, AplicacionGui apgui, ControladorCliente cl) {
         this.apgui = apgui;
         this.pagoFacturaGui = pagoFacturaGui;
         this.pagoFacturaGui.setActionListener(this);
@@ -48,6 +49,7 @@ public class RealizarPagoVentaControlador implements ActionListener {
         this.ctaCteActual = ctaCteActual;
         CargarDatosCli();
         busqueda = new Busqueda();
+        this.cl = cl;
     }
 
     RealizarPagoVentaControlador() {
@@ -67,11 +69,11 @@ public class RealizarPagoVentaControlador implements ActionListener {
             pagoFacturaGui.setCuenta(ctaCte.toString());
         }
         pagoFacturaGui.setCuentaActual(ctaCteActual.toString());
-        if (ctaCte.signum() == -1) {
+        if (ctaCteActual.signum() == -1) {
             pagoFacturaGui.getCuentaActual().setForeground(Color.red);
-            ctaCte = ctaCte.negate();
+            ctaCteActual = ctaCteActual.negate();
             pagoFacturaGui.setCuentaActual(ctaCteActual.toString());
-            ctaCte = ctaCte.negate();
+            ctaCteActual = ctaCteActual.negate();
         } else {
             pagoFacturaGui.getCuentaActual().setForeground(Color.black);
             pagoFacturaGui.setCuentaActual(ctaCteActual.toString());
@@ -142,6 +144,9 @@ public class RealizarPagoVentaControlador implements ActionListener {
                 }
             }
         }
+        cl.cargarVentas();
+        cl.calcularCtaCte();
+        cl.calcularCtaCteActual();
         pagoFacturaGui.dispose();
         try {
             this.finalize();

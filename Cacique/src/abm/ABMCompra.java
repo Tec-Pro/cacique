@@ -112,13 +112,13 @@ public class ABMCompra {
         Iterator itr = productos.iterator();
         Articulo prodViejo;
         Pair par;
-        Integer cant;
+        BigDecimal cant;
         ABMArticulo abmProd = new ABMArticulo();
         while (itr.hasNext()) {
             par = (Pair) itr.next(); //saco el par de la lista
             prodViejo = (Articulo) par.first(); //saco el producto del par
-            cant = (Integer) par.second();//saco la cantidad del par
-            cant = prodViejo.getInteger("stock_actual") + cant;//asigno a cant el valor nuevo del stock
+            cant = (BigDecimal) par.second();//saco la cantidad del par
+            cant = prodViejo.getBigDecimal("stock_actual").add(cant);//asigno a cant el valor nuevo del stock
             resultOp = resultOp && prodViejo.setInteger("stock_actual", cant).saveIt();//actualizo el stock del producto
             Proveedor.findById(prodViejo.get("proveedor_id")).add(prodViejo);//creo la relacion
         }

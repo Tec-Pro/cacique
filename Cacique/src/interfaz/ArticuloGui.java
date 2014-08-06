@@ -3,14 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package interfaz;
 
+import abm.ManejoIp;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -18,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import modelos.Articulo;
 import modelos.Proveedor;
+import org.javalite.activejdbc.Base;
 
 /**
  *
@@ -25,9 +28,8 @@ import modelos.Proveedor;
  */
 public class ArticuloGui extends javax.swing.JInternalFrame {
 
-        private DefaultTableModel tablaArticulosDefault; //Tabla Default para tener las opciones de instar y elimnar filas
+    private DefaultTableModel tablaArticulosDefault; //Tabla Default para tener las opciones de instar y elimnar filas
 
-    
     /**
      * Creates new form ArticuloGui
      */
@@ -36,7 +38,7 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
         tablaArticulosDefault = (DefaultTableModel) articulos.getModel(); //convierto la tabla
 
     }
-    
+
     public void setActionListener(ActionListener lis) {
         this.guardar.addActionListener(lis);
         this.borrar.addActionListener(lis);
@@ -44,10 +46,9 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
         this.modificar.addActionListener(lis);
         this.exportar.addActionListener(lis);
         this.filtroEquiv.addActionListener(lis);
-        this.articulosEquiv.addActionListener(lis);
     }
-    
-        public void habilitarCampos(boolean b) {
+
+    public void habilitarCampos(boolean b) {
         marca.setEnabled(b);
         codigo.setEnabled(b);
         nombre.setEnabled(b);
@@ -57,43 +58,89 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
         precioVenta.setEnabled(b);
         stockMinimo.setEnabled(b);
         proveedores.setEnabled(b);
-        articulosEquiv.setEnabled(b);
-        
+        equivalencia1.setEnabled(b);
+        equivalencia2.setEnabled(b);
+        equivalencia3.setEnabled(b);
     }
-        
-        public void limpiarCampos() {
+
+    public void limpiarCampos() {
         marca.setText("");
         nombre.setText("");
-        stock.setValue(0);
-        stockMinimo.setValue(0);
+        stock.setText("");
+        stockMinimo.setText("");
         codigo.setText("");
         descripcion.setText("");
         precioCompra.setText("");
         precioVenta.setText("");
         proveedores.removeAllItems();
-        
-        
+        equivalencia1.setText("");
+                equivalencia2.setText("");
+
+                        equivalencia3.setText("");
+
+                        
+
+    }
+    
+        private void abrirBase() {
+        if (!Base.hasConnection()) {
+            try {
+                Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://" + ManejoIp.ipServer + "/cacique", "tecpro", "tecpro");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n " + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
-        public void CargarCampos(Articulo art) {
-            codigo.setText(art.getString("codigo"));
-            nombre.setText(art.getString("nombre"));
+    public void CargarCampos(Articulo art) {
+        abrirBase();
+        codigo.setText(art.getString("codigo"));
+        nombre.setText(art.getString("nombre"));
         marca.setText(art.getString("marca"));
-                precioCompra.setText(art.getBigDecimal("precio_compra").setScale(2).toString());
-        stock.setValue(art.get("stock_actual"));
+        precioCompra.setText(art.getBigDecimal("precio_compra").setScale(2).toString());
+        stock.setText(art.getString("stock_actual"));
         precioVenta.setText(art.getBigDecimal("precio_venta").setScale(2).toString());
-        stockMinimo.setValue(art.getInteger("stock_minimo"));
-        
+        stockMinimo.setText(art.getString("stock_minimo"));
+
         descripcion.setText(art.getString("descripcion"));
-        
+       
         proveedores.removeAllItems();
-        String nombreProv=art.parent(Proveedor.class).getString("nombre");
-        proveedores.addItem(nombreProv);
-        proveedores.setSelectedItem(nombreProv);
-        ultimaCompra.setText(art.getString("ultima_compra"));
-    }
+        Proveedor proveedor = art.parent(Proveedor.class);
+        if (proveedor != null) {
+            String nombreProv = proveedor.getString("nombre");
+            proveedores.addItem(nombreProv);
+            proveedores.setSelectedItem(nombreProv);
+        } else {
+            proveedores.addItem("");
+            proveedores.setSelectedItem("");
+        }
         
-        public DefaultTableModel getTablaArticulosDefault() {
+        Date date= art.getDate("ultima_compra");
+        
+        ultimaCompra.setText(dateToMySQLDate(date, true));
+        equivalencia1.setText(art.getString("equivalencia_1"));
+                equivalencia2.setText(art.getString("equivalencia_2"));
+
+                        equivalencia3.setText(art.getString("equivalencia_3"));
+
+    }
+
+        /*va true si se quiere usar para mostrarla por pantalla es decir 12/12/2014 y false si va 
+     para la base de datos, es decir 2014/12/12*/
+    public String dateToMySQLDate(Date fecha, boolean paraMostrar) {
+        if(fecha!=null){
+        if (paraMostrar) {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+            return sdf.format(fecha);
+        } else {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+            return sdf.format(fecha);
+        }
+        }else{
+            return "";
+        }
+    }
+    public DefaultTableModel getTablaArticulosDefault() {
         return tablaArticulosDefault;
     }
 
@@ -101,9 +148,19 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
         return articulos;
     }
 
-    public JButton getArticulosEquiv() {
-        return articulosEquiv;
+    public JTextField getEquivalencia1() {
+        return equivalencia1;
     }
+
+    public JTextField getEquivalencia2() {
+        return equivalencia2;
+    }
+
+    public JTextField getEquivalencia3() {
+        return equivalencia3;
+    }
+
+
 
     public JButton getBorrar() {
         return borrar;
@@ -165,20 +222,18 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
         return proveedores;
     }
 
-    public JSpinner getStock() {
+    public JTextField getStock() {
         return stock;
     }
 
-    public JSpinner getStockMinimo() {
+    public JTextField getStockMinimo() {
         return stockMinimo;
     }
 
     public JTextField getUltimaCompra() {
         return ultimaCompra;
     }
-        
-        
-        
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -211,27 +266,31 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
         descripcion = new javax.swing.JTextArea();
         precioCompra = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        stock = new javax.swing.JSpinner();
         jLabel7 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         precioVenta = new javax.swing.JTextField();
-        stockMinimo = new javax.swing.JSpinner();
         jLabel9 = new javax.swing.JLabel();
         proveedores = new javax.swing.JComboBox();
         jLabel10 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         nombre = new javax.swing.JTextField();
-        articulosEquiv = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         ultimaCompra = new javax.swing.JTextField();
+        stock = new javax.swing.JTextField();
+        stockMinimo = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        equivalencia1 = new javax.swing.JTextField();
+        equivalencia2 = new javax.swing.JTextField();
+        equivalencia3 = new javax.swing.JTextField();
         cantidadArticulos = new javax.swing.JLabel();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
         setTitle("Gestión de artículos");
-        setPreferredSize(new java.awt.Dimension(872, 459));
+        setPreferredSize(new java.awt.Dimension(882, 475));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Artículos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Schoolbook L", 1, 14))); // NOI18N
         jPanel2.setPreferredSize(new java.awt.Dimension(855, 420));
@@ -246,19 +305,20 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
         exportar.setText("Exportar listado");
         exportar.setToolTipText("Exportar listado de articulos");
 
+        articulos.setAutoCreateRowSorter(true);
         articulos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Id fabrica", "Nombre", "Marca", "Descrip.", "Precio compra", "Precio venta"
+                "Id fabrica", "Nombre", "Marca", "Descrip.", "Precio compra", "Precio venta", "Id interno"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -269,6 +329,7 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        articulos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(articulos);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos del artículo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Schoolbook L", 1, 14))); // NOI18N
@@ -311,6 +372,9 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
                     .addComponent(guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0))
         );
+
+        jPanel4Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {borrar, guardar, modificar, nuevo});
+
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
@@ -322,6 +386,8 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
                 .addGap(0, 0, 0)
                 .addComponent(guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
+
+        jPanel4Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {borrar, guardar, modificar, nuevo});
 
         jLabel1.setText("Código");
 
@@ -352,9 +418,6 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Precio Compra");
 
-        stock.setToolTipText("Stock disponible");
-        stock.setEnabled(false);
-
         jLabel7.setText("Stock");
 
         jLabel6.setText("Precio Venta");
@@ -362,9 +425,6 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
         precioVenta.setToolTipText("Precio de venta");
         precioVenta.setDisabledTextColor(new java.awt.Color(16, 2, 245));
         precioVenta.setEnabled(false);
-
-        stockMinimo.setToolTipText("Stock mínimo del artículo");
-        stockMinimo.setEnabled(false);
 
         jLabel9.setText("Stock minimo");
 
@@ -378,13 +438,28 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
         nombre.setDisabledTextColor(new java.awt.Color(16, 2, 245));
         nombre.setEnabled(false);
 
-        articulosEquiv.setText("Articulos equiv.");
-
         jLabel12.setText("Fecha ultima compra");
 
         ultimaCompra.setToolTipText("Precio de venta");
         ultimaCompra.setDisabledTextColor(new java.awt.Color(16, 2, 245));
         ultimaCompra.setEnabled(false);
+
+        stock.setDisabledTextColor(new java.awt.Color(16, 2, 245));
+        stock.setEnabled(false);
+
+        stockMinimo.setDisabledTextColor(new java.awt.Color(16, 2, 245));
+        stockMinimo.setEnabled(false);
+
+        jLabel11.setText("Equivalencia");
+
+        equivalencia1.setDisabledTextColor(new java.awt.Color(16, 2, 245));
+        equivalencia1.setEnabled(false);
+
+        equivalencia2.setDisabledTextColor(new java.awt.Color(16, 2, 245));
+        equivalencia2.setEnabled(false);
+
+        equivalencia3.setDisabledTextColor(new java.awt.Color(16, 2, 245));
+        equivalencia3.setEnabled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -403,14 +478,12 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nombre)
-                        .addGap(11, 11, 11)
-                        .addComponent(articulosEquiv, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(4, 4, 4))
+                        .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(80, 80, 80))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -423,20 +496,33 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
                                     .addComponent(proveedores, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(precioVenta)
-                                            .addComponent(precioCompra))
-                                        .addGap(26, 26, 26)
+                                            .addComponent(precioCompra)
+                                            .addComponent(precioVenta))
+                                        .addGap(0, 0, 0)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel9)
-                                            .addComponent(jLabel7))
-                                        .addGap(6, 6, 6)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(stockMinimo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(stock, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(13, 13, 13)
+                                                .addComponent(jLabel7)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(stock, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(4, 4, 4))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel9)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(stockMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ultimaCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(ultimaCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 84, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(equivalencia1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(equivalencia2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(equivalencia3)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -449,8 +535,7 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
                     .addComponent(jLabel3)
                     .addComponent(marca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
-                    .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(articulosEquiv))
+                    .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(1, 1, 1)
@@ -463,32 +548,38 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(precioCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5)
+                            .addComponent(stock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel7)
-                                    .addComponent(precioCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(precioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel6))
-                                    .addComponent(jLabel9)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(stock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(stockMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(precioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel6))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(stockMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel9)))
+                        .addGap(8, 8, 8)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(proveedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(ultimaCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel12)))))
+                            .addComponent(jLabel12))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel11)
+                            .addComponent(equivalencia1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(equivalencia2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(equivalencia3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
             .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {equivalencia1, equivalencia2, equivalencia3});
 
         cantidadArticulos.setFont(new java.awt.Font("Century Schoolbook L", 1, 18)); // NOI18N
         cantidadArticulos.setForeground(new java.awt.Color(237, 2, 24));
@@ -521,7 +612,7 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
                         .addComponent(jLabel4))
                     .addComponent(cantidadArticulos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -540,17 +631,20 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable articulos;
-    private javax.swing.JButton articulosEquiv;
     private javax.swing.JButton borrar;
     private javax.swing.JTextField busqueda;
     private javax.swing.JLabel cantidadArticulos;
     private javax.swing.JTextField codigo;
     private javax.swing.JTextArea descripcion;
+    private javax.swing.JTextField equivalencia1;
+    private javax.swing.JTextField equivalencia2;
+    private javax.swing.JTextField equivalencia3;
     private javax.swing.JButton exportar;
     private javax.swing.JCheckBox filtroEquiv;
     private javax.swing.JButton guardar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -573,8 +667,8 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
     private javax.swing.JTextField precioCompra;
     private javax.swing.JTextField precioVenta;
     private javax.swing.JComboBox proveedores;
-    private javax.swing.JSpinner stock;
-    private javax.swing.JSpinner stockMinimo;
+    private javax.swing.JTextField stock;
+    private javax.swing.JTextField stockMinimo;
     private javax.swing.JTextField ultimaCompra;
     // End of variables declaration//GEN-END:variables
 }

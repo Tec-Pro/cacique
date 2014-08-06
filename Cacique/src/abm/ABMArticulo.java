@@ -35,6 +35,10 @@ public class ABMArticulo {
                     "stock_minimo", art.get("stock_minimo"),
                     "precio_compra", art.get("precio_compra"),
                     "precio_venta", art.get("precio_venta"),
+                    "equivalencia_1", art.get("equivalencia_1"),
+                    "equivalencia_2", art.get("equivalencia_2"),
+                    "equivalencia_3", art.get("equivalencia_3"),
+
                     "descripcion", art.get("descripcion") //"ultima_compra",art.get("ultima_compra"), // es al pedo que vaya, no tiene compra todavía
                     //"proveedor_id",art.get("proveedor_id")
                     );
@@ -68,17 +72,23 @@ public class ABMArticulo {
         Articulo viejo = Articulo.findFirst("codigo = ?", art.get("codigo"));
         if (viejo != null) {
             Base.openTransaction();
+
+            
             viejo.set(
-                    "codigo", art.get("codigo"),
+                   
                     "nombre", art.get("nombre"),
                     "marca", art.get("marca"),
-                    "sotck_actual", art.get("stock_actual"),
+                    "stock_actual", art.get("stock_actual"),
                     "stock_minimo", art.get("stock_minimo"),
                     "precio_compra", art.get("precio_compra"),
                     "precio_venta", art.get("precio_venta"),
+                                        "equivalencia_1", art.get("equivalencia_1"),
+                    "equivalencia_2", art.get("equivalencia_2"),
+                    "equivalencia_3", art.get("equivalencia_3"),
+
                     "descripcion", art.get("descripcion") //"ultima_compra",art.get("ultima_compra"), // es al pedo que vaya, no tiene compra todavía
                     );
-            ret = art.saveIt();
+            ret = viejo.saveIt();
             Proveedor p = Proveedor.findFirst("nombre =?", art.getNombreProv());
             if (p != null) {
                 p.add(art);

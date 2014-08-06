@@ -40,6 +40,7 @@ CREATE  TABLE `cacique`.`articulos` (
   `ultima_compra` DATE NULL ,
   `proveedor_id` INT NULL ,
   PRIMARY KEY (`id`, `codigo`) );
+ALTER TABLE `cacique`.`articulos` ADD COLUMN `equivalencia_1` VARCHAR(45) NULL  AFTER `proveedor_id` , ADD COLUMN `equivalencia_2` VARCHAR(45) NULL  AFTER `equivalencia_1` , ADD COLUMN `equivalencia_3` VARCHAR(45) NULL  AFTER `equivalencia_2` ;
 
 create table usuarios (
 	id integer not null auto_increment,

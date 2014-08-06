@@ -7,6 +7,7 @@ package controladores;
 import abm.ManejoIp;
 import interfaz.AplicacionGui;
 import interfaz.ArticuloGui;
+import interfaz.ArticulosSinStock;
 import interfaz.CambiarUsuarioGui;
 //import interfaz.CambiarUsuarioGui;
 import interfaz.CargarDatosEmail;
@@ -14,6 +15,8 @@ import interfaz.ClienteGui;
 import interfaz.CompraGui;
 import interfaz.ConfigurarServerGui;
 import interfaz.EnviarManualGui;
+import interfaz.ImportarExcelGui;
+import interfaz.ProveedorGui;
 //import interfaz.ImportarExcelGui;
 //import interfaz.ProveedorGui;
 import interfaz.VentaGui;
@@ -41,10 +44,10 @@ public class ControladorApliacion implements ActionListener {
     private AplicacionGui aplicacionGui;
     private ArticuloGui articuloGui;
     private ControladorArticulo controladorArticulo;
-//    private ControladorProveedor controladorProveedor;
-//    private controladorImportarGui controladorImportarGui;
-//    private ProveedorGui proveedorGui;
-//    private ImportarExcelGui importarGui;
+    private ControladorProveedor controladorProveedor;
+    private controladorImportarGui controladorImportarGui;
+    private ProveedorGui proveedorGui;
+    private ImportarExcelGui importarGui;
     private ClienteGui clienteGui;
     private ControladorCliente controladorCliente;
     private CargarDatosEmail emailGui;
@@ -57,6 +60,8 @@ public class ControladorApliacion implements ActionListener {
     private ControladorVenta controladorVenta;
     private CompraGui compraGui;
     private VentaGui ventaGui;
+     private ArticulosSinStock articulosSinStock;
+    private ControladorArticulosAgot controladorArtSinStock;
 
     public ControladorApliacion() throws JRException, ClassNotFoundException, SQLException {
         try {
@@ -71,22 +76,25 @@ public class ControladorApliacion implements ActionListener {
         aplicacionGui.setActionListener(this);
         aplicacionGui.setExtendedState(JFrame.MAXIMIZED_BOTH);
         articuloGui = new ArticuloGui();
-//        proveedorGui = new ProveedorGui();
+        proveedorGui = new ProveedorGui();
         clienteGui = new ClienteGui();
         compraGui = new CompraGui();
         ventaGui = new VentaGui();
+                articulosSinStock= new ArticulosSinStock();
         controladorVenta = new ControladorVenta(ventaGui, aplicacionGui);
-//        controladorProveedor = new ControladorProveedor(proveedorGui, aplicacionGui, articuloGui, compraGui);
+        controladorProveedor = new ControladorProveedor(proveedorGui, aplicacionGui, articuloGui, compraGui);
         controladorArticulo = new ControladorArticulo(articuloGui);
         controladorCliente = new ControladorCliente(clienteGui, aplicacionGui, ventaGui);
-//        importarGui = new ImportarExcelGui();
-//        controladorImportarGui = new controladorImportarGui(importarGui);
-//        aplicacionGui.getContenedor().add(proveedorGui);
+       controladorArtSinStock= new ControladorArticulosAgot(articulosSinStock, articuloGui);
+        importarGui = new ImportarExcelGui();
+        controladorImportarGui = new controladorImportarGui(importarGui);
+        aplicacionGui.getContenedor().add(proveedorGui);
         aplicacionGui.getContenedor().add(articuloGui);
-//        aplicacionGui.getContenedor().add(importarGui);
+        aplicacionGui.getContenedor().add(importarGui);
         aplicacionGui.getContenedor().add(clienteGui);
         aplicacionGui.getContenedor().add(compraGui);
         aplicacionGui.getContenedor().add(ventaGui);
+                aplicacionGui.getContenedor().add(articulosSinStock);
         aplicacionGui.setCursor(Cursor.DEFAULT_CURSOR);
 
     }
@@ -121,19 +129,19 @@ public class ControladorApliacion implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == aplicacionGui.getArticulos()) {
-            //    controladorArticulo.cargarTodos();
+                controladorArticulo.cargarTodos();
             articuloGui.setVisible(true);
             articuloGui.toFront();
         }
         if (ae.getSource() == aplicacionGui.getProveedores()) {
-            //    controladorProveedor.cargarTodos();
-//            proveedorGui.setVisible(true);
-//            proveedorGui.toFront();
+                controladorProveedor.cargarTodos();
+            proveedorGui.setVisible(true);
+            proveedorGui.toFront();
         }
         if (ae.getSource() == aplicacionGui.getImportar()) {
-//            controladorImportarGui.cargarProveedores();
-//            importarGui.setVisible(true);
-//            importarGui.toFront();
+          controladorImportarGui.cargarProveedores();
+            importarGui.setVisible(true);
+            importarGui.toFront();
         }
         if (ae.getSource() == aplicacionGui.getClientes()) {
             controladorCliente.cargarTodos();
@@ -218,6 +226,11 @@ public class ControladorApliacion implements ActionListener {
         }
         if (ae.getSource() == aplicacionGui.getConfigServer()) {
             new ConfigurarServerGui(aplicacionGui, true).setVisible(true);
+        }
+         if(ae.getSource()==aplicacionGui.getBotArtSinStock()){
+            controladorArtSinStock.realizarBusqueda();
+            articulosSinStock.setVisible(true);
+            articulosSinStock.toFront();
         }
     }
 

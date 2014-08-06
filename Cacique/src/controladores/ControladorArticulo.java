@@ -82,7 +82,14 @@ public class ControladorArticulo implements ActionListener, FocusListener {
 
     private void realizarBusqueda() {
         abrirBase();
-        listArticulos = Articulo.where("codigo like ? or descripcion like ? or marca like ? or id like ? or nombre like ?", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%");
+        if (articuloGui.getFiltroEquiv().isSelected()) {// se esta buscando por los equivalentes a este
+                   listArticulos = Articulo.where("equivalencia_1 like ? or equivalencia_2 like ? or equivalencia_3 like ? ", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%");
+
+        }
+        else{
+                    listArticulos = Articulo.where("codigo like ? or descripcion like ? or marca like ? or id like ? or nombre like ? or id like ?", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%");
+
+        }
         actualizarLista();
         cerrarBase();
 
@@ -106,7 +113,6 @@ public class ControladorArticulo implements ActionListener, FocusListener {
             articuloGui.getModificar().setEnabled(true);
             articuloGui.getGuardar().setEnabled(false);
             articuloGui.getNuevo().setEnabled(true);
-            articuloGui.getArticulosEquiv().setEnabled(true);
             editandoInfo = false;
             articuloGui.limpiarCampos();
             abrirBase();
@@ -123,44 +129,19 @@ public class ControladorArticulo implements ActionListener, FocusListener {
         Iterator<Articulo> it = listArticulos.iterator();
         while (it.hasNext()) {
             Articulo art = it.next();
-            Object row[] = new String[6];
+            Object row[] = new String[7];
             row[0] = art.getString("codigo");
             row[1] = art.getString("nombre");
             row[2] = art.getString("marca");
             row[3] = art.getString("descripcion");
             row[4] = art.getBigDecimal("precio_compra").setScale(2, RoundingMode.CEILING).toString();
             row[5] = art.getBigDecimal("precio_venta").setScale(2, RoundingMode.CEILING).toString();
+            row[6]= art.getString("id");
             tablaArtDefault.addRow(row);
 
         }
         articuloGui.getCantidadArticulos().setText(String.valueOf(tablaArticulos.getRowCount()));
-        /*if (articuloGui.getFiltroEquiv().isSelected()) {// se esta buscando por los equivalentes a este
-            String id = (String) tablaArticulos.getValueAt(0, 0);
-            Articulo a = Articulo.findFirst("codigo = ?", articuloGui.getBusqueda().getText());
-            if (a != null) {
-                String fram = a.getString("equivalencia_fram");
-                if (!(fram.equals(""))) {
-                    Busqueda busqueda = new Busqueda();
-                    listArticulos = busqueda.filtroProducto2(fram);
-                    Iterator<Articulo> itr = listArticulos.iterator();
-                    while (itr.hasNext()) {
-                        Articulo b = itr.next();
-                        if (!(b.getInteger("id").equals(a.getInteger("id")))) {
-                            String row[] = new String[6];
-                            row[0] = b.getString("codigo");
-                            row[1] = b.getString("descripcion");
-                            row[2] = b.getString("marca");
-                            row[3] = b.getBigDecimal("precio_compra").setScale(2, RoundingMode.CEILING).toString();
-                            row[4] = b.getBigDecimal("precio_venta").setScale(2, RoundingMode.CEILING).toString();
-                            row[5] = b.getString("equivalencia_fram");
-                            tablaArtDefault.addRow(row);
-                            {
-                            }
-                        }
-                    }
-                }
-            }
-        }*/
+        
         cerrarBase();
     }
 
@@ -180,7 +161,7 @@ public class ControladorArticulo implements ActionListener, FocusListener {
         }
         
         if (e.getSource() == articuloGui.getFiltroEquiv()) {
-            actualizarLista();
+            realizarBusqueda();
         }
         
         if (e.getSource() == articuloGui.getGuardar() && editandoInfo && isNuevo) {
@@ -233,7 +214,9 @@ public class ControladorArticulo implements ActionListener, FocusListener {
         }
         if (e.getSource() == articuloGui.getModificar()) {
             System.out.println("Boton modificar pulsado");
+            
             articuloGui.habilitarCampos(true);
+            articuloGui.getCodigo().setEnabled(false);
             editandoInfo = true;
             isNuevo = false;
             //articuloGui.getCodigo().setEnabled(false);
@@ -340,21 +323,58 @@ public class ControladorArticulo implements ActionListener, FocusListener {
             ret = false;
             JOptionPane.showMessageDialog(articuloGui, "Error en precio de venta", "Error!", JOptionPane.ERROR_MESSAGE);
         }
-
-        if (Integer.parseInt(articuloGui.getStock().getValue().toString()) < 0) {
-            JOptionPane.showMessageDialog(articuloGui, "Stock negativo", "Error!", JOptionPane.ERROR_MESSAGE);
+        try {
+            Float stock= Float.valueOf(articuloGui.getStock().getText());
+            art.set("stock_actual", articuloGui.getStock().getText());
+            if(stock<0){
+                            JOptionPane.showMessageDialog(articuloGui, "Stock negativo", "Error!", JOptionPane.ERROR_MESSAGE);
             ret = false;
-        } else {
-            art.set("stock_actual", articuloGui.getStock().getValue());
-        }
-        if (Integer.parseInt(articuloGui.getStockMinimo().getValue().toString()) < 0) {
-            JOptionPane.showMessageDialog(articuloGui, "Stock minimo negativo", "Error!", JOptionPane.ERROR_MESSAGE);
+            }
+                 } catch (NumberFormatException | ClassCastException e) {
             ret = false;
-        } else {
-            art.set("stock_minimo", articuloGui.getStockMinimo().getValue());
+            JOptionPane.showMessageDialog(articuloGui, "Error en el stock", "Error!", JOptionPane.ERROR_MESSAGE);
         }
       
-        art.setNombreProv(articuloGui.getProveedores().getSelectedItem().toString());
+        try {
+            Float stock= Float.valueOf(articuloGui.getStockMinimo().getText());
+            art.set("stock_minimo", articuloGui.getStockMinimo().getText());
+            if(stock<0){
+                            JOptionPane.showMessageDialog(articuloGui, "Stock minimo negativo", "Error!", JOptionPane.ERROR_MESSAGE);
+            ret = false;
+            }
+                 } catch (NumberFormatException | ClassCastException e) {
+            ret = false;
+            JOptionPane.showMessageDialog(articuloGui, "Error en el stock minimo", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
+        Object prv=articuloGui.getProveedores().getSelectedItem();
+        if(prv!=null){
+            art.setNombreProv(prv.toString());
+        }
+        else{
+            art.setNombreProv("");
+        }
+        
+                        try {
+            String equivalencia1 = articuloGui.getEquivalencia1().getText();
+            art.set("equivalencia_1", equivalencia1);
+        } catch (ClassCastException e) {
+            ret = false;
+            JOptionPane.showMessageDialog(articuloGui, "Error en la equivalencia 1", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
+                                                try {
+            String equivalencia2 = articuloGui.getEquivalencia2().getText();
+            art.set("equivalencia_2", equivalencia2);
+        } catch (ClassCastException e) {
+            ret = false;
+            JOptionPane.showMessageDialog(articuloGui, "Error en la equivalencia 2", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
+                                try {
+            String equivalencia1 = articuloGui.getEquivalencia3().getText();
+            art.set("equivalencia_3", equivalencia1);
+        } catch (ClassCastException e) {
+            ret = false;
+            JOptionPane.showMessageDialog(articuloGui, "Error en la equivalencia 3", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
         return ret;
     }
 

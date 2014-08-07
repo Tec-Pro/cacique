@@ -145,11 +145,11 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
     }
 
     private void tablaProdMouseClicked(MouseEvent evt) {
-        abrirBase();
+        
         int[] rows = compraGui.getTablaArticulos().getSelectedRows();
         if (rows.length > 0) {
             for (int i = 0; i < rows.length; i++) {
-                abrirBase();
+                
                 if (!existeProdFacc(Integer.valueOf((String) tablaprod.getValueAt(rows[i], 0)))) {
                     Articulo p = Articulo.findFirst("id = ?", (tablaprod.getValueAt(rows[i], 0)));
                     Object cols[] = new Object[6];
@@ -161,7 +161,7 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
                     cols[4] = BigDecimal.valueOf(p.getFloat("precio_compra")).setScale(2, RoundingMode.CEILING);
                     cols[5] = BigDecimal.valueOf(p.getFloat("precio_compra")).setScale(2, RoundingMode.CEILING);;
                     if (Base.hasConnection()) {
-                        Base.close();
+                        
                     }
                     compraGui.getTablaCompraDefault().addRow(cols);
                     setCellEditor();
@@ -185,7 +185,7 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
     }
 
     public void actualizarListaProveedor() {
-        abrirBase();
+        
         tablaProveedores.setRowCount(0);
         provlista = busqueda.filtroProveedor(textnom.getText(), "");
         Iterator<Proveedor> it = provlista.iterator();
@@ -197,12 +197,12 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
             tablaProveedores.addRow(row);
         }
         if (Base.hasConnection()) {
-            Base.close();
+            
         }
     }
 
     public void actualizarListaProd() {
-        abrirBase();
+        
         tablaProd.setRowCount(0);
         prodlista = Articulo.where("codigo like ? or descripcion like ?", "%" + textCodProd.getText() + "%", "%" + textCodProd.getText() + "%");
         Iterator<Articulo> it = prodlista.iterator();
@@ -238,7 +238,7 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
             }
         }
         if (Base.hasConnection()) {
-            Base.close();
+            
         }
     }
 
@@ -285,7 +285,7 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
                     v.set("proveedor_id", idCliente);
                 }
                 for (int i = 0; i < compraGui.getTablaCompra().getRowCount(); i++) {
-                    abrirBase();
+                    
                     Articulo producto = Articulo.findFirst("id = ?", tablafac.getValueAt(i, 0));
                     BigDecimal cantidad = ((BigDecimal) tablafac.getValueAt(i, 1)).setScale(2, RoundingMode.CEILING); //saco la cantidad
                     BigDecimal precioFinal = ((BigDecimal) tablafac.getValueAt(i, 4)).setScale(2, RoundingMode.CEILING);
@@ -303,7 +303,7 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
                 }
                 BigDecimal bd = new BigDecimal(compraGui.getTotalCompra().getText());
                 v.set("monto", bd);
-                abrirBase();
+                
                 if (abmCompra.alta(v)) {
                     JOptionPane.showMessageDialog(apgui, "Compra realizada con exito.");
                     compraGui.limpiarVentana();
@@ -326,7 +326,7 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
                     JOptionPane.showMessageDialog(apgui, "Ocurrió un error inesperado, compra no realizada");
                 }
                 if (Base.hasConnection()) {
-                    Base.close();
+                    
                 }
             }
         }
@@ -338,15 +338,7 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
         }
     }
 
-    private void abrirBase() {
-        if (!Base.hasConnection()) {
-            try {
-                Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://" + ManejoIp.ipServer + "/cacique", "tecpro", "tecpro");
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n " + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
+
 
     private boolean existeProdFacc(int id) {
         boolean ret = false;

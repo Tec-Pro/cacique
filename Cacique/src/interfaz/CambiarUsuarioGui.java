@@ -24,13 +24,11 @@ public class CambiarUsuarioGui extends javax.swing.JDialog {
     public CambiarUsuarioGui(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        if (!Base.hasConnection()) {
-            try{             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://"+ManejoIp.ipServer+"/cacique", "tecpro", "tecpro");             }catch(Exception e){                 JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n "+e.getMessage(),null,JOptionPane.ERROR_MESSAGE); }
-        }
+       
         Usuario usuario = Usuario.findById(1);
         this.user.setText(usuario.getString("nombre"));
         if (Base.hasConnection()) {
-            Base.close();
+            
         }
         this.pass.requestFocus();
     }
@@ -163,10 +161,7 @@ public class CambiarUsuarioGui extends javax.swing.JDialog {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             ManejoUsuario abm = new ManejoUsuario();
             if (Arrays.equals(pass.getPassword(), repetirPass.getPassword())) {
-                if (!Base.hasConnection()) {
-                    try{             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://"+ManejoIp.ipServer+"/cacique", "tecpro", "tecpro");             }catch(Exception e){                 JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n "+e.getMessage(),null,JOptionPane.ERROR_MESSAGE); }
-                    
-                }
+                
                 boolean res=abm.modificarDatos(user.getText(),String.valueOf(pass.getPassword()));
                 if(res){
                     JOptionPane.showMessageDialog(this, "Cambios realizados con éxito", null, JOptionPane.INFORMATION_MESSAGE);
@@ -175,7 +170,7 @@ public class CambiarUsuarioGui extends javax.swing.JDialog {
                 else
                     JOptionPane.showMessageDialog(this, "Ocurrió un error, intente nuevamente", null, JOptionPane.ERROR_MESSAGE);
                 if (Base.hasConnection()) {
-                    Base.close();
+                    
                 }
             }
             else{

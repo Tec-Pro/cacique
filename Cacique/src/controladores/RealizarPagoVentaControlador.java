@@ -89,7 +89,7 @@ public class RealizarPagoVentaControlador implements ActionListener {
                 if (queCobrar == -1) {
                     JOptionPane.showMessageDialog(pagoFacturaGui, "Por favor ingrese que cuenta corriente se debe cobrar", "Error!", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    abrirBase();
+                    
                     String clienteId = cli.getString("id");
                     int idCliente = cli.getInteger("id");
                     BigDecimal entrega = new BigDecimal(pagoFacturaGui.getMonto().getText());
@@ -126,7 +126,7 @@ public class RealizarPagoVentaControlador implements ActionListener {
                             }
                         }
                         if (sePuedePagar) {
-                            abrirBase();
+                            
                             entrega = entrega.subtract(montoVentaAPagar);
                             ambV.pagar(ventaAPagar, montoVentaAPagar);
                             ventaAPagar.set("pago_id", pagoId);
@@ -140,7 +140,7 @@ public class RealizarPagoVentaControlador implements ActionListener {
                     cli.set("cuenta", entrega);
                     cli.saveIt();
                     JOptionPane.showMessageDialog(apgui, "¡Cobro registrado exitosamente!");
-                    cerrarBase();
+                    
                 }
             }
         }
@@ -155,24 +155,12 @@ public class RealizarPagoVentaControlador implements ActionListener {
         }
     }
 
-    private void abrirBase() {
-        if (!Base.hasConnection()) {
-            try {
-                Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://" + ManejoIp.ipServer + "/cacique", "tecpro", "tecpro");
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n " + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
 
-    private void cerrarBase() {
-        if (Base.hasConnection()) {
-            Base.close();
-        }
-    }
+
+
 
     public LinkedList<Venta> cargarDeuda(String id) {
-        abrirBase();
+        
         Iterator<Venta> itr = busqueda.filtroVenta(id, "0-0-0", "9999-0-0").iterator();
         LinkedList<Venta> retorno = new LinkedList<Venta>();
         while (itr.hasNext()) {
@@ -185,7 +173,7 @@ public class RealizarPagoVentaControlador implements ActionListener {
     }
 
     public BigDecimal montoVentaNoAbonada(String id) {
-        abrirBase();
+        
         BigDecimal montox = null;
         BigDecimal cuenta;
         Iterator<ArticulosVentas> itr2 = busqueda.filtroVendidos(id).iterator();

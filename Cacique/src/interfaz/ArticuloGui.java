@@ -81,19 +81,10 @@ public class ArticuloGui extends javax.swing.JInternalFrame {
                         
 
     }
-    
-        private void abrirBase() {
-        if (!Base.hasConnection()) {
-            try {
-                Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://" + ManejoIp.ipServer + "/cacique", "tecpro", "tecpro");
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n " + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
+
 
     public void CargarCampos(Articulo art) {
-        abrirBase();
+        
         codigo.setText(art.getString("codigo"));
         nombre.setText(art.getString("nombre"));
         marca.setText(art.getString("marca"));

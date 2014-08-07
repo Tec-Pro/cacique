@@ -79,10 +79,10 @@ public class ControladorCliente implements ActionListener {
         listClientes = new LinkedList();
         abmCliente = new ABMCliente();
         cliente = new Cliente();
-        abrirBase();
+        
         nacimiento = clienteGui.getNacimiento();
         listClientes = Cliente.findAll();
-        cerrarBase();
+        
         actualizarLista();
         nomcli = clienteGui.getBusqueda();
         nomcli.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -114,7 +114,7 @@ public class ControladorCliente implements ActionListener {
     private void tablaVentasMouseClicked(MouseEvent evt) {
         if (evt.getClickCount() == 2) {
             Integer idFac = Integer.valueOf((String) clienteGui.getVentasRealizadas().getValueAt(clienteGui.getVentasRealizadas().getSelectedRow(), 0));
-            abrirBase();
+            
             Venta factura = Venta.findById(idFac);
             Object idCliente = factura.get("cliente_id");
             DefaultTableModel tablita = ventaGui.getTablaFacturaDefault();
@@ -154,7 +154,7 @@ public class ControladorCliente implements ActionListener {
                 } else {
                     actualizarPrecio();
                 }
-                Base.close();
+                
                 System.out.println("sali");
                 ventaGui.paraVerVenta(true);
                 ventaGui.setVisible(true);
@@ -168,12 +168,12 @@ public class ControladorCliente implements ActionListener {
 
     // Carga todos los clientes
     public void cargarTodos() {
-        abrirBase();
+        
         listClientes = Cliente.findAll();
         if (!listClientes.isEmpty()) {
             realizarBusqueda();
         }
-        cerrarBase();
+        
     }
 
     // doble click en un cliente = muestra los datos y habilita los botones
@@ -189,7 +189,7 @@ public class ControladorCliente implements ActionListener {
             clienteGui.getPresupuestos().setEnabled(true);
             System.out.println("hice doble click en un cliente");
             clienteGui.limpiarCampos();
-            abrirBase();
+            
             cliente = busqueda.buscarCliente(tablaCliente.getValueAt(tablaCliente.getSelectedRow(), 0));
             clienteGui.CargarCampos(cliente);
             cargarVentas();
@@ -217,7 +217,7 @@ public class ControladorCliente implements ActionListener {
         if (e.getSource() == clienteGui.getGuardar() && editandoInfo && isNuevo) { //Guardar
             System.out.println("Boton guardar pulsado");
             if (cargarDatosCliente(cliente)) {
-                abrirBase();
+                
                 if (abmCliente.alta(cliente)) {
                     clienteGui.habilitarCampos(false);
                     clienteGui.limpiarCampos();
@@ -228,7 +228,7 @@ public class ControladorCliente implements ActionListener {
                 } else {
                     JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
-                cerrarBase();
+                
                 realizarBusqueda();
             }
 
@@ -239,9 +239,9 @@ public class ControladorCliente implements ActionListener {
             if (cliente.getString("id") != null && !editandoInfo) {
                 Integer resp = JOptionPane.showConfirmDialog(clienteGui, "¿Desea borrar el cliente " + clienteGui.getNombre().getText(), "Confirmar borrado", JOptionPane.YES_NO_OPTION);
                 if (resp == JOptionPane.YES_OPTION) {
-                    abrirBase();
+                    
                     Boolean seBorro = abmCliente.baja(cliente);
-                    cerrarBase();
+                    
                     if (seBorro) {
                         JOptionPane.showMessageDialog(clienteGui, "¡Cliente borrado exitosamente!");
                         clienteGui.limpiarCampos();
@@ -275,7 +275,7 @@ public class ControladorCliente implements ActionListener {
         if (e.getSource() == clienteGui.getGuardar() && editandoInfo && !isNuevo) {
             System.out.println("Boton guardar pulsado");
             if (cargarDatosCliente(cliente)) {
-                abrirBase();
+                
                 if (abmCliente.modificar(cliente)) {
                     clienteGui.habilitarCampos(false);
                     clienteGui.limpiarCampos();
@@ -289,7 +289,7 @@ public class ControladorCliente implements ActionListener {
                     JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error,revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
                 realizarBusqueda();
-                cerrarBase();
+                
             }
         }
         if (e.getSource() == clienteGui.getRealizarEntrega()) {
@@ -305,7 +305,7 @@ public class ControladorCliente implements ActionListener {
         if (e.getSource() == clienteGui.getEliminarVenta()) {
             int row = tablaVentas.getSelectedRow();
             if (row > -1) {
-                abrirBase();
+                
                 String id = (String) tablaVentas.getValueAt(row, 0);
                 Venta v = Venta.findById(id);
                 ABMVenta abmV = new ABMVenta();
@@ -317,7 +317,7 @@ public class ControladorCliente implements ActionListener {
                 }
                 calcularCtaCte();
                 calcularCtaCteActual();
-                cerrarBase();
+                
             }
         }
         if (e.getSource() == clienteGui.getVer()) {
@@ -343,7 +343,7 @@ public class ControladorCliente implements ActionListener {
                         if (reply == JOptionPane.YES_OPTION) {
                             cobroNuevo = true;
                         }
-                        abrirBase();
+                        
                         String id = (String) tablaVentas.getValueAt(row, 0);
                         BigDecimal monto = null;
                         if (cobroNuevo) {
@@ -376,7 +376,7 @@ public class ControladorCliente implements ActionListener {
                         cargarVentas();
                         calcularCtaCte();
                         calcularCtaCteActual();
-                        cerrarBase();
+                        
                     } else {
                         JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, el cobro no ha sido registrado", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
@@ -403,24 +403,12 @@ public class ControladorCliente implements ActionListener {
         ventaGui.getTotalFactura().setText(total.toString());
     }
 
-    private void abrirBase() {
-        if (!Base.hasConnection()) {
-            try {
-                Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://" + ManejoIp.ipServer + "/cacique", "tecpro", "tecpro");
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n " + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
 
-    private void cerrarBase() {
-        if (Base.hasConnection()) {
-            Base.close();
-        }
-    }
+
+ 
 
     private void actualizarLista() {
-        abrirBase();
+        
         tablaCliDefault.setRowCount(0);
         Iterator<Cliente> it = listClientes.iterator();
         while (it.hasNext()) {
@@ -431,13 +419,13 @@ public class ControladorCliente implements ActionListener {
             row[2] = c.getString("telefono");
             row[3] = c.getString("celular");
             tablaCliDefault.addRow(row);
-            cerrarBase();
+            
         }
     }
 
     // calcula la cuenta corriente con precios viejos
     public BigDecimal calcularCtaCte() {
-        abrirBase();
+        
         BigDecimal aux;
         BigDecimal total = new BigDecimal(0);
         for (int i = 0; i < tablaVentas.getRowCount(); i++) {
@@ -463,7 +451,7 @@ public class ControladorCliente implements ActionListener {
 
     //calcula la cuenta corriente con precios actuales
     public BigDecimal calcularCtaCteActual() {
-        abrirBase();
+        
         BigDecimal aux;
         BigDecimal total = new BigDecimal(0);
         for (int i = 0; i < tablaVentas.getRowCount(); i++) {
@@ -488,10 +476,10 @@ public class ControladorCliente implements ActionListener {
     }
 
     private void realizarBusqueda() {
-        abrirBase();
+        
         listClientes = busqueda.buscarCliente(nomcli.getText());
         actualizarLista();
-        cerrarBase();
+        
 
     }
 
@@ -549,7 +537,7 @@ public class ControladorCliente implements ActionListener {
 
     //carga las ventas realizadas al cliente en la tabla
     public void cargarVentas() {
-        abrirBase();
+        
         tablaVentasDefault.setRowCount(0);
         Iterator<Venta> itr = busqueda.filtroVenta(cliente.getString("id"), "0-0-0", "9999-0-0").iterator();
         while (itr.hasNext()) {
@@ -602,11 +590,11 @@ public class ControladorCliente implements ActionListener {
             }
         }
 
-        cerrarBase();
+        
     }
 
     public LinkedList<Venta> cargarDeuda(String id) {
-        abrirBase();
+        
         Iterator<Venta> itr = busqueda.filtroVenta(id, "0-0-0", "9999-0-0").iterator();
         LinkedList<Venta> retorno = new LinkedList<Venta>();
         while (itr.hasNext()) {
@@ -619,7 +607,7 @@ public class ControladorCliente implements ActionListener {
     }
 
     public BigDecimal montoVentaNoAbonada(String id) {
-        abrirBase();
+        
         BigDecimal montox = null;
         BigDecimal cuenta;
         Iterator<ArticulosVentas> itr2 = busqueda.filtroVendidos(id).iterator();

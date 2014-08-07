@@ -36,7 +36,7 @@ public class ArticulosProvee extends javax.swing.JDialog {
        
 
         initComponents();
-        abrirBase();
+        
         if(proveedor!=null)
             this.setTitle("Artículos que provee "+proveedor.getString("nombre"));
         formateador.getDecimalFormatSymbols().setDecimalSeparator('.');
@@ -55,7 +55,7 @@ public class ArticulosProvee extends javax.swing.JDialog {
         listArticulos = proveedor.getAll(Articulo.class);
         articulosProv.setRowCount(0);
         Iterator<Articulo> it = listArticulos.iterator();
-        cerrarBase();
+        
         while (it.hasNext()) {
             Articulo art = it.next();
             Object row[] = new String[7];
@@ -68,12 +68,12 @@ public class ArticulosProvee extends javax.swing.JDialog {
             row[6]= art.getString("stock_minimo");
             articulosProv.addRow(row);
         }
-        cerrarBase();
+        
     }
 
     private void tablaArticulosClicked(java.awt.event.MouseEvent evt) {
         if (evt.getClickCount() == 2) {
-            abrirBase();
+            
             Articulo articulo = Articulo.findFirst("codigo = ?", tablaArticulos.getValueAt(tablaArticulos.getSelectedRow(), 0));
             Proveedor papacito = articulo.parent(Proveedor.class);
             if (papacito == null) {
@@ -81,7 +81,7 @@ public class ArticulosProvee extends javax.swing.JDialog {
             } else {
                 articulo.setNombreProv(papacito.getString("nombre"));
             }
-            cerrarBase();
+            
 
             articuloGui.CargarCampos(articulo);
             articuloGui.setVisible(true);
@@ -90,22 +90,9 @@ public class ArticulosProvee extends javax.swing.JDialog {
         }
     }
 
-    private void abrirBase() {
-        if (!Base.hasConnection()) {
-            try {
-                Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://" + ManejoIp.ipServer + "/cacique", "tecpro", "tecpro");
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n " + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
 
-    private void cerrarBase() {
-        if (Base.hasConnection()) {
-            Base.close();
-        }
-    }
 
+ 
     public JTable getTablaArticulosProv() {
         return tablaArticulos;
     }

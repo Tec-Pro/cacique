@@ -22,7 +22,7 @@ import org.javalite.activejdbc.LazyList;
 public class EmailThread extends Thread {
 
     public void run() {
-        abrirBase();
+        
         EnvioEmailControlador enviar = new EnvioEmailControlador();
         LazyList<Envio> list = Envio.findAll();
         if (!list.isEmpty()) {
@@ -45,7 +45,7 @@ public class EmailThread extends Thread {
                     Logger.getLogger(EmailThread.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
-                cerrarBase();
+                
             }
         } else {
             Modulo moduloBackUp = new Modulo();
@@ -59,15 +59,7 @@ public class EmailThread extends Thread {
 
     }
 
-    private void abrirBase() {
-        if (!Base.hasConnection()) {
-            try{             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://"+ManejoIp.ipServer+"/cacique", "tecpro", "tecpro");             }catch(Exception e){                 JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n "+e.getMessage(),null,JOptionPane.ERROR_MESSAGE); }
-        }
-    }
 
-    private void cerrarBase() {
-        if (Base.hasConnection()) {
-            Base.close();
-        }
-    }
+
+ 
 }

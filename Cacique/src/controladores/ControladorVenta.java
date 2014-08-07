@@ -126,12 +126,12 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
     }
 
     private void tablaProdMouseClicked(MouseEvent evt) {
-        abrirBase();
+        
         BigDecimal porcentaje;
         int[] rows = ventaGui.getTablaArticulos().getSelectedRows();
         if (rows.length > 0) {
             for (int i = 0; i < rows.length; i++) {
-                abrirBase();
+                
                 if (!existeProdFacc(Integer.valueOf((String) tablap.getValueAt(rows[i], 0)))) {
                     Articulo p = Articulo.findFirst("id = ?", (tablap.getValueAt(rows[i], 0)));
                     Object cols[] = new Object[7];
@@ -143,7 +143,7 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
                     cols[5] = p.getBigDecimal("stock_actual");
                     cols[6] = BigDecimal.valueOf(p.getFloat("precio_venta")).setScale(2, RoundingMode.CEILING);
                     if (Base.hasConnection()) {
-                        Base.close();
+                        
                     }
                     ventaGui.getTablaFacturaDefault().addRow(cols);
                     setCellEditor();
@@ -198,7 +198,7 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
                 JOptionPane.showMessageDialog(ventaGui, "Fecha, cliente vacio o no hay productos cargados", "Error!", JOptionPane.ERROR_MESSAGE);
             } else {
                 System.out.println("entre a registrar venta");
-                abrirBase();
+                
                 Venta v = new Venta();
                 LinkedList<Pair> parDeProductos = new LinkedList();
                 LinkedList<BigDecimal> preciosFinales = new LinkedList();
@@ -207,7 +207,7 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
                 Integer idCliente = Integer.valueOf(cliente.split(" ")[0]); //saco el id cliente
                 v.set("cliente_id", idCliente);
                 for (int i = 0; i < ventaGui.getTablaFactura().getRowCount(); i++) {
-                    abrirBase();
+                    
                     Articulo producto = Articulo.findFirst("id = ?", tablafac.getValueAt(i, 0));
                     BigDecimal cantidad = ((BigDecimal) tablafac.getValueAt(i, 1)).setScale(2, RoundingMode.CEILING); //saco la cantidad
                     BigDecimal precioFinal = ((BigDecimal) tablafac.getValueAt(i, 6)).setScale(2, RoundingMode.CEILING);
@@ -226,17 +226,17 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
                 BigDecimal bd = new BigDecimal(ventaGui.getTotalFactura().getText());
                 v.set("monto", bd);
                 if (ventaGui.getAbonaSi().isSelected()) {
-                    abrirBase();
+                    
                     Base.openTransaction();
                     Pago pago = Pago.createIt("fecha", laFecha, "monto", bd, "cliente_id", idCliente);
                     Base.commitTransaction();
-                    Base.close();
+                    
                     System.out.println(pago.getId() + " " + laFecha + " " + bd + " " + idCliente);
                     String pagoId = pago.getString("id");//Pago.findFirst("fecha = ? and monto = ? and cliente_id = ?", laFecha, bd, idCliente).getString("id");
                     System.out.println("el pago id es:  " + pagoId);
                     v.set("pago_id", pagoId);
                 }
-                abrirBase();
+                
                 if (abmVenta.alta(v)) {
                     JOptionPane.showMessageDialog(apgui, "Venta realizada con exito.");
                     ventaGui.limpiarVentana();
@@ -255,7 +255,7 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
                     JOptionPane.showMessageDialog(apgui, "Ocurrió un error inesperado, venta no realizada");
                 }
                 if (Base.hasConnection()) {
-                    Base.close();
+                    
                 }
             }
         }
@@ -267,7 +267,7 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
     }
 
     private void actualizarListaCliente() {
-        abrirBase();
+        
         tablaClientes.setRowCount(0);
         clientelista = busqueda.filtroCliente(textan.getText(), "");
         Iterator<Cliente> it = clientelista.iterator();
@@ -279,12 +279,12 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
             tablaClientes.addRow(row);
         }
         if (Base.hasConnection()) {
-            Base.close();
+            
         }
     }
 
     private void actualizarListaProd() {
-        abrirBase();
+        
         tablaProd.setRowCount(0);
         prodlista = Articulo.where("codigo like ? or descripcion like ?", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%");
         Iterator<Articulo> it = prodlista.iterator();
@@ -320,19 +320,11 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
             }
         }
         if (Base.hasConnection()) {
-            Base.close();
+            
         }
     }
 
-    private void abrirBase() {
-        if (!Base.hasConnection()) {
-            try {
-                Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://" + ManejoIp.ipServer + "/cacique", "tecpro", "tecpro");
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n " + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
+
 
     private boolean existeProdFacc(int id) {
         boolean ret = false;

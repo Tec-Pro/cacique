@@ -61,13 +61,13 @@ public class EnvioEmailControlador {
 
     public boolean guardarDatos(String email, String pass) throws SQLException {
         emailModel = new Email();
-        abrirBase();
+        
         emailModel.set("email", email, "password", pass);
         Base.openTransaction();
         Email.deleteAll();
         boolean guardado = emailModel.saveIt();
         Base.commitTransaction();
-        cerrarBase();
+        
         if (guardado) {
             JOptionPane.showMessageDialog(null, "Los datos han sido Guardados Correctamente!");
         } else {
@@ -82,13 +82,13 @@ public class EnvioEmailControlador {
 
     public boolean enviarMail(String email, String passw, boolean envio) throws MessagingException {
         boolean ret = false;
-        abrirBase();
+        
         LazyList<Email> emailsModel = Email.findAll();
 
         if (!emailsModel.isEmpty() || !envio) {
-            cerrarBase();
+            
             if (envio) {
-                abrirBase();
+                
                 emailModel = emailsModel.get(0);
                 this.mail = emailModel.getString("email");
                 String contraEncrip = emailModel.getString("password");
@@ -97,7 +97,7 @@ public class EnvioEmailControlador {
                     arrayD[i] = (char) (arrayD[i] - (char) 5);
                 }
                 this.passwo = String.valueOf(arrayD);
-                cerrarBase();
+                
             } else {
                 this.mail = email;
                 this.passwo = passw;
@@ -158,7 +158,7 @@ public class EnvioEmailControlador {
                 }
             }
             if (envio && ret) {
-                abrirBase();
+                
                 Envio enviarModel = new Envio();
                 Base.openTransaction();
                 Envio.deleteAll();
@@ -166,7 +166,7 @@ public class EnvioEmailControlador {
                 enviarModel.setBoolean("enviado", true);
                 enviarModel.saveIt();
                 Base.commitTransaction();
-                cerrarBase();
+                
             }
             t.close();
         } else {
@@ -176,17 +176,9 @@ public class EnvioEmailControlador {
 
     }
 
-    private void abrirBase() {
-        if (!Base.hasConnection()) {
-            try{             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://"+ManejoIp.ipServer+"/"+bd, password, login);             }catch(Exception e){                 JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n "+e.getMessage(),null,JOptionPane.ERROR_MESSAGE); }
-        }
-    }
 
-    private void cerrarBase() {
-        if (Base.hasConnection()) {
-            Base.close();
-        }
-    }
+
+ 
 
     public static String convertirFechaString() {
         String fechaString;

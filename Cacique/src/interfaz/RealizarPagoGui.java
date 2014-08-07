@@ -51,10 +51,10 @@ public class RealizarPagoGui extends javax.swing.JDialog {
         totalFac.setText("");
         descuento.setText("");
         this.prov = prov;
-        abrirBase();
+        
         String windowsPoneComa=String.valueOf(prov.getBigDecimal("cuenta_corriente").setScale(2, RoundingMode.CEILING));
         cuenta.setText(windowsPoneComa);
-        cerrarBase();
+        
         proveedor.setText(prov.getString("nombre"));
         fecha.setDate(Calendar.getInstance().getTime());
         monto.requestFocus();
@@ -66,7 +66,7 @@ public class RealizarPagoGui extends javax.swing.JDialog {
 
         setEnabledPanelFac(true);
         this.prov = prov;
-        abrirBase();
+        
         totalConDescuento.setText("");
         numeroFac.setText("");
         totalFac.setText("");
@@ -79,7 +79,7 @@ public class RealizarPagoGui extends javax.swing.JDialog {
         }
         String windowsPoneComa= String.valueOf(prov.getBigDecimal("cuenta_corriente").setScale(2, RoundingMode.CEILING));
         cuenta.setText(windowsPoneComa);
-        cerrarBase();
+        
         proveedor.setText(prov.getString("nombre"));
         fecha.setDate(Calendar.getInstance().getTime());
         descuento.requestFocus();
@@ -348,7 +348,7 @@ public class RealizarPagoGui extends javax.swing.JDialog {
     }//GEN-LAST:event_cancelarActionPerformed
 
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
-        abrirBase();
+        
         //try {
         java.sql.Date sqlFecha = new java.sql.Date(fecha.getDate().getTime());
         Pago pago = Pago.createIt("fecha", sqlFecha, "monto", monto.getText().replaceAll(",", "."));
@@ -403,7 +403,7 @@ public class RealizarPagoGui extends javax.swing.JDialog {
         // }
 
 
-        cerrarBase();
+        
         JOptionPane.showMessageDialog(this, "¡Pago registrado correctamente");
         this.dispose();
         //} catch (Exception ex) {
@@ -471,21 +471,9 @@ public class RealizarPagoGui extends javax.swing.JDialog {
     private javax.swing.JLabel totalFac;
     // End of variables declaration//GEN-END:variables
 
-    private void abrirBase() {
-        if (!Base.hasConnection()) {
-            try {
-                Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://"+ManejoIp.ipServer+"/cacique", "tecpro", "tecpro");
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n " + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
 
-    private void cerrarBase() {
-        if (Base.hasConnection()) {
-            Base.close();
-        }
-    }
+
+
     
     private BigDecimal calcularDeuda(LazyList<Compra> compras){
         Iterator<Compra> calcularDeuda= compras.iterator();

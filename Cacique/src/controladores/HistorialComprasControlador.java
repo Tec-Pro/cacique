@@ -55,7 +55,7 @@ public class HistorialComprasControlador implements ActionListener {
     private JDateChooser calenHasta;
 
     public HistorialComprasControlador(AplicacionGui apgui, HistorialComprasGui historialCompras, ClienteGui clienteGui, Cliente cliente) {
-        abrirBase();
+        
         this.apgui = apgui;
         this.historialComprasGui = historialCompras;
         this.clienteGui = clienteGui;
@@ -177,13 +177,5 @@ public class HistorialComprasControlador implements ActionListener {
     public void actionPerformed(ActionEvent e) {
     }
 
-    private void abrirBase() {
-        if (!Base.hasConnection()) {
-            try {
-                Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://" + ManejoIp.ipServer + "/cacique", "tecpro", "tecpro");
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n " + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
+
 }

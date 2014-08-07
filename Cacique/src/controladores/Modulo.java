@@ -55,7 +55,7 @@ public class Modulo {
             conn = DriverManager.getConnection(url, login, password);
             if (conn != null) {
                 conectadoMySQL = 1;
-                conn.close();
+             //   conn.close();
             }
         } catch (SQLException ex) {
             conectadoMySQL = 0;
@@ -70,7 +70,7 @@ public class Modulo {
             conn = DriverManager.getConnection(urlcero, login, password);
             if (conn != null) {
                 conectadoMySQL = 1;
-                conn.close();
+               // conn.close();
             }
         } catch (SQLException ex) {
             conectadoMySQL = 0;

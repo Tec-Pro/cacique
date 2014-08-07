@@ -55,9 +55,9 @@ public class ControladorArticulo implements ActionListener, FocusListener {
         listArticulos = new LinkedList();
         listProveedores = new LinkedList();
         abmArticulo = new ABMArticulo();
-        abrirBase();
+        
         listArticulos = Articulo.findAll();
-        cerrarBase();
+        
         actualizarLista();
        // reporteArticulos = new ControladorJReport("listadoArticulos.jasper");
         articuloGui.getBusqueda().addKeyListener(new java.awt.event.KeyAdapter() {
@@ -81,7 +81,7 @@ public class ControladorArticulo implements ActionListener, FocusListener {
     }
 
     private void realizarBusqueda() {
-        abrirBase();
+        
         if (articuloGui.getFiltroEquiv().isSelected()) {// se esta buscando por los equivalentes a este
                    listArticulos = Articulo.where("equivalencia_1 like ? or equivalencia_2 like ? or equivalencia_3 like ? ", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%");
 
@@ -91,18 +91,18 @@ public class ControladorArticulo implements ActionListener, FocusListener {
 
         }
         actualizarLista();
-        cerrarBase();
+        
 
     }
 
     public void cargarTodos() {
-        abrirBase();
+        
         listArticulos = Articulo.findAll();
         if (!listArticulos.isEmpty()) {
             realizarBusqueda();
             System.out.println("cargue todo");
         }
-        cerrarBase();
+        
     }
 
     public void tablaMouseClicked(java.awt.event.MouseEvent evt) {
@@ -115,16 +115,16 @@ public class ControladorArticulo implements ActionListener, FocusListener {
             articuloGui.getNuevo().setEnabled(true);
             editandoInfo = false;
             articuloGui.limpiarCampos();
-            abrirBase();
+            
             articulo = Articulo.findFirst("codigo = ?", tablaArticulos.getValueAt(tablaArticulos.getSelectedRow(), 0));
             articuloGui.CargarCampos(articulo);
-            cerrarBase();
+            
 
         }
     }
 
     private void actualizarLista() {
-        abrirBase();
+        
         tablaArtDefault.setRowCount(0);
         Iterator<Articulo> it = listArticulos.iterator();
         while (it.hasNext()) {
@@ -142,7 +142,7 @@ public class ControladorArticulo implements ActionListener, FocusListener {
         }
         articuloGui.getCantidadArticulos().setText(String.valueOf(tablaArticulos.getRowCount()));
         
-        cerrarBase();
+        
     }
 
     @Override
@@ -167,7 +167,7 @@ public class ControladorArticulo implements ActionListener, FocusListener {
         if (e.getSource() == articuloGui.getGuardar() && editandoInfo && isNuevo) {
             System.out.println("Boton guardar pulsado");
             if (cargarDatosProd(articulo)) {
-                abrirBase();
+                
                 if (abmArticulo.alta(articulo)) {
 
                     articuloGui.habilitarCampos(false);
@@ -179,7 +179,7 @@ public class ControladorArticulo implements ActionListener, FocusListener {
                 } else {
                     JOptionPane.showMessageDialog(articuloGui, "codigo repetido, no se guardó el artículo", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
-                cerrarBase();
+                
                 realizarBusqueda();
             }
         }
@@ -192,9 +192,9 @@ public class ControladorArticulo implements ActionListener, FocusListener {
             if (articulo.getString("codigo") != null && !editandoInfo) {
                 Integer resp = JOptionPane.showConfirmDialog(articuloGui, "¿Desea borrar el artículo " + articuloGui.getCodigo().getText(), "Confirmar borrado", JOptionPane.YES_NO_OPTION);
                 if (resp == JOptionPane.YES_OPTION) {
-                    abrirBase();
+                    
                     Boolean seBorro = abmArticulo.baja(articulo);
-                    cerrarBase();
+                    
                     if (seBorro) {
                         JOptionPane.showMessageDialog(articuloGui, "¡Artículo borrado exitosamente!");
                         articuloGui.limpiarCampos();
@@ -230,7 +230,7 @@ public class ControladorArticulo implements ActionListener, FocusListener {
         if (e.getSource() == articuloGui.getGuardar() && editandoInfo && !isNuevo) {
             System.out.println("Boton guardar pulsado");
             if (cargarDatosProd(articulo)) {
-                abrirBase();
+                
                 if (abmArticulo.modificar(articulo)) {
                     
 
@@ -243,7 +243,7 @@ public class ControladorArticulo implements ActionListener, FocusListener {
                 } else {
                     JOptionPane.showMessageDialog(articuloGui, "Ocurrió un error,revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
-                cerrarBase();
+                
                 realizarBusqueda();
             }
         }
@@ -265,17 +265,9 @@ public class ControladorArticulo implements ActionListener, FocusListener {
      } catch (NumberFormatException | ClassCastException e) {
      }
      }*/
-    private void abrirBase() {
-        if (!Base.hasConnection()) {
-            try{             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://"+ManejoIp.ipServer+"/cacique", "tecpro", "tecpro");             }catch(Exception e){                 JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n "+e.getMessage(),null,JOptionPane.ERROR_MESSAGE); }
-        }
-    }
 
-    private void cerrarBase() {
-        if (Base.hasConnection()) {
-            Base.close();
-        }
-    }
+
+ 
 
     private boolean cargarDatosProd(Articulo art) {
         boolean ret = true;
@@ -390,7 +382,7 @@ public class ControladorArticulo implements ActionListener, FocusListener {
     }
 
     private void cargarProveedores() {
-        abrirBase();
+        
         articuloGui.getProveedores().removeAllItems();
         listProveedores = Proveedor.findAll();
         Iterator<Proveedor> it = listProveedores.iterator();

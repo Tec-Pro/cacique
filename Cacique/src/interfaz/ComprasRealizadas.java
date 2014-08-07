@@ -61,21 +61,12 @@ private DefaultTableModel tablaComprasDefault;
             }
         });
     }
-    private void abrirBase() {
-        if (!Base.hasConnection()) {
-            try{             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://"+ManejoIp.ipServer+"/cacique", "tecpro", "tecpro");             }catch(Exception e){                 JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n "+e.getMessage(),null,JOptionPane.ERROR_MESSAGE); }
-        }
-    }
 
-    private void cerrarBase() {
-        if (Base.hasConnection()) {
-            Base.close();
-        }
-    }
-    
+
+
 
     private void cargarCompras() {
-        abrirBase();
+        
         listCompras = proveedor.getAll(Compra.class);
         tablaComprasDefault.setRowCount(0);
         Iterator<Compra> it = listCompras.iterator();
@@ -92,7 +83,7 @@ private DefaultTableModel tablaComprasDefault;
             row[5]= compra.get("fecha_pago");
             tablaComprasDefault.addRow(row);
         }
-        cerrarBase();
+        
     }
     
     
@@ -105,14 +96,14 @@ private DefaultTableModel tablaComprasDefault;
             pagarFac.setEnabled(true);
         }
         if (evt.getClickCount() == 2) {
-            abrirBase();
+            
             compraGui.limpiarVentana();
             compraGui.paraVerCompra(true);
             Compra compra = Compra.findById(tablaCompras.getValueAt(tablaCompras.getSelectedRow(), 0));
-            cerrarBase();
+            
             //PODRÍA HACERSE UNA FUNCION EN COMPRAGUI PARA CARGAR LA COMPRA
             compraGui.getProveedorCompra().setText(proveedor.getString("nombre"));
-            abrirBase();
+            
             LazyList<ArticulosCompras> artCom = ArticulosCompras.find("compra_id = ?", compra.getId());
             Iterator<ArticulosCompras> it = artCom.iterator();
             while (it.hasNext()) {
@@ -137,7 +128,7 @@ private DefaultTableModel tablaComprasDefault;
             compraGui.getDescuento().setVisible(true);
             compraGui.getLabelTotalConDes().setVisible(true);
             compraGui.getDescuento().setText(compra.getBigDecimal("monto").subtract(compra.getBigDecimal("descuento").multiply(compra.getBigDecimal("monto").divide(new BigDecimal(100)))).setScale(2, RoundingMode.CEILING)+" ("+compra.getString("descuento")+" %)");
-            Base.close();
+            
             compraGui.setVisible(true);
             compraGui.toFront();
         }
@@ -247,20 +238,20 @@ private DefaultTableModel tablaComprasDefault;
 
     private void pagarFacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pagarFacActionPerformed
 System.out.println("realizar pago pulsado");
-            abrirBase();
+            
             realizarPagoGui = new RealizarPagoGui(papa, true, proveedor, (Compra)Compra.findById(tablaCompras.getValueAt(tablaCompras.getSelectedRow(), 0)));
             realizarPagoGui.setLocationRelativeTo(this);
             realizarPagoGui.setVisible(true);
-            abrirBase();
+            
             
             cargarCompras();
             pagarFac.setEnabled(false);
-            cerrarBase();    }//GEN-LAST:event_pagarFacActionPerformed
+                }//GEN-LAST:event_pagarFacActionPerformed
 
     private void borrarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarCompraActionPerformed
         int row = tablaCompras.getSelectedRow();
             if (row > -1) {
-                abrirBase();
+                
                Object id =  tablaCompras.getValueAt(row, 0);
                 Compra comp = Compra.findById(id);
                 ABMCompra abmC = new ABMCompra();
@@ -271,7 +262,7 @@ System.out.println("realizar pago pulsado");
 //                    JOptionPane.showMessageDialog(this, "Ocurrió un error, la compra no ha sido eliminada", "Error!", JOptionPane.ERROR_MESSAGE);
 //
 //                }
-                cerrarBase();
+                
             }
     }//GEN-LAST:event_borrarCompraActionPerformed
     public JTable getComprasRealizadas() {

@@ -37,15 +37,7 @@ public class ArticulosSinStock extends javax.swing.JInternalFrame {
     public JTable getArticulos() {
         return articulos;
     }
-          private void abrirBase() {
-        if (!Base.hasConnection()) {
-            try {
-                Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://" + ManejoIp.ipServer + "/cacique", "tecpro", "tecpro");
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n " + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
+
 
     public JTextField getBusqueda() {
         return busqueda;

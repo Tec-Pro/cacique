@@ -39,7 +39,7 @@ public class ControladorJReport {
         parametros.put("logo", this.getClass().getResourceAsStream(logo));
         JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, connection);
         JasperViewer.viewReport(jasperPrint, false);
-        connection.close();
+       
     }
 
     public void mostrarFactura(int venta) throws ClassNotFoundException, SQLException, JRException {
@@ -51,6 +51,5 @@ public class ControladorJReport {
         parametros.put("numFactura", venta);
         JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, connection);
         JasperViewer.viewReport(jasperPrint, false);
-        connection.close();
     }
 }

@@ -100,14 +100,13 @@ public class controladorImportarGui implements ActionListener {
 
     public void cargarProveedores() {
         importarGui.getProveedor().removeAllItems();
-        abrirBase();
+        
         List<Proveedor> proveedores = Proveedor.findAll();
         Iterator<Proveedor> it = proveedores.iterator();
         while (it.hasNext()) {
             prov = it.next();
             importarGui.getProveedor().addItem(prov.get("nombre"));
         }
-        cerrarBase();
         importarGui.getProveedor().addItem("");
         importarGui.getProveedor().setSelectedItem("");
     }
@@ -163,19 +162,6 @@ public class controladorImportarGui implements ActionListener {
 
 
 
-    private void abrirBase() {
-        if (!Base.hasConnection()) {
-            try{             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://"+ManejoIp.ipServer+"/cacique", "tecpro", "tecpro");             }catch(Exception e){                 JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n "+e.getMessage(),null,JOptionPane.ERROR_MESSAGE); }
-        }
-    }
-
-    private void cerrarBase() {
-        if (Base.hasConnection()) {
-            Base.close();
-        }
-
-    }
-
     
     
     
@@ -210,7 +196,7 @@ public class controladorImportarGui implements ActionListener {
                         double precioFloat;
                         BigDecimal precioCompraBig;
                         BigDecimal precioVenta;
-                        abrirBase();
+                        
                         agregados = 0;
                         modificados = 0;
                         iterarFilas.next();
@@ -293,7 +279,6 @@ public class controladorImportarGui implements ActionListener {
                                 }
                             }
                         }
-                        cerrarBase();
                     }
                 } else if (importarGui.getSelectorArchivos().getSelectedFile().getName().contains("xls")) {
                     importando = true;
@@ -318,7 +303,7 @@ public class controladorImportarGui implements ActionListener {
                         double precioFloat;
                         BigDecimal precioCompraBig;
                         BigDecimal precioVenta;
-                        abrirBase();
+                        
                         agregados = 0;
                         modificados = 0;
                         iterarFilas.next();
@@ -407,7 +392,6 @@ public class controladorImportarGui implements ActionListener {
                                 }
                             }
                         }
-                        cerrarBase();
                     }
                 }
                 return null;

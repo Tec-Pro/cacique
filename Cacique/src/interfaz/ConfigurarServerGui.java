@@ -132,9 +132,7 @@ public class ConfigurarServerGui extends javax.swing.JDialog {
     }//GEN-LAST:event_isServerActionPerformed
 
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
-        if (!Base.hasConnection()) {
-            Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/cacique", "tecpro", "tecpro");
-        }
+
         boolean res;
         if (isServer.isSelected()) {
             res = manejo.modificarDatos("localhost", true);
@@ -148,9 +146,7 @@ public class ConfigurarServerGui extends javax.swing.JDialog {
         } else {
             JOptionPane.showMessageDialog(this, "Ocurrió un error, intente nuevamente", null, JOptionPane.ERROR_MESSAGE);
         }
-        if (Base.hasConnection()) {
-            Base.close();
-        }
+
     }//GEN-LAST:event_guardarActionPerformed
 
     private void conexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_conexionActionPerformed
@@ -163,8 +159,7 @@ public class ConfigurarServerGui extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión",null,JOptionPane.ERROR_MESSAGE);                    
                 }
         }
-                            if(Base.hasConnection())
-                            Base.close();
+               
     }//GEN-LAST:event_conexionActionPerformed
 
     /**

@@ -39,9 +39,9 @@ public class ControladorArticulosAgot {
          tablaArtDefault = this.articuloSinStockGui.getTablaArticulosDefault();
         tablaArticulos = this.articuloSinStockGui.getArticulos();
         listArticulos = new LinkedList();
-        abrirBase();
+        
         listArticulos = Articulo.where("stock_actual <= stock_minimo", (Object) null);
-        cerrarBase();
+        
         articuloSinStockGui.getBusqueda().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -61,16 +61,16 @@ public class ControladorArticulosAgot {
     }
 
     public void realizarBusqueda() {
-        abrirBase();
+        
         listArticulos = Articulo.where("(codigo like ? or descripcion like ? or marca like ? or id like ? or nombre like ? or id like ?) and stock_actual<=stock_minimo", "%" + articuloSinStockGui.getBusqueda().getText() + "%", "%" + articuloSinStockGui.getBusqueda().getText() + "%", "%" + articuloSinStockGui.getBusqueda().getText() + "%", "%" + articuloSinStockGui.getBusqueda().getText() + "%", "%" + articuloSinStockGui.getBusqueda().getText() + "%", "%" + articuloSinStockGui.getBusqueda().getText() + "%");
         actualizarLista();
-        cerrarBase();
+        
 
     }
     
     
        private void actualizarLista() {
-        abrirBase();
+        
         tablaArtDefault.setRowCount(0);
         Iterator<Articulo> it = listArticulos.iterator();
         while (it.hasNext()) {
@@ -89,7 +89,7 @@ public class ControladorArticulosAgot {
 
         }
         
-        cerrarBase();
+        
     }
        
        
@@ -109,21 +109,13 @@ public class ControladorArticulosAgot {
         }
     }
        
-           private void abrirBase() {
-        if (!Base.hasConnection()) {
-            try{             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://"+ManejoIp.ipServer+"/cacique", "tecpro", "tecpro");             }catch(Exception e){                 JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n "+e.getMessage(),null,JOptionPane.ERROR_MESSAGE); }
-        }
-    }
 
-    private void cerrarBase() {
-        if (Base.hasConnection()) {
-            Base.close();
-        }
-    }
+
+
     
     private void tablaArticulosClicked(java.awt.event.MouseEvent evt) {
         if (evt.getClickCount() == 2) {
-            abrirBase();
+            
             Articulo articulo = Articulo.findFirst("codigo = ?", tablaArticulos.getValueAt(tablaArticulos.getSelectedRow(), 0));
             Proveedor papacito = articulo.parent(Proveedor.class);
             if (papacito == null) {
@@ -131,7 +123,7 @@ public class ControladorArticulosAgot {
             } else {
                 articulo.setNombreProv(papacito.getString("nombre"));
             }
-            cerrarBase();
+            
 
             articuloGui.CargarCampos(articulo);
             articuloGui.setVisible(true);

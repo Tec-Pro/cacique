@@ -47,10 +47,15 @@ public class AplicacionGui extends javax.swing.JFrame {
         this.registrarVenta.addActionListener(lis);
         this.configServer.addActionListener(lis);
         this.botArtSinStock.addActionListener(lis);
+        this.botCumple.addActionListener(lis);
     }
 
     public JMenuItem getCerrarSesion() {
         return cerrarSesion;
+    }
+
+    public JButton getBotCumple() {
+        return botCumple;
     }
 
     public JMenuItem getEnviar() {
@@ -122,6 +127,7 @@ public class AplicacionGui extends javax.swing.JFrame {
         registrarVenta = new javax.swing.JButton();
         importar = new javax.swing.JButton();
         botArtSinStock = new javax.swing.JButton();
+        botCumple = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         cambiosEmail = new javax.swing.JMenuItem();
@@ -160,8 +166,11 @@ public class AplicacionGui extends javax.swing.JFrame {
         importar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/importar.png"))); // NOI18N
         importar.setToolTipText("Importar datos desde Excel");
 
-        botArtSinStock.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/ventas.png"))); // NOI18N
-        botArtSinStock.setToolTipText("Registrar Venta");
+        botArtSinStock.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/sinstock.png"))); // NOI18N
+        botArtSinStock.setToolTipText("Artículos sin stock");
+
+        botCumple.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/cumple.png"))); // NOI18N
+        botCumple.setToolTipText("registros de cumpleaños");
 
         javax.swing.GroupLayout panelBotonesLayout = new javax.swing.GroupLayout(panelBotones);
         panelBotones.setLayout(panelBotonesLayout);
@@ -173,7 +182,8 @@ public class AplicacionGui extends javax.swing.JFrame {
                 .addComponent(proveedores, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(registrarCompra, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(registrarVenta, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(botArtSinStock, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(botArtSinStock, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(botCumple, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(importar)
         );
         panelBotonesLayout.setVerticalGroup(
@@ -192,6 +202,8 @@ public class AplicacionGui extends javax.swing.JFrame {
                 .addComponent(registrarVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(botArtSinStock, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(botCumple, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
         );
 
@@ -289,6 +301,7 @@ public class AplicacionGui extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton articulos;
     private javax.swing.JButton botArtSinStock;
+    private javax.swing.JButton botCumple;
     private javax.swing.JMenuItem cambiosEmail;
     private javax.swing.JMenuItem cargarBackup;
     private javax.swing.JMenuItem cerrarSesion;

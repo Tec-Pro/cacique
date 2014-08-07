@@ -79,9 +79,9 @@ public class ControladorProveedor implements ActionListener {
         proveedor = new Proveedor();
         this.articuloGui= articuloGui;
         //reporteProveedor = new ControladorJReport("listadoProveedores.jasper");
-        abrirBase();
+        
         listProveedores = Proveedor.findAll();
-        cerrarBase();
+        
         actualizarLista();
         proveedorGui.getBusqueda().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -107,12 +107,12 @@ public class ControladorProveedor implements ActionListener {
     }
 
     public void cargarTodos() {
-        abrirBase();
+        
         listProveedores = Proveedor.findAll();
         if (!listProveedores.isEmpty() ) {
         realizarBusqueda();
         }
-        cerrarBase();
+        
 
     }
 
@@ -131,10 +131,10 @@ public class ControladorProveedor implements ActionListener {
     }
 
     private void realizarBusqueda() {
-        abrirBase();
+        
         listProveedores = Proveedor.where("id like ? or nombre like ? or cuit like ? ", "%" + proveedorGui.getBusqueda().getText() + "%", "%" + proveedorGui.getBusqueda().getText() + "%", "%" + proveedorGui.getBusqueda().getText() + "%");
         actualizarLista();
-        cerrarBase();
+        
 
     }
 
@@ -152,18 +152,18 @@ public class ControladorProveedor implements ActionListener {
             proveedorGui.getComprasRealizadas().setEnabled(true);
             System.out.println("hice doble click en un proveedor");
             proveedorGui.limpiarCampos();
-            abrirBase();
+            
             proveedor = Proveedor.findFirst("id = ?", tablaProveedor.getValueAt(tablaProveedor.getSelectedRow(), 0));
             proveedorGui.CargarCampos(proveedor);
             
-            cerrarBase();
+            
             
             cargarPagos();
         }
     }
 
     private void actualizarLista() {
-        abrirBase();
+        
         tablaProvDefault.setRowCount(0);
         Iterator<Proveedor> it = listProveedores.iterator();
         while (it.hasNext()) {
@@ -173,7 +173,7 @@ public class ControladorProveedor implements ActionListener {
             row[1] = prov.getString("nombre");
             row[2] = prov.getString("cuit");
             tablaProvDefault.addRow(row);
-            cerrarBase();
+            
         }
     }
 
@@ -196,7 +196,7 @@ public class ControladorProveedor implements ActionListener {
         if (e.getSource() == proveedorGui.getGuardar() && editandoInfo && isNuevo) {
             System.out.println("Boton guardar pulsado");
             if (cargarDatosProv(proveedor)) {
-                abrirBase();
+                
                 if (abmProveedor.alta(proveedor)) {
                     proveedorGui.habilitarCampos(false);
                     proveedorGui.limpiarCampos();
@@ -207,7 +207,7 @@ public class ControladorProveedor implements ActionListener {
                 } else {
                     JOptionPane.showMessageDialog(proveedorGui, "Ocurrió un error, revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
-                cerrarBase();
+                
                 realizarBusqueda();
             }
         }
@@ -218,9 +218,9 @@ public class ControladorProveedor implements ActionListener {
             if (proveedor.getId() != null && !editandoInfo) {
                 Integer resp = JOptionPane.showConfirmDialog(proveedorGui, "¿Desea borrar el proveedor " + proveedorGui.getNombre().getText(), "Confirmar borrado", JOptionPane.YES_NO_OPTION);
                 if (resp == JOptionPane.YES_OPTION) {
-                    abrirBase();
+                    
                     Boolean seBorro = abmProveedor.baja(proveedor);
-                    cerrarBase();
+                    
                     if (seBorro) {
                         JOptionPane.showMessageDialog(proveedorGui, "¡Proveedor borrado exitosamente!");
                         proveedorGui.limpiarCampos();
@@ -253,7 +253,7 @@ public class ControladorProveedor implements ActionListener {
         if (e.getSource() == proveedorGui.getGuardar() && editandoInfo && !isNuevo) {
             System.out.println("Boton guardar pulsado");
             if (cargarDatosProv(proveedor)) {
-                abrirBase();
+                
                 if (abmProveedor.modificar(proveedor)) {
                     proveedorGui.habilitarCampos(false);
                     proveedorGui.limpiarCampos();
@@ -264,7 +264,7 @@ public class ControladorProveedor implements ActionListener {
                 } else {
                     JOptionPane.showMessageDialog(proveedorGui, "Ocurrió un error,revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
-                cerrarBase();
+                
                 realizarBusqueda();
             }
         }
@@ -273,11 +273,11 @@ public class ControladorProveedor implements ActionListener {
             realizarPagoGui = new RealizarPagoGui(aplicacionGui, true, proveedor);
             realizarPagoGui.setLocationRelativeTo(proveedorGui);
             realizarPagoGui.setVisible(true);
-            abrirBase();
+            
             proveedor= abmProveedor.getProveedor(proveedor);
             proveedorGui.CargarCampos(proveedor);
             
-            cerrarBase();
+            
             cargarPagos();
             
         }
@@ -290,9 +290,9 @@ public class ControladorProveedor implements ActionListener {
                 String mes = fecha.substring(3, 5);
                 String anio = fecha.substring(6, 10);
                 String fechaSql = anio + mes + dia;
-                abrirBase();
+                
                 Pago.findFirst("fecha = ? and monto = ? and proveedor_id = ?", fechaSql, tablaPagos.getValueAt(tablaPagos.getSelectedRow(), 1), proveedorGui.getId().getText()).delete();
-                cerrarBase();
+                
                 cargarPagos();
 
             }
@@ -333,17 +333,9 @@ public class ControladorProveedor implements ActionListener {
  
     }
 
-    private void abrirBase() {
-        if (!Base.hasConnection()) {
-            try{             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://"+ManejoIp.ipServer+"/cacique", "tecpro", "tecpro");             }catch(Exception e){                 JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n "+e.getMessage(),null,JOptionPane.ERROR_MESSAGE); }
-        }
-    }
 
-    private void cerrarBase() {
-        if (Base.hasConnection()) {
-            Base.close();
-        }
-    }
+
+ 
 
     private boolean cargarDatosProv(Proveedor prov) {
         boolean ret = true;
@@ -414,7 +406,7 @@ public class ControladorProveedor implements ActionListener {
     }
 
     private void cargarPagos() {
-        abrirBase();
+        
         listPagos = proveedor.getAll(Pago.class);
         tablaPagosDefault.setRowCount(0);
         Iterator<Pago> it = listPagos.iterator();
@@ -427,7 +419,7 @@ public class ControladorProveedor implements ActionListener {
             row[1] = pago.getBigDecimal("monto").setScale(2, RoundingMode.CEILING).toString();
             tablaPagosDefault.addRow(row);
         }
-                    cerrarBase();
+                    
 
     }
 

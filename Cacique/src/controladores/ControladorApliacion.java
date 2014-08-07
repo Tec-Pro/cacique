@@ -14,6 +14,7 @@ import interfaz.CargarDatosEmail;
 import interfaz.ClienteGui;
 import interfaz.CompraGui;
 import interfaz.ConfigurarServerGui;
+import interfaz.CumpleaniosGui;
 import interfaz.EnviarManualGui;
 import interfaz.ImportarExcelGui;
 import interfaz.ProveedorGui;
@@ -62,12 +63,17 @@ public class ControladorApliacion implements ActionListener {
     private VentaGui ventaGui;
      private ArticulosSinStock articulosSinStock;
     private ControladorArticulosAgot controladorArtSinStock;
+    private CumpleaniosGui cumpleGui;
 
     public ControladorApliacion() throws JRException, ClassNotFoundException, SQLException {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        if(!Base.hasConnection()){
+             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://" + ManejoIp.ipServer + "/cacique", "tecpro", "tecpro");
+             
         }
         aplicacionGui = new AplicacionGui();
         log = new ControladorLogin(aplicacionGui);
@@ -80,6 +86,7 @@ public class ControladorApliacion implements ActionListener {
         clienteGui = new ClienteGui();
         compraGui = new CompraGui();
         ventaGui = new VentaGui();
+        cumpleGui= new CumpleaniosGui(clienteGui);
                 articulosSinStock= new ArticulosSinStock();
         controladorVenta = new ControladorVenta(ventaGui, aplicacionGui);
         controladorProveedor = new ControladorProveedor(proveedorGui, aplicacionGui, articuloGui, compraGui);
@@ -94,23 +101,21 @@ public class ControladorApliacion implements ActionListener {
         aplicacionGui.getContenedor().add(clienteGui);
         aplicacionGui.getContenedor().add(compraGui);
         aplicacionGui.getContenedor().add(ventaGui);
+        aplicacionGui.getContenedor().add(cumpleGui);
                 aplicacionGui.getContenedor().add(articulosSinStock);
         aplicacionGui.setCursor(Cursor.DEFAULT_CURSOR);
 
     }
 
     public static void main(String[] args) throws InterruptedException, ClassNotFoundException, SQLException, JRException {
-        ManejoIp manejoIp = new ManejoIp();
+       
         if (!Base.hasConnection()) {
             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/cacique", "tecpro", "tecpro");
         }
+         ManejoIp manejoIp = new ManejoIp();
         manejoIp.crearIp();
         manejoIp.conseguirDatos();
-        System.out.println("consegui todo wacho");
-        if (Base.hasConnection()) {
-            Base.close();
-        }
-
+        Base.close();
         if (!Base.hasConnection()) {
             try {
                 Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://" + ManejoIp.ipServer + "/cacique", "tecpro", "tecpro");
@@ -122,6 +127,7 @@ public class ControladorApliacion implements ActionListener {
 
             }
         }
+        
         ControladorApliacion controladorAplicacion = new ControladorApliacion();
 
     }
@@ -232,6 +238,11 @@ public class ControladorApliacion implements ActionListener {
             articulosSinStock.setVisible(true);
             articulosSinStock.toFront();
         }
+         if(ae.getSource()==aplicacionGui.getBotCumple()){
+             cumpleGui.cargarCumple();
+             cumpleGui.setVisible(true);
+             cumpleGui.toFront();
+         }
     }
 
     private static class SQLFilter extends javax.swing.filechooser.FileFilter {

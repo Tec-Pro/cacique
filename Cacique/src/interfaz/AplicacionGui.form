@@ -142,8 +142,11 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="contenedor" max="32767" attributes="0"/>
-          <Component id="panelBotones" alignment="0" max="32767" attributes="0"/>
+          <Component id="contenedor" pref="534" max="32767" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <Component id="panelBotones" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -163,43 +166,9 @@
         </Property>
       </Properties>
 
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                  <Component id="clientes" alignment="0" max="32767" attributes="0"/>
-                  <Component id="articulos" alignment="0" max="32767" attributes="0"/>
-                  <Component id="proveedores" alignment="0" max="32767" attributes="0"/>
-                  <Component id="registrarCompra" alignment="0" max="32767" attributes="0"/>
-                  <Component id="registrarVenta" alignment="0" max="32767" attributes="0"/>
-                  <Component id="botArtSinStock" alignment="0" max="32767" attributes="0"/>
-                  <Component id="botCumple" alignment="0" max="32767" attributes="0"/>
-              </Group>
-              <Component id="importar" min="-2" max="-2" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <Component id="articulos" min="-2" pref="66" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                  <Component id="proveedores" min="-2" pref="66" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                  <Component id="clientes" min="-2" pref="66" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                  <Component id="importar" min="-2" pref="66" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                  <Component id="registrarCompra" min="-2" pref="66" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                  <Component id="registrarVenta" min="-2" pref="66" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                  <Component id="botArtSinStock" min="-2" pref="66" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                  <Component id="botCumple" min="-2" pref="66" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
+        <Property name="columns" type="int" value="1"/>
+        <Property name="rows" type="int" value="0"/>
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JButton" name="articulos">
@@ -264,6 +233,13 @@
               <Image iconType="3" name="/interfaz/Icons/cumple.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="registros de cumplea&#xf1;os"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="botAuto">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/interfaz/Icons/auto.png"/>
+            </Property>
           </Properties>
         </Component>
       </SubComponents>

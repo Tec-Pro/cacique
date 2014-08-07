@@ -146,4 +146,10 @@ CREATE  TABLE `cacique`.`pagos` (
 	cliente_id INT NULL DEFAULT NULL,
   PRIMARY KEY (`id`) );
 
-
+CREATE  TABLE `cacique`.`autos` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `patente` VARCHAR(45) NULL ,
+  `modelo` VARCHAR(45) NULL ,
+  `marca` VARCHAR(45) NULL ,
+  `cliente_id` INT NULL ,
+  PRIMARY KEY (`id`) );

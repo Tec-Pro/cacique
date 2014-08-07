@@ -48,6 +48,7 @@ public class AplicacionGui extends javax.swing.JFrame {
         this.configServer.addActionListener(lis);
         this.botArtSinStock.addActionListener(lis);
         this.botCumple.addActionListener(lis);
+        this.botAuto.addActionListener(lis);
     }
 
     public JMenuItem getCerrarSesion() {
@@ -106,6 +107,14 @@ public class AplicacionGui extends javax.swing.JFrame {
     public JMenuItem getConfigServer() {
         return configServer;
     }
+
+    public JButton getBotAuto() {
+        return botAuto;
+    }
+
+    public void setBotAuto(JButton botAuto) {
+        this.botAuto = botAuto;
+    }
     
     
 
@@ -128,6 +137,7 @@ public class AplicacionGui extends javax.swing.JFrame {
         importar = new javax.swing.JButton();
         botArtSinStock = new javax.swing.JButton();
         botCumple = new javax.swing.JButton();
+        botAuto = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         cambiosEmail = new javax.swing.JMenuItem();
@@ -147,65 +157,42 @@ public class AplicacionGui extends javax.swing.JFrame {
         setIconImage(new ImageIcon(getClass().getResource("/interfaz/Icons/icono.png")).getImage());
 
         panelBotones.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        panelBotones.setLayout(new java.awt.GridLayout(0, 1));
 
         articulos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/productos.png"))); // NOI18N
         articulos.setToolTipText("Gestión de artículos");
+        panelBotones.add(articulos);
 
         proveedores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/proveedor.png"))); // NOI18N
         proveedores.setToolTipText("Gestión de proveedores");
+        panelBotones.add(proveedores);
 
         clientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/clients.png"))); // NOI18N
         clientes.setToolTipText("Gestión de clientes");
+        panelBotones.add(clientes);
 
         registrarCompra.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/compras.png"))); // NOI18N
         registrarCompra.setToolTipText("Registrar Compra");
+        panelBotones.add(registrarCompra);
 
         registrarVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/ventas.png"))); // NOI18N
         registrarVenta.setToolTipText("Registrar Venta");
+        panelBotones.add(registrarVenta);
 
         importar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/importar.png"))); // NOI18N
         importar.setToolTipText("Importar datos desde Excel");
+        panelBotones.add(importar);
 
         botArtSinStock.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/sinstock.png"))); // NOI18N
         botArtSinStock.setToolTipText("Artículos sin stock");
+        panelBotones.add(botArtSinStock);
 
         botCumple.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/cumple.png"))); // NOI18N
         botCumple.setToolTipText("registros de cumpleaños");
+        panelBotones.add(botCumple);
 
-        javax.swing.GroupLayout panelBotonesLayout = new javax.swing.GroupLayout(panelBotones);
-        panelBotones.setLayout(panelBotonesLayout);
-        panelBotonesLayout.setHorizontalGroup(
-            panelBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                .addComponent(clientes, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(articulos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(proveedores, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(registrarCompra, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(registrarVenta, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(botArtSinStock, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(botCumple, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(importar)
-        );
-        panelBotonesLayout.setVerticalGroup(
-            panelBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelBotonesLayout.createSequentialGroup()
-                .addComponent(articulos, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(proveedores, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(clientes, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(importar, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(registrarCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(registrarVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(botArtSinStock, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(botCumple, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
-        );
+        botAuto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/auto.png"))); // NOI18N
+        panelBotones.add(botAuto);
 
         jMenu1.setText("Archivo");
 
@@ -278,8 +265,10 @@ public class AplicacionGui extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(contenedor)
-            .addComponent(panelBotones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -301,6 +290,7 @@ public class AplicacionGui extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton articulos;
     private javax.swing.JButton botArtSinStock;
+    private javax.swing.JButton botAuto;
     private javax.swing.JButton botCumple;
     private javax.swing.JMenuItem cambiosEmail;
     private javax.swing.JMenuItem cargarBackup;

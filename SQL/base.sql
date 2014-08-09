@@ -153,3 +153,34 @@ CREATE  TABLE `cacique`.`autos` (
   `marca` VARCHAR(45) NULL ,
   `cliente_id` INT NULL ,
   PRIMARY KEY (`id`) );
+
+ALTER TABLE `cacique`.`autos` ADD COLUMN `ult_cambio_aceite` DATE NULL  AFTER `cliente_id` ;
+
+
+CREATE  TABLE `cacique`.`trabajos` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `fecha` DATE NULL ,
+  `kilometraje` VARCHAR(45) NULL ,
+  `observaciones` VARCHAR(200) NULL ,
+  `aceite_caja` INT NULL ,
+  `aceite_diferencial` INT NULL ,
+  `filtro_aire` INT NULL ,
+  `filtro_combustible` INT NULL ,
+  `fiiltro_aceite` INT NULL ,
+  `filtro_habitaculo` INT NULL ,
+  `liquido_freno` INT NULL ,
+  `anticongelante` INT NULL ,
+  `correa_multicanal` INT NULL ,
+  `tensor_correa_multicanal` INT NULL ,
+  `correa_distribucion` INT NULL ,
+  `tensores` INT NULL ,
+  `bomba_agua` INT NULL ,
+  `bateria` INT NULL ,
+  `tipo_bateria` VARCHAR(45) NULL ,
+  `importe_bateria` FLOAT NULL ,
+  `descripcion_bateria` VARCHAR(200) NULL ,
+  `costo` FLOAT NULL ,
+  `descripcion_adicional` VARCHAR(200) NULL ,
+  `cliente_id` INT NULL ,
+  `auto_id` INT NULL ,
+  PRIMARY KEY (`id`) );

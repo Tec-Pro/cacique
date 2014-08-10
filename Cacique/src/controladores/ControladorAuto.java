@@ -8,16 +8,22 @@ package controladores;
 
 import abm.ABMAuto;
 import interfaz.AutoGui;
+import interfaz.Trabajos;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import modelos.Articulo;
 import modelos.Auto;
 import modelos.Cliente;
+import modelos.Proveedor;
+import modelos.Trabajo;
 import org.javalite.activejdbc.LazyList;
+import org.javalite.activejdbc.Model;
 
 /**
  *
@@ -37,9 +43,11 @@ public class ControladorAuto  implements ActionListener {
     private Boolean isNuevo;
     private Boolean editandoInfo;
     private Auto auto;
-
-    public ControladorAuto(AutoGui autoGui) {
+    private Trabajos trabajoGui;
+    
+    public ControladorAuto(AutoGui autoGui, Trabajos trabajoGui) {
         this.autoGui = autoGui;
+        this.trabajoGui= trabajoGui;
         isNuevo = true; //para saber si es nuevo o no
         editandoInfo = false; // se esta editando la info
         auto = new Auto();
@@ -71,6 +79,12 @@ public class ControladorAuto  implements ActionListener {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaMouseClicked(evt);
+            }
+        });
+                autoGui.getTablaTrabajos().addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaMouseClickedAuto(evt);
             }
         });
 
@@ -118,6 +132,23 @@ public class ControladorAuto  implements ActionListener {
         
     }
             
+              private void tablaMouseClickedAuto(java.awt.event.MouseEvent evt) {
+        if (evt.getClickCount() == 2) {
+            
+            Trabajo t = Trabajo.findById(tablaTrabajos.getValueAt(tablaTrabajos.getSelectedRow(), 0));
+            trabajoGui.setAutoModel(t.parent((Auto.class)));
+            trabajoGui.setClienteModel(t.parent(Cliente.class));
+            trabajoGui.cargarTrabajo(t);
+
+            trabajoGui.bloquearCampos(false);
+            
+            trabajoGui.getModificar().setEnabled(true);
+            trabajoGui.getGuardar().setEnabled(false);
+                        trabajoGui.setVisible(true);
+            trabajoGui.toFront();
+        }
+    }
+            
              public void tablaMouseClicked(java.awt.event.MouseEvent evt) {
         if (evt.getClickCount() == 2) {
             //bloqueo los campos y habilito botones
@@ -142,16 +173,33 @@ public class ControladorAuto  implements ActionListener {
         Iterator<Auto> it = listAutos.iterator();
         while (it.hasNext()) {
             Auto auto = it.next();
-            Object row[] = new String[4];
+            Object row[] = new String[5];
             row[0] = auto.getString("patente");
             row[1] = auto.getString("marca");
             row[2] = auto.getString("modelo");
             Cliente cli= auto.parent(Cliente.class);
             row[3] = cli.getString("nombre");
+            row[4]= dateToMySQLDate(auto.getDate("ult_cambio_aceite"), true);
+            
             autosDefault.addRow(row);
 
         }
                 
+    }
+                      /*va true si se quiere usar para mostrarla por pantalla es decir 12/12/2014 y false si va 
+     para la base de datos, es decir 2014/12/12*/
+    public String dateToMySQLDate(Date fecha, boolean paraMostrar) {
+        if(fecha!=null){
+        if (paraMostrar) {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+            return sdf.format(fecha);
+        } else {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+            return sdf.format(fecha);
+        }
+        }else{
+            return "";
+        }
     }
              
     @Override

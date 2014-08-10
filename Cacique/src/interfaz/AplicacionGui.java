@@ -49,6 +49,7 @@ public class AplicacionGui extends javax.swing.JFrame {
         this.botArtSinStock.addActionListener(lis);
         this.botCumple.addActionListener(lis);
         this.botAuto.addActionListener(lis);
+        this.botTrabajos.addActionListener(lis);
     }
 
     public JMenuItem getCerrarSesion() {
@@ -57,6 +58,10 @@ public class AplicacionGui extends javax.swing.JFrame {
 
     public JButton getBotCumple() {
         return botCumple;
+    }
+
+    public JButton getBotTrabajos() {
+        return botTrabajos;
     }
 
     public JMenuItem getEnviar() {
@@ -138,6 +143,7 @@ public class AplicacionGui extends javax.swing.JFrame {
         botArtSinStock = new javax.swing.JButton();
         botCumple = new javax.swing.JButton();
         botAuto = new javax.swing.JButton();
+        botTrabajos = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         cambiosEmail = new javax.swing.JMenuItem();
@@ -193,6 +199,9 @@ public class AplicacionGui extends javax.swing.JFrame {
 
         botAuto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/auto.png"))); // NOI18N
         panelBotones.add(botAuto);
+
+        botTrabajos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/rsz_oil-change.png"))); // NOI18N
+        panelBotones.add(botTrabajos);
 
         jMenu1.setText("Archivo");
 
@@ -268,7 +277,7 @@ public class AplicacionGui extends javax.swing.JFrame {
             .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 0, 0))
         );
 
         pack();
@@ -292,6 +301,7 @@ public class AplicacionGui extends javax.swing.JFrame {
     private javax.swing.JButton botArtSinStock;
     private javax.swing.JButton botAuto;
     private javax.swing.JButton botCumple;
+    private javax.swing.JButton botTrabajos;
     private javax.swing.JMenuItem cambiosEmail;
     private javax.swing.JMenuItem cargarBackup;
     private javax.swing.JMenuItem cerrarSesion;

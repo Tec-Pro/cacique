@@ -18,6 +18,7 @@ import interfaz.CumpleaniosGui;
 import interfaz.EnviarManualGui;
 import interfaz.ImportarExcelGui;
 import interfaz.ProveedorGui;
+import interfaz.Trabajos;
 import interfaz.VentaGui;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
@@ -64,6 +65,8 @@ public class ControladorApliacion implements ActionListener {
     private CumpleaniosGui cumpleGui;
     private AutoGui autoGui;
     private ControladorAuto controladorAuto;
+    private Trabajos trabajoGui;
+    private ControladorTrabajo controladorTrabajo;
 
     public ControladorApliacion() throws JRException, ClassNotFoundException, SQLException {
         try {
@@ -88,13 +91,15 @@ public class ControladorApliacion implements ActionListener {
         ventaGui = new VentaGui();
         cumpleGui= new CumpleaniosGui(clienteGui);
         autoGui= new AutoGui();
+        trabajoGui= new Trabajos();
                 articulosSinStock= new ArticulosSinStock();
         controladorVenta = new ControladorVenta(ventaGui, aplicacionGui);
         controladorProveedor = new ControladorProveedor(proveedorGui, aplicacionGui, articuloGui, compraGui);
         controladorArticulo = new ControladorArticulo(articuloGui);
         controladorCliente = new ControladorCliente(clienteGui, aplicacionGui, ventaGui);
        controladorArtSinStock= new ControladorArticulosAgot(articulosSinStock, articuloGui);
-       controladorAuto= new ControladorAuto(autoGui);
+       controladorAuto= new ControladorAuto(autoGui,trabajoGui);
+       controladorTrabajo= new ControladorTrabajo(trabajoGui);
         importarGui = new ImportarExcelGui();
         controladorImportarGui = new controladorImportarGui(importarGui);
         aplicacionGui.getContenedor().add(proveedorGui);
@@ -104,6 +109,7 @@ public class ControladorApliacion implements ActionListener {
         aplicacionGui.getContenedor().add(compraGui);
         aplicacionGui.getContenedor().add(ventaGui);
         aplicacionGui.getContenedor().add(cumpleGui);
+        aplicacionGui.getContenedor().add(trabajoGui);
                 aplicacionGui.getContenedor().add(autoGui);
 
                 aplicacionGui.getContenedor().add(articulosSinStock);
@@ -251,6 +257,10 @@ public class ControladorApliacion implements ActionListener {
              controladorAuto.cargarTodos();
              autoGui.setVisible(true);
              autoGui.toFront();
+         }
+         if(ae.getSource()==aplicacionGui.getBotTrabajos()){
+             trabajoGui.setVisible(true);
+             trabajoGui.toFront();
          }
     }
 

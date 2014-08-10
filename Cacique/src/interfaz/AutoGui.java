@@ -5,6 +5,7 @@
 package interfaz;
 
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
@@ -12,6 +13,9 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import modelos.Auto;
 import modelos.Cliente;
+import modelos.Trabajo;
+import org.javalite.activejdbc.LazyList;
+import org.javalite.activejdbc.Model;
 
 /**
  *
@@ -89,14 +93,14 @@ public class AutoGui extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Patente", "Modelo", "Marca", "Dueño"
+                "Patente", "Modelo", "Marca", "Dueño", "Último cambio aceite"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -164,7 +168,7 @@ public class AutoGui extends javax.swing.JInternalFrame {
         modelo.setEnabled(false);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jPanel4.setLayout(new java.awt.GridLayout());
+        jPanel4.setLayout(new java.awt.GridLayout(1, 0));
 
         borrar.setFont(new java.awt.Font("Cantarell", 0, 12)); // NOI18N
         borrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/borrar.png"))); // NOI18N
@@ -258,15 +262,27 @@ public class AutoGui extends javax.swing.JInternalFrame {
 
         tablaTrabajos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Fecha", "Kilometraje", "Costo"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane3.setViewportView(tablaTrabajos);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -437,7 +453,18 @@ public class AutoGui extends javax.swing.JInternalFrame {
         marca.setText(auto.getString("marca"));
         modelo.setText(auto.getString("modelo"));
         duenio.addItem(auto.parent(Cliente.class).getString("nombre"));
-      
+        trabajosDefault.setRowCount(0);
+        LazyList<Trabajo> trab= auto.getAll(Trabajo.class);
+        Iterator<Trabajo> it = trab.iterator();
+        while(it.hasNext()){
+            Trabajo t= it.next();
+            String[] row= new String[4];
+            row[0]= t.getString("id");
+            row[1]= t.getString("fecha");
+            row[2]= t.getString("kilometraje");
+            row[3]= t.getString("costo");
+            trabajosDefault.addRow(row);
+        }
         }
 
 

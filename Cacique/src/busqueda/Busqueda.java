@@ -9,10 +9,12 @@ import java.util.LinkedList;
 import java.util.List;
 import modelos.Articulo;
 import modelos.ArticulosCompras;
+import modelos.ArticulosPresupuestos;
 import modelos.ArticulosVentas;
 import modelos.Cliente;
 import modelos.ClientesArticulos;
 import modelos.Compra;
+import modelos.Presupuesto;
 import modelos.Proveedor;
 import modelos.Venta;
 
@@ -67,6 +69,13 @@ public class Busqueda {
         return result;
     }
 
+       public List<Presupuesto> filtroPresupuesto(String idcliente, String desde, String hasta) {
+        List<Presupuesto> result;
+        result = Presupuesto.where("cliente_id like ? and (fecha between ? and ?)", idcliente, desde, hasta);
+        System.out.println(idcliente+ " "+ desde +" "+hasta);
+        return result;
+    }
+    
     /**
      * @param idproveedor,
      * @param fecha desde (Pasada como string),
@@ -115,6 +124,20 @@ public class Busqueda {
         result = ArticulosVentas.where("venta_id like ? and producto_id like ?", idventa + "%", idproducto + "%");
         return result;
     }
+    
+     public LinkedList<ArticulosPresupuestos> filtroPresupuestados(String idventa, String idproducto) {
+        List<ArticulosPresupuestos> result;
+        result = ArticulosPresupuestos.where("presupuesto_id like ? and articulo_id like ?", idventa + "%", idproducto + "%");
+        Iterator it = result.iterator();
+        LinkedList<ArticulosPresupuestos> result2 = new LinkedList<ArticulosPresupuestos>();
+        while (it.hasNext()) {
+            ArticulosPresupuestos ap = (ArticulosPresupuestos) it.next();
+            result2.add(ap);
+        }
+        
+        return result2;
+    }
+
 
     public List<ArticulosVentas> filtroVendidos(String idventa) {
         List<ArticulosVentas> result;

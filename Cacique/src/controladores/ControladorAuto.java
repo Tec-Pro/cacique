@@ -104,13 +104,12 @@ public class ControladorAuto  implements ActionListener {
         realizarBusquedaDuenio();
     }
      
-     private void realizarBusquedaDuenio() {
+     public void realizarBusquedaDuenio() {
                     LazyList<Cliente> duenios= Cliente.where("nombre like  ?", "%"+autoGui.getBusquedaDuenio().getText()+"%");
                     Iterator<Cliente> it = duenios.iterator();
                     listAutos=new LinkedList<>();
                     while(it.hasNext()){
-                        Cliente cli= it.next();
-                        
+                        Cliente cli= it.next();                        
                         listAutos.addAll(cli.getAll(Auto.class));
                     }
                     actualizarLista();

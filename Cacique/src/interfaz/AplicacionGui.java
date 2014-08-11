@@ -31,8 +31,8 @@ public class AplicacionGui extends javax.swing.JFrame {
     public JButton getArticulos() {
         return articulos;
     }
-    
-    public void setActionListener(ActionListener lis){
+
+    public void setActionListener(ActionListener lis) {
         this.getArticulos().addActionListener(lis);
         this.proveedores.addActionListener(lis);
         this.importar.addActionListener(lis);
@@ -50,6 +50,21 @@ public class AplicacionGui extends javax.swing.JFrame {
         this.botCumple.addActionListener(lis);
         this.botAuto.addActionListener(lis);
         this.botTrabajos.addActionListener(lis);
+        this.historialPresupuestos.addActionListener(lis);
+        this.presupuesto.addActionListener(lis);
+        this.tocaCambio.addActionListener(lis);
+    }
+
+    public JButton getHistorialPresupuestos() {
+        return historialPresupuestos;
+    }
+
+    public JButton getPresupuesto() {
+        return presupuesto;
+    }
+
+    public JButton getTocaCambio() {
+        return tocaCambio;
     }
 
     public JMenuItem getCerrarSesion() {
@@ -68,7 +83,6 @@ public class AplicacionGui extends javax.swing.JFrame {
         return enviar;
     }
 
-    
     public JMenuItem getModificarUsuario() {
         return modificarUsuario;
     }
@@ -120,8 +134,6 @@ public class AplicacionGui extends javax.swing.JFrame {
     public void setBotAuto(JButton botAuto) {
         this.botAuto = botAuto;
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -144,6 +156,9 @@ public class AplicacionGui extends javax.swing.JFrame {
         botCumple = new javax.swing.JButton();
         botAuto = new javax.swing.JButton();
         botTrabajos = new javax.swing.JButton();
+        tocaCambio = new javax.swing.JButton();
+        presupuesto = new javax.swing.JButton();
+        historialPresupuestos = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         cambiosEmail = new javax.swing.JMenuItem();
@@ -202,6 +217,15 @@ public class AplicacionGui extends javax.swing.JFrame {
 
         botTrabajos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/rsz_oil-change.png"))); // NOI18N
         panelBotones.add(botTrabajos);
+
+        tocaCambio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/tocaCambio.png"))); // NOI18N
+        panelBotones.add(tocaCambio);
+
+        presupuesto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/presupuesto.png"))); // NOI18N
+        panelBotones.add(presupuesto);
+
+        historialPresupuestos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/historialPresupuestos.png"))); // NOI18N
+        panelBotones.add(historialPresupuestos);
 
         jMenu1.setText("Archivo");
 
@@ -274,28 +298,26 @@ public class AplicacionGui extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+            .addComponent(contenedor)
+            .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirActionPerformed
-        int ret=JOptionPane.showConfirmDialog(this, "¿Desea salir de la aplicación?","Cerrar aplicación", JOptionPane.YES_NO_OPTION);
-        if(ret== JOptionPane.YES_OPTION)
+        int ret = JOptionPane.showConfirmDialog(this, "¿Desea salir de la aplicación?", "Cerrar aplicación", JOptionPane.YES_NO_OPTION);
+        if (ret == JOptionPane.YES_OPTION) {
             System.exit(0);
-        
+        }
+
     }//GEN-LAST:event_salirActionPerformed
 
     private void tecProActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tecProActionPerformed
-        AcercaDe acercaDe= new AcercaDe(this, true);
+        AcercaDe acercaDe = new AcercaDe(this, true);
         acercaDe.setLocationRelativeTo(this);
         acercaDe.setVisible(true);
     }//GEN-LAST:event_tecProActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton articulos;
     private javax.swing.JButton botArtSinStock;
@@ -310,6 +332,7 @@ public class AplicacionGui extends javax.swing.JFrame {
     private javax.swing.JDesktopPane contenedor;
     private javax.swing.JMenuItem crearBackup;
     private javax.swing.JMenuItem enviar;
+    private javax.swing.JButton historialPresupuestos;
     private javax.swing.JButton importar;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -317,13 +340,12 @@ public class AplicacionGui extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem modificarUsuario;
     private javax.swing.JPanel panelBotones;
+    private javax.swing.JButton presupuesto;
     private javax.swing.JButton proveedores;
     private javax.swing.JButton registrarCompra;
     private javax.swing.JButton registrarVenta;
     private javax.swing.JMenuItem salir;
     private javax.swing.JMenuItem tecPro;
+    private javax.swing.JButton tocaCambio;
     // End of variables declaration//GEN-END:variables
-
-
-
 }

@@ -10,9 +10,12 @@ import abm.ManejoIp;
 import busqueda.Busqueda;
 import com.toedter.calendar.JDateChooser;
 import interfaz.AplicacionGui;
+import interfaz.AutoGui;
 import interfaz.ClienteGui;
 import interfaz.HistorialComprasGui;
 import interfaz.PagoFacturaGui;
+import interfaz.PresupuestoRealizadosGui;
+import interfaz.Trabajos;
 import interfaz.VentaGui;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -43,7 +46,7 @@ import org.javalite.activejdbc.LazyList;
  * @author jacinto
  */
 public class ControladorCliente implements ActionListener {
-
+    
     private static BigDecimal iva = new BigDecimal("21");
     private static BigDecimal cien = new BigDecimal("100");
     private JTextField nomcli;
@@ -63,7 +66,7 @@ public class ControladorCliente implements ActionListener {
     VentaGui ventaGui;
     private Color Color;
     private JDateChooser nacimiento;
-
+    
     public ControladorCliente(ClienteGui clienteGui, AplicacionGui aplicacionGui, VentaGui ventaGui) {
         this.aplicacionGui = aplicacionGui;
         this.clienteGui = clienteGui;
@@ -105,12 +108,12 @@ public class ControladorCliente implements ActionListener {
         });
         ver = clienteGui.getVer();
     }
-
+    
     private void busquedaKeyReleased(KeyEvent evt) {
         System.out.println("apreté el caracter: " + evt.getKeyChar());
         realizarBusqueda();
     }
-
+    
     private void tablaVentasMouseClicked(MouseEvent evt) {
         if (evt.getClickCount() == 2) {
             Integer idFac = Integer.valueOf((String) clienteGui.getVentasRealizadas().getValueAt(clienteGui.getVentasRealizadas().getSelectedRow(), 0));
@@ -198,7 +201,7 @@ public class ControladorCliente implements ActionListener {
             calcularCtaCteActual();
         }
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == clienteGui.getNuevo()) { //crear un nuevo cliente
@@ -231,7 +234,7 @@ public class ControladorCliente implements ActionListener {
                 
                 realizarBusqueda();
             }
-
+            
         }
         if (e.getSource() == clienteGui.getBorrar()) { //borrar cliente 
             System.out.println("Boton borrar pulsado");
@@ -271,7 +274,7 @@ public class ControladorCliente implements ActionListener {
             clienteGui.getAutos().setEnabled(false);
             clienteGui.getPresupuestos().setEnabled(false);
         }
-
+        
         if (e.getSource() == clienteGui.getGuardar() && editandoInfo && !isNuevo) {
             System.out.println("Boton guardar pulsado");
             if (cargarDatosCliente(cliente)) {
@@ -364,7 +367,7 @@ public class ControladorCliente implements ActionListener {
                         int idCliente2 = Integer.parseInt(clienteId);
                         Calendar c = Calendar.getInstance();
                         c.setTime(new Date());
-                        String d = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH + 1 ) + "-" + c.get(Calendar.DATE);
+                        String d = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH + 1) + "-" + c.get(Calendar.DATE);
                         Base.openTransaction();
                         Pago pago = Pago.createIt("fecha", d, "monto", monto, "cliente_id", idCliente2);
                         pago.saveIt();
@@ -381,14 +384,33 @@ public class ControladorCliente implements ActionListener {
                         JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, el cobro no ha sido registrado", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
                 }
-
+                
             } else {
                 JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, el cobro no ha sido registrado", "Error!", JOptionPane.ERROR_MESSAGE);
-
+                
             }
         }
+        if (e.getSource() == clienteGui.getPresupuestos()) {
+            PresupuestoRealizadosGui hcg = new PresupuestoRealizadosGui();
+            hcg.getFiltroNombre().setText(cliente.getString("nombre"));
+            ControladorPresupuestosRealizados hcc = new ControladorPresupuestosRealizados(aplicacionGui, hcg);
+            hcc.filtroNombre();
+            aplicacionGui.getContenedor().add(hcg);
+            hcg.setVisible(true);
+            hcg.toFront();
+        }
+        if (e.getSource() == clienteGui.getAutos()) {
+            AutoGui hcg = new AutoGui();
+            hcg.getBusquedaDuenio().setText(cliente.getString("nombre"));
+            Trabajos t = new Trabajos();
+            ControladorAuto hcc = new ControladorAuto(hcg,t);
+            hcc.realizarBusquedaDuenio();
+            aplicacionGui.getContenedor().add(hcg);
+            hcg.setVisible(true);
+            hcg.toFront();
+        }
     }
-
+    
     public void actualizarPrecio() {
         BigDecimal importe;
         BigDecimal total = new BigDecimal(0);
@@ -398,15 +420,11 @@ public class ControladorCliente implements ActionListener {
         }
         for (int i = 0; i < ventaGui.getTablaFactura().getRowCount(); i++) {
             total = total.add((BigDecimal) ventaGui.getTablaFactura().getValueAt(i, 6)).setScale(2, RoundingMode.CEILING);;
-
+            
         }
         ventaGui.getTotalFactura().setText(total.toString());
     }
-
-
-
- 
-
+    
     private void actualizarLista() {
         
         tablaCliDefault.setRowCount(0);
@@ -474,15 +492,15 @@ public class ControladorCliente implements ActionListener {
             return cta;
         }
     }
-
+    
     private void realizarBusqueda() {
         
         listClientes = busqueda.buscarCliente(nomcli.getText());
         actualizarLista();
         
-
+        
     }
-
+    
     private boolean cargarDatosCliente(Cliente c) {
         boolean ret = true;
         try {
@@ -589,10 +607,10 @@ public class ControladorCliente implements ActionListener {
                 }
             }
         }
-
+        
         
     }
-
+    
     public LinkedList<Venta> cargarDeuda(String id) {
         
         Iterator<Venta> itr = busqueda.filtroVenta(id, "0-0-0", "9999-0-0").iterator();
@@ -605,7 +623,7 @@ public class ControladorCliente implements ActionListener {
         }
         return retorno;
     }
-
+    
     public BigDecimal montoVentaNoAbonada(String id) {
         
         BigDecimal montox = null;
@@ -621,7 +639,7 @@ public class ControladorCliente implements ActionListener {
                 montox = new BigDecimal(String.valueOf(montox.add(cuenta).setScale(2, RoundingMode.CEILING)));
             }
         }
-
+        
         return montox.setScale(2, RoundingMode.CEILING);
     }
 }

@@ -13,6 +13,7 @@ CREATE  TABLE `cacique`.`clientes` (
   `facebook` VARCHAR(60) NULL ,
   `email` VARCHAR(60) NULL ,
   `dni` VARCHAR(45) NULL ,
+	cuenta FLOAT NULL DEFAULT 0,
   PRIMARY KEY (`id`) );
 
 CREATE  TABLE `cacique`.`proveedors` (
@@ -31,14 +32,15 @@ CREATE  TABLE `cacique`.`articulos` (
   `codigo` VARCHAR(45) NOT NULL ,
   `nombre` VARCHAR(45) NULL ,
   `marca` VARCHAR(45) NULL ,
-  `stock_actual` INT NULL DEFAULT 0 ,
-  `stock_minimo` INT NULL DEFAULT 0 ,
+  `stock_actual` FLOAT NULL DEFAULT 0 ,
+  `stock_minimo` FLOAT NULL DEFAULT 0 ,
   `precio_compra` FLOAT NULL DEFAULT 0 ,
   `precio_venta` FLOAT NULL DEFAULT 0 ,
   `descripcion` VARCHAR(200) NULL ,
   `ultima_compra` DATE NULL ,
   `proveedor_id` INT NULL ,
   PRIMARY KEY (`id`, `codigo`) );
+ALTER TABLE `cacique`.`articulos` ADD COLUMN `equivalencia_1` VARCHAR(45) NULL  AFTER `proveedor_id` , ADD COLUMN `equivalencia_2` VARCHAR(45) NULL  AFTER `equivalencia_1` , ADD COLUMN `equivalencia_3` VARCHAR(45) NULL  AFTER `equivalencia_2` ;
 
 create table usuarios (
 	id integer not null auto_increment,
@@ -84,7 +86,7 @@ ALTER TABLE `cacique`.`envios` ADD COLUMN `id` INT NOT NULL AUTO_INCREMENT  AFTE
 
 ALTER TABLE `cacique`.`envios` CHANGE COLUMN `enviado` `enviado` INT NULL DEFAULT NULL  ;
 
-create table lubricentro.ventas (
+create table cacique.ventas (
     id integer not null auto_increment,
     monto float,
     cliente_id integer,
@@ -93,7 +95,7 @@ create table lubricentro.ventas (
 	pago_id INT NULL DEFAULT NULL,
     PRIMARY KEY (`id`) );
 
-create table lubricentro.compras (
+create table cacique.compras (
     id integer not null auto_increment,
     monto float,
     proveedor_id integer,
@@ -136,3 +138,49 @@ create table articulos_compras (
 	check (precio_final>0),
     primary key(id));
 
+CREATE  TABLE `cacique`.`pagos` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `fecha` DATE NULL DEFAULT NULL,
+  `monto` FLOAT NULL ,
+  `proveedor_id` INT NULL ,
+	cliente_id INT NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) );
+
+CREATE  TABLE `cacique`.`autos` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `patente` VARCHAR(45) NULL ,
+  `modelo` VARCHAR(45) NULL ,
+  `marca` VARCHAR(45) NULL ,
+  `cliente_id` INT NULL ,
+  PRIMARY KEY (`id`) );
+
+ALTER TABLE `cacique`.`autos` ADD COLUMN `ult_cambio_aceite` DATE NULL  AFTER `cliente_id` ;
+
+
+CREATE  TABLE `cacique`.`trabajos` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `fecha` DATE NULL ,
+  `kilometraje` VARCHAR(45) NULL ,
+  `observaciones` VARCHAR(200) NULL ,
+  `aceite_caja` INT NULL ,
+  `aceite_diferencial` INT NULL ,
+  `filtro_aire` INT NULL ,
+  `filtro_combustible` INT NULL ,
+  `fiiltro_aceite` INT NULL ,
+  `filtro_habitaculo` INT NULL ,
+  `liquido_freno` INT NULL ,
+  `anticongelante` INT NULL ,
+  `correa_multicanal` INT NULL ,
+  `tensor_correa_multicanal` INT NULL ,
+  `correa_distribucion` INT NULL ,
+  `tensores` INT NULL ,
+  `bomba_agua` INT NULL ,
+  `bateria` INT NULL ,
+  `tipo_bateria` VARCHAR(45) NULL ,
+  `importe_bateria` FLOAT NULL ,
+  `descripcion_bateria` VARCHAR(200) NULL ,
+  `costo` FLOAT NULL ,
+  `descripcion_adicional` VARCHAR(200) NULL ,
+  `cliente_id` INT NULL ,
+  `auto_id` INT NULL ,
+  PRIMARY KEY (`id`) );

@@ -17,6 +17,8 @@ import interfaz.ConfigurarServerGui;
 import interfaz.CumpleaniosGui;
 import interfaz.EnviarManualGui;
 import interfaz.ImportarExcelGui;
+import interfaz.PresupuestoGui;
+import interfaz.PresupuestoRealizadosGui;
 import interfaz.ProveedorGui;
 import interfaz.Trabajos;
 import interfaz.VentaGui;
@@ -60,13 +62,17 @@ public class ControladorApliacion implements ActionListener {
     private ControladorVenta controladorVenta;
     private CompraGui compraGui;
     private VentaGui ventaGui;
-     private ArticulosSinStock articulosSinStock;
+    private ArticulosSinStock articulosSinStock;
     private ControladorArticulosAgot controladorArtSinStock;
     private CumpleaniosGui cumpleGui;
     private AutoGui autoGui;
     private ControladorAuto controladorAuto;
     private Trabajos trabajoGui;
     private ControladorTrabajo controladorTrabajo;
+    private PresupuestoGui presupuestoGui;
+    private ControladorPresupuesto controladorPresupuesto;
+    private ControladorPresupuestosRealizados controladorPresupuestosRealizados;
+    private PresupuestoRealizadosGui presupuestoRealizadosGui;
 
     public ControladorApliacion() throws JRException, ClassNotFoundException, SQLException {
         try {
@@ -74,9 +80,9 @@ public class ControladorApliacion implements ActionListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(!Base.hasConnection()){
-             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://" + ManejoIp.ipServer + "/cacique", "tecpro", "tecpro");
-             
+        if (!Base.hasConnection()) {
+            Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://" + ManejoIp.ipServer + "/cacique", "tecpro", "tecpro");
+
         }
         aplicacionGui = new AplicacionGui();
         log = new ControladorLogin(aplicacionGui);
@@ -89,17 +95,17 @@ public class ControladorApliacion implements ActionListener {
         clienteGui = new ClienteGui();
         compraGui = new CompraGui();
         ventaGui = new VentaGui();
-        cumpleGui= new CumpleaniosGui(clienteGui);
-        autoGui= new AutoGui();
-        trabajoGui= new Trabajos();
-                articulosSinStock= new ArticulosSinStock();
+        cumpleGui = new CumpleaniosGui(clienteGui);
+        autoGui = new AutoGui();
+        trabajoGui = new Trabajos();
+        articulosSinStock = new ArticulosSinStock();
         controladorVenta = new ControladorVenta(ventaGui, aplicacionGui);
         controladorProveedor = new ControladorProveedor(proveedorGui, aplicacionGui, articuloGui, compraGui);
         controladorArticulo = new ControladorArticulo(articuloGui);
         controladorCliente = new ControladorCliente(clienteGui, aplicacionGui, ventaGui);
-       controladorArtSinStock= new ControladorArticulosAgot(articulosSinStock, articuloGui);
-       controladorAuto= new ControladorAuto(autoGui,trabajoGui);
-       controladorTrabajo= new ControladorTrabajo(trabajoGui);
+        controladorArtSinStock = new ControladorArticulosAgot(articulosSinStock, articuloGui);
+        controladorAuto = new ControladorAuto(autoGui, trabajoGui);
+        controladorTrabajo = new ControladorTrabajo(trabajoGui);
         importarGui = new ImportarExcelGui();
         controladorImportarGui = new controladorImportarGui(importarGui);
         aplicacionGui.getContenedor().add(proveedorGui);
@@ -110,19 +116,19 @@ public class ControladorApliacion implements ActionListener {
         aplicacionGui.getContenedor().add(ventaGui);
         aplicacionGui.getContenedor().add(cumpleGui);
         aplicacionGui.getContenedor().add(trabajoGui);
-                aplicacionGui.getContenedor().add(autoGui);
+        aplicacionGui.getContenedor().add(autoGui);
 
-                aplicacionGui.getContenedor().add(articulosSinStock);
+        aplicacionGui.getContenedor().add(articulosSinStock);
         aplicacionGui.setCursor(Cursor.DEFAULT_CURSOR);
 
     }
 
     public static void main(String[] args) throws InterruptedException, ClassNotFoundException, SQLException, JRException {
-       
+
         if (!Base.hasConnection()) {
             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/cacique", "tecpro", "tecpro");
         }
-         ManejoIp manejoIp = new ManejoIp();
+        ManejoIp manejoIp = new ManejoIp();
         manejoIp.crearIp();
         manejoIp.conseguirDatos();
         Base.close();
@@ -137,7 +143,7 @@ public class ControladorApliacion implements ActionListener {
 
             }
         }
-        
+
         ControladorApliacion controladorAplicacion = new ControladorApliacion();
 
     }
@@ -145,17 +151,17 @@ public class ControladorApliacion implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == aplicacionGui.getArticulos()) {
-                controladorArticulo.cargarTodos();
+            controladorArticulo.cargarTodos();
             articuloGui.setVisible(true);
             articuloGui.toFront();
         }
         if (ae.getSource() == aplicacionGui.getProveedores()) {
-                controladorProveedor.cargarTodos();
+            controladorProveedor.cargarTodos();
             proveedorGui.setVisible(true);
             proveedorGui.toFront();
         }
         if (ae.getSource() == aplicacionGui.getImportar()) {
-          controladorImportarGui.cargarProveedores();
+            controladorImportarGui.cargarProveedores();
             importarGui.setVisible(true);
             importarGui.toFront();
         }
@@ -243,25 +249,38 @@ public class ControladorApliacion implements ActionListener {
         if (ae.getSource() == aplicacionGui.getConfigServer()) {
             new ConfigurarServerGui(aplicacionGui, true).setVisible(true);
         }
-         if(ae.getSource()==aplicacionGui.getBotArtSinStock()){
+        if (ae.getSource() == aplicacionGui.getBotArtSinStock()) {
             controladorArtSinStock.realizarBusqueda();
             articulosSinStock.setVisible(true);
             articulosSinStock.toFront();
         }
-         if(ae.getSource()==aplicacionGui.getBotCumple()){
-             cumpleGui.cargarCumple();
-             cumpleGui.setVisible(true);
-             cumpleGui.toFront();
-         }
-         if(ae.getSource()==aplicacionGui.getBotAuto()){
-             controladorAuto.cargarTodos();
-             autoGui.setVisible(true);
-             autoGui.toFront();
-         }
-         if(ae.getSource()==aplicacionGui.getBotTrabajos()){
-             trabajoGui.setVisible(true);
-             trabajoGui.toFront();
-         }
+        if (ae.getSource() == aplicacionGui.getBotCumple()) {
+            cumpleGui.cargarCumple();
+            cumpleGui.setVisible(true);
+            cumpleGui.toFront();
+        }
+        if (ae.getSource() == aplicacionGui.getBotAuto()) {
+            controladorAuto.cargarTodos();
+            autoGui.setVisible(true);
+            autoGui.toFront();
+        }
+        if (ae.getSource() == aplicacionGui.getBotTrabajos()) {
+            trabajoGui.setVisible(true);
+            trabajoGui.toFront();
+        }
+        if (ae.getSource() == aplicacionGui.getTocaCambio()) {
+           //FALTA COMPLETAR
+            
+        }
+        if (ae.getSource() == aplicacionGui.getPresupuesto()) {
+            controladorPresupuesto.cargarTodos();
+            presupuestoGui.setVisible(true);
+            presupuestoGui.toFront();
+        }
+        if (ae.getSource() == aplicacionGui.getHistorialPresupuestos()) {
+            presupuestoRealizadosGui.setVisible(true);
+            presupuestoRealizadosGui.toFront();
+        }
     }
 
     private static class SQLFilter extends javax.swing.filechooser.FileFilter {

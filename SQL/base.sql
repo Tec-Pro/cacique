@@ -184,3 +184,20 @@ CREATE  TABLE `cacique`.`trabajos` (
   `cliente_id` INT NULL ,
   `auto_id` INT NULL ,
   PRIMARY KEY (`id`) );
+
+create table cacique.presupuestos (
+    id integer not null auto_increment,
+    monto float,
+    cliente_id integer,
+    fecha date not null,    
+    PRIMARY KEY (`id`) );
+
+create table articulos_presupuestos (
+    id integer not null auto_increment,
+    presupuesto_id integer,
+    articulo_id integer,
+    cantidad float not null,
+	precio_final float,
+	check (cantidad>0),
+	check (precio_final>0),
+    primary key(id) );

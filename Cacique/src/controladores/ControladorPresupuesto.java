@@ -60,8 +60,7 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
         clientelista = new LinkedList<Cliente>();
         busqueda = new Busqueda();
         abmPresupuesto = new ABMPresupuesto();
-        this.PresupuestoGui = presupuestoGui;
-        this.PresupuestoGui.setActionListener(this);
+        this.PresupuestoGui = presupuestoGui;       
         tablap = presupuestoGui.getTablaArticulos();
         tablap.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -105,8 +104,7 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
         prodlista = busqueda.filtroProducto("", "");
         actualizarListaCliente();
         actualizarListaProd();
-//        reporteFactura = new ControladorJReport(("factura.jasper"));
-//        reporteFacturaSinPagar = new ControladorJReport(("facturaSinPago.jasper"));
+         this.PresupuestoGui.setActionListener(this);
 
     }
 

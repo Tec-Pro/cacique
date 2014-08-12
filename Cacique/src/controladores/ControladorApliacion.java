@@ -108,6 +108,11 @@ public class ControladorApliacion implements ActionListener {
         controladorTrabajo = new ControladorTrabajo(trabajoGui);
         importarGui = new ImportarExcelGui();
         controladorImportarGui = new controladorImportarGui(importarGui);
+        presupuestoGui = new PresupuestoGui();
+        controladorPresupuesto = new ControladorPresupuesto(presupuestoGui, aplicacionGui);
+        controladorImportarGui = new controladorImportarGui(importarGui);
+        presupuestoRealizadosGui = new PresupuestoRealizadosGui();
+        controladorPresupuestosRealizados = new ControladorPresupuestosRealizados(aplicacionGui, presupuestoRealizadosGui);
         aplicacionGui.getContenedor().add(proveedorGui);
         aplicacionGui.getContenedor().add(articuloGui);
         aplicacionGui.getContenedor().add(importarGui);
@@ -117,7 +122,9 @@ public class ControladorApliacion implements ActionListener {
         aplicacionGui.getContenedor().add(cumpleGui);
         aplicacionGui.getContenedor().add(trabajoGui);
         aplicacionGui.getContenedor().add(autoGui);
-
+        aplicacionGui.getContenedor().add(presupuestoGui);
+        aplicacionGui.getContenedor().add(articulosSinStock);
+        aplicacionGui.getContenedor().add(presupuestoRealizadosGui);
         aplicacionGui.getContenedor().add(articulosSinStock);
         aplicacionGui.setCursor(Cursor.DEFAULT_CURSOR);
 
@@ -269,11 +276,10 @@ public class ControladorApliacion implements ActionListener {
             trabajoGui.toFront();
         }
         if (ae.getSource() == aplicacionGui.getTocaCambio()) {
-           //FALTA COMPLETAR
-            
+            //FALTA COMPLETAR
         }
         if (ae.getSource() == aplicacionGui.getPresupuesto()) {
-            controladorPresupuesto.cargarTodos();
+           // controladorPresupuesto.cargarTodos();
             presupuestoGui.setVisible(true);
             presupuestoGui.toFront();
         }

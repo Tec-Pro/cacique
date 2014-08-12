@@ -70,14 +70,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         facebook.setEnabled(b);
         dni.setEnabled(b);
         nacimiento.setEnabled(b);
-        direccion.setEnabled(b);
-        if (b) {
-            Calendar miCalendario = Calendar.getInstance();
-            int diaHoy = miCalendario.get(Calendar.DAY_OF_MONTH);
-            int mes = miCalendario.get(Calendar.MONTH);
-            int anio = miCalendario.get(Calendar.YEAR);
-            nacimiento.setDate(Date.valueOf(anio + "-" + (mes + 1) + "-" + diaHoy));
-        }
+        direccion.setEnabled(b);        
     }
 
     public void limpiarCampos() {

@@ -35,19 +35,19 @@ public class ABMTrabajo {
             "fecha", t.getDate("fecha"),
 "kilometraje",t.getString("kilometraje"),
 "observaciones",t.getString("observaciones"),
-"aceite_caja",t.getBoolean("aceite_caja"),
-"aceite_diferencial",t.getBoolean("aceite_diferencial"),
-"filtro_aire",t.getBoolean("filtro_aire"),
-"filtro_combustible",t.getBoolean("filtro_combustible"),
-"filtro_aceite",t.getBoolean("filtro_aceite"),
-"filtro_habitaculo",t.getBoolean("filtro_habitaculo"),
-"liquido_freno",t.getBoolean("liquido_freno"),
-"anticongelante",t.getBoolean("anticongelante"),
-"correa_multicanal",t.getBoolean("correa_multicanal"),
-"tensor_correa_multicanal",t.getBoolean("tensor_correa_multicanal"),
-"correa_distribucion",t.getBoolean("correa_distribucion"),
-"tensores",t.getBoolean("tensores"),
-"bomba_agua",t.getBoolean("bomba_agua"),
+"aceite_caja",t.getString("aceite_caja"),
+"aceite_diferencial",t.getString("aceite_diferencial"),
+"filtro_aire",t.getString("filtro_aire"),
+"filtro_combustible",t.getString("filtro_combustible"),
+"filtro_aceite",t.getString("filtro_aceite"),
+"filtro_habitaculo",t.getString("filtro_habitaculo"),
+"liquido_freno",t.getString("liquido_freno"),
+"anticongelante",t.getString("anticongelante"),
+"correa_multicanal",t.getString("correa_multicanal"),
+"tensor_correa_multicanal",t.getString("tensor_correa_multicanal"),
+"correa_distribucion",t.getString("correa_distribucion"),
+"tensores",t.getString("tensores"),
+"bomba_agua",t.getString("bomba_agua"),
 "bateria",t.getBoolean("bateria"),
 "tipo_bateria",t.getString("tipo_bateria"),
 "importe_bateria",t.getBigDecimal("importe_bateria").toString(),
@@ -55,13 +55,15 @@ public class ABMTrabajo {
 "costo",t.getBigDecimal("costo").toString(),
 "descripcion_adicional",t.getString("descripcion_adicional"),
 "cliente_id",c.getId(),
-"aceite_motor", t.getBoolean("aceite_motor")
+"mecanico",t.getString("mecanico"),
+"aceite_motor", t.getString("aceite_motor")
             );
             a.add(nuevo);
-            nuevo.saveIt();
-            if(t.getBoolean("aceite_motor")){
+            if(t.getString("aceite_motor").equals("cambio")){
                 a.set("ult_cambio_aceite",t.getDate("fecha")).saveIt();
+                nuevo.set("aceite_usa",t.getString("aceite_usa"));
             }
+                        nuevo.saveIt();
             Base.commitTransaction();
             return true;
         } else {
@@ -88,33 +90,39 @@ public class ABMTrabajo {
             "fecha", t.getDate("fecha"),
 "kilometraje",t.getString("kilometraje"),
 "observaciones",t.getString("observaciones"),
-"aceite_caja",t.getBoolean("aceite_caja"),
-"aceite_diferencial",t.getBoolean("aceite_diferencial"),
-"filtro_aire",t.getBoolean("filtro_aire"),
-"filtro_combustible",t.getBoolean("filtro_combustible"),
-"filtro_aceite",t.getBoolean("filtro_aceite"),
-"filtro_habitaculo",t.getBoolean("filtro_habitaculo"),
-"liquido_freno",t.getBoolean("liquido_freno"),
-"anticongelante",t.getBoolean("anticongelante"),
-"correa_multicanal",t.getBoolean("correa_multicanal"),
-"tensor_correa_multicanal",t.getBoolean("tensor_correa_multicanal"),
-"correa_distribucion",t.getBoolean("correa_distribucion"),
-"tensores",t.getBoolean("tensores"),
-"bomba_agua",t.getBoolean("bomba_agua"),
+"aceite_caja",t.getString("aceite_caja"),
+"aceite_diferencial",t.getString("aceite_diferencial"),
+"filtro_aire",t.getString("filtro_aire"),
+"filtro_combustible",t.getString("filtro_combustible"),
+"filtro_aceite",t.getString("filtro_aceite"),
+"filtro_habitaculo",t.getString("filtro_habitaculo"),
+"liquido_freno",t.getString("liquido_freno"),
+"anticongelante",t.getString("anticongelante"),
+"correa_multicanal",t.getString("correa_multicanal"),
+"tensor_correa_multicanal",t.getString("tensor_correa_multicanal"),
+"correa_distribucion",t.getString("correa_distribucion"),
+"tensores",t.getString("tensores"),
+"bomba_agua",t.getString("bomba_agua"),
 "bateria",t.getBoolean("bateria"),
 "tipo_bateria",t.getString("tipo_bateria"),
 "importe_bateria",t.getBigDecimal("importe_bateria").toString(),
 "descripcion_bateria",t.getString("descripcion_bateria"),
 "costo",t.getBigDecimal("costo").toString(),
 "descripcion_adicional",t.getString("descripcion_adicional"),
-"aceite_motor", t.getBoolean("aceite_motor"),
+"aceite_motor", t.getString("aceite_motor"),
+"mecanico",t.getString("mecanico"),
+
 "cliente_id",c.getId()
             );
              a.add(viejo);
-             boolean ret=viejo.saveIt();
-               if(t.getBoolean("aceite_motor")){
+             boolean ret=true;
+               if(t.getString("aceite_motor").equals("cambio")){
                 ret= a.set("ult_cambio_aceite",t.getDate("fecha")).saveIt();
+                                viejo.set("aceite_usa",t.getString("aceite_usa"));
+
             }     
+                             ret=ret&&viejo.saveIt();
+
                     Base.commitTransaction();
             return ret;
         }

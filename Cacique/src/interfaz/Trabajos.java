@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.util.Calendar;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -55,7 +56,7 @@ public class Trabajos extends javax.swing.JInternalFrame {
          fecha.setEnabled(b);
          filtroAceite.setEnabled(b);
          aceiteCaja.setEnabled(b);
-         aceiteDif.setEnabled(b);
+         aceiteDiferencial.setEnabled(b);
          filtroAire.setEnabled(b);
          filtroCombustible.setEnabled(b);
          filtroHabitaculo.setEnabled(b);
@@ -64,13 +65,18 @@ public class Trabajos extends javax.swing.JInternalFrame {
          observGeneral.setEnabled(b);
          observaciones.setEnabled(b);
          precioBateria.setEnabled(b);
-         tensorMulticanal.setEnabled(b);
+         tensorCorreaMulti.setEnabled(b);
          tensores.setEnabled(b);
          tipoBateria.setEnabled(b);
          tablaAutos.setEnabled(b);
          aceiteMotor.setEnabled(b);
-         if(b)
+         mecanico.setEnabled(b);
+         aceiteUsa.setEnabled(b);
+         
+         if(b){
             actualizarBateria();
+            actualizarAceite();
+         }
          
      }
 
@@ -86,6 +92,10 @@ public class Trabajos extends javax.swing.JInternalFrame {
         return autoModel;
     }
 
+    public JTextField getAceiteUsa() {
+        return aceiteUsa;
+    }
+
     public void setClienteModel(Cliente clienteModel) {
         this.clienteModel = clienteModel;
     }
@@ -95,62 +105,67 @@ public class Trabajos extends javax.swing.JInternalFrame {
     }
      
      public void limpiarCampos(){
-               anticongelante.setSelected(false);
-         bombaAgua.setSelected(false);
+               anticongelante.setSelectedItem("nada");
+         bombaAgua.setSelectedItem("nada");
          cambioBateria.setSelected(false);
-         correaDistrib.setSelected(false);
-         correaMulticanal.setSelected(false);
+         correaDistrib.setSelectedItem("nada");
+         correaMulticanal.setSelectedItem("nada");
          costoTotal.setText("");
          descripcionBateria.setText("");
          fecha.setDate(Calendar.getInstance().getTime());
-         filtroAceite.setSelected(false);
-         aceiteCaja.setSelected(false);
-         aceiteDif.setSelected(false);
-         filtroAire.setSelected(false);
-         filtroCombustible.setSelected(false);
-         filtroHabitaculo.setSelected(false);
+         filtroAceite.setSelectedItem("nada");
+         aceiteCaja.setSelectedItem("nada");
+         aceiteDiferencial.setSelectedItem("nada");
+         filtroAire.setSelectedItem("nada");
+         filtroCombustible.setSelectedItem("nada");
+         filtroHabitaculo.setSelectedItem("nada");
          kilometraje.setText("");
-         liquidoFreno.setSelected(false);
+         liquidoFreno.setSelectedItem("nada");
          observGeneral.setText("");
          observaciones.setText("");
          precioBateria.setText("");
-         tensorMulticanal.setSelected(false);
-         tensores.setSelected(false);
+         tensorCorreaMulti.setSelectedItem("nada");
+         tensores.setSelectedItem("nada");
          tipoBateria.setText("");  
          duenio.setText("");
          auto.setText("");
          idTrabajo.setText("");
-         aceiteMotor.setSelected(false);
+         aceiteMotor.setSelectedItem("nada");
+         mecanico.setText("");
+         aceiteUsa.setText("");
      }
 
      
      public void cargarTrabajo(Trabajo t){
-         anticongelante.setSelected(t.getBoolean("anticongelante"));
-         bombaAgua.setSelected(t.getBoolean("bomba_agua"));
+         anticongelante.setSelectedItem(t.getString("anticongelante"));
+         bombaAgua.setSelectedItem(t.getString("bomba_agua"));
          cambioBateria.setSelected(t.getBoolean("bateria"));
-         correaDistrib.setSelected(t.getBoolean("correa_distribucion"));
-         correaMulticanal.setSelected(t.getBoolean("correa_multicanal"));
+         correaDistrib.setSelectedItem(t.getString("correa_distribucion"));
+         correaMulticanal.setSelectedItem(t.getString("correa_multicanal"));
          costoTotal.setText(t.getBigDecimal("costo").toString());
          descripcionBateria.setText(t.getString("descripcion_bateria"));
          fecha.setDate(t.getDate("fecha"));
-         filtroAceite.setSelected(t.getBoolean("filtro_aceite"));
-         aceiteCaja.setSelected(t.getBoolean("aceite_caja"));
-         aceiteDif.setSelected(t.getBoolean("aceite_diferencial"));
-         filtroAire.setSelected(t.getBoolean("filtro_aire"));
-         filtroCombustible.setSelected(t.getBoolean("filtro_combustible"));
-         filtroHabitaculo.setSelected(t.getBoolean("filtro_habitaculo"));
+         filtroAceite.setSelectedItem(t.getString("filtro_aceite"));
+         aceiteCaja.setSelectedItem(t.getString("aceite_caja"));
+         aceiteDiferencial.setSelectedItem(t.getString("aceite_diferencial"));
+         filtroAire.setSelectedItem(t.getString("filtro_aire"));
+         filtroCombustible.setSelectedItem(t.getString("filtro_combustible"));
+         filtroHabitaculo.setSelectedItem(t.getString("filtro_habitaculo"));
          kilometraje.setText(t.getString("kilometraje"));
-         liquidoFreno.setSelected(t.getBoolean("liquido_freno"));
+         liquidoFreno.setSelectedItem(t.getString("liquido_freno"));
          observGeneral.setText(t.getString("descripcion_adicional"));
          observaciones.setText(t.getString("observaciones"));
          precioBateria.setText(t.getBigDecimal("importe_bateria").toString());
-         tensorMulticanal.setSelected(t.getBoolean("tensor_correa_multicanal"));
-         tensores.setSelected(t.getBoolean("tensores"));
+         tensorCorreaMulti.setSelectedItem(t.getString("tensor_correa_multicanal"));
+         tensores.setSelectedItem(t.getString("tensores"));
          tipoBateria.setText(t.getString("tipo_bateria"));
          duenio.setText(t.parent(Cliente.class).getString("nombre"));
-         aceiteMotor.setSelected(t.getBoolean("aceite_motor"));
+         aceiteMotor.setSelectedItem(t.getString("aceite_motor"));
          auto.setText(t.parent(Auto.class).getString("patente"));
+         mecanico.setText(t.getString("mecanico"));
+         aceiteUsa.setText(t.getString("aceite_usa"));
          actualizarBateria();
+         actualizarAceite();
          Object idTrab= t.getId();
          if(idTrab!=null){
              idTrabajo.setText(idTrab.toString());
@@ -168,21 +183,30 @@ public class Trabajos extends javax.swing.JInternalFrame {
        }
        
      }
+     private void actualizarAceite(){
+         if(aceiteMotor.getSelectedIndex()==1){
+             aceiteUsa.setEnabled(true);
+         }else{
+             aceiteUsa.setEnabled(false);
+             aceiteUsa.setText("");
+         
+         }
+     }
     public DefaultTableModel getAutosDefault() {
         return autosDefault;
     }
 
 
 
-    public JCheckBox getAceiteCaja() {
+    public JComboBox getAceiteCaja() {
         return aceiteCaja;
     }
 
-    public JCheckBox getAceiteDif() {
-        return aceiteDif;
+    public JComboBox getAceiteDif() {
+        return aceiteDiferencial;
     }
 
-    public JCheckBox getAnticongelante() {
+    public JComboBox getAnticongelante() {
         return anticongelante;
     }
 
@@ -190,12 +214,16 @@ public class Trabajos extends javax.swing.JInternalFrame {
         return auto;
     }
 
-    public JCheckBox getBombaAgua() {
+    public JComboBox getBombaAgua() {
         return bombaAgua;
     }
 
     public JButton getBorrar() {
         return borrar;
+    }
+
+    public JTextField getMecanico() {
+        return mecanico;
     }
 
     public JButton getBotImprimir() {
@@ -212,11 +240,11 @@ public class Trabajos extends javax.swing.JInternalFrame {
         return cambioBateria;
     }
 
-    public JCheckBox getCorreaDistrib() {
+    public JComboBox getCorreaDistrib() {
         return correaDistrib;
     }
 
-    public JCheckBox getCorreaMulticanal() {
+    public JComboBox getCorreaMulticanal() {
         return correaMulticanal;
     }
 
@@ -236,19 +264,19 @@ public class Trabajos extends javax.swing.JInternalFrame {
         return fecha;
     }
 
-    public JCheckBox getFiltroAceite() {
+    public JComboBox getFiltroAceite() {
         return filtroAceite;
     }
 
-    public JCheckBox getFiltroAire() {
+    public JComboBox getFiltroAire() {
         return filtroAire;
     }
 
-    public JCheckBox getFiltroCombustible() {
+    public JComboBox getFiltroCombustible() {
         return filtroCombustible;
     }
 
-    public JCheckBox getFiltroHabitaculo() {
+    public JComboBox getFiltroHabitaculo() {
         return filtroHabitaculo;
     }
 
@@ -260,7 +288,7 @@ public class Trabajos extends javax.swing.JInternalFrame {
         return kilometraje;
     }
 
-    public JCheckBox getLiquidoFreno() {
+    public JComboBox getLiquidoFreno() {
         return liquidoFreno;
     }
 
@@ -290,11 +318,11 @@ public class Trabajos extends javax.swing.JInternalFrame {
 
  
 
-    public JCheckBox getTensorMulticanal() {
-        return tensorMulticanal;
+    public JComboBox getTensorMulticanal() {
+        return correaMulticanal;
     }
 
-    public JCheckBox getTensores() {
+    public JComboBox getTensores() {
         return tensores;
     }
 
@@ -306,7 +334,7 @@ public class Trabajos extends javax.swing.JInternalFrame {
         return venta;
     }
 
-    public JCheckBox getAceiteMotor() {
+    public JComboBox getAceiteMotor() {
         return aceiteMotor;
     }
     
@@ -345,20 +373,46 @@ public class Trabajos extends javax.swing.JInternalFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         observaciones = new javax.swing.JTextArea();
         jPanel6 = new javax.swing.JPanel();
-        filtroHabitaculo = new javax.swing.JCheckBox();
-        filtroAceite = new javax.swing.JCheckBox();
-        filtroCombustible = new javax.swing.JCheckBox();
-        filtroAire = new javax.swing.JCheckBox();
-        aceiteDif = new javax.swing.JCheckBox();
-        aceiteCaja = new javax.swing.JCheckBox();
-        liquidoFreno = new javax.swing.JCheckBox();
-        anticongelante = new javax.swing.JCheckBox();
-        correaMulticanal = new javax.swing.JCheckBox();
-        tensorMulticanal = new javax.swing.JCheckBox();
-        correaDistrib = new javax.swing.JCheckBox();
-        tensores = new javax.swing.JCheckBox();
-        bombaAgua = new javax.swing.JCheckBox();
-        aceiteMotor = new javax.swing.JCheckBox();
+        jPanel13 = new javax.swing.JPanel();
+        jLabel21 = new javax.swing.JLabel();
+        filtroCombustible = new javax.swing.JComboBox();
+        jPanel14 = new javax.swing.JPanel();
+        jLabel22 = new javax.swing.JLabel();
+        filtroHabitaculo = new javax.swing.JComboBox();
+        jPanel15 = new javax.swing.JPanel();
+        jLabel23 = new javax.swing.JLabel();
+        filtroAceite = new javax.swing.JComboBox();
+        jPanel16 = new javax.swing.JPanel();
+        jLabel24 = new javax.swing.JLabel();
+        filtroAire = new javax.swing.JComboBox();
+        jPanel17 = new javax.swing.JPanel();
+        jLabel25 = new javax.swing.JLabel();
+        aceiteDiferencial = new javax.swing.JComboBox();
+        jPanel18 = new javax.swing.JPanel();
+        jLabel26 = new javax.swing.JLabel();
+        aceiteCaja = new javax.swing.JComboBox();
+        jPanel19 = new javax.swing.JPanel();
+        jLabel27 = new javax.swing.JLabel();
+        liquidoFreno = new javax.swing.JComboBox();
+        jPanel20 = new javax.swing.JPanel();
+        jLabel28 = new javax.swing.JLabel();
+        anticongelante = new javax.swing.JComboBox();
+        jPanel21 = new javax.swing.JPanel();
+        jLabel29 = new javax.swing.JLabel();
+        correaMulticanal = new javax.swing.JComboBox();
+        jPanel22 = new javax.swing.JPanel();
+        jLabel30 = new javax.swing.JLabel();
+        correaDistrib = new javax.swing.JComboBox();
+        jPanel23 = new javax.swing.JPanel();
+        jLabel31 = new javax.swing.JLabel();
+        tensores = new javax.swing.JComboBox();
+        jPanel24 = new javax.swing.JPanel();
+        jLabel32 = new javax.swing.JLabel();
+        bombaAgua = new javax.swing.JComboBox();
+        jPanel25 = new javax.swing.JPanel();
+        jPanel26 = new javax.swing.JPanel();
+        jLabel34 = new javax.swing.JLabel();
+        tensorCorreaMulti = new javax.swing.JComboBox();
         jPanel7 = new javax.swing.JPanel();
         cambioBateria = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
@@ -375,6 +429,11 @@ public class Trabajos extends javax.swing.JInternalFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         idTrabajo = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        mecanico = new javax.swing.JTextField();
+        jLabel35 = new javax.swing.JLabel();
+        aceiteMotor = new javax.swing.JComboBox();
+        aceiteUsa = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         borrar = new javax.swing.JButton();
         nuevo = new javax.swing.JButton();
@@ -388,7 +447,7 @@ public class Trabajos extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setTitle("Trabajos");
-        setPreferredSize(new java.awt.Dimension(940, 573));
+        setPreferredSize(new java.awt.Dimension(1061, 620));
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Autos del cliente", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Schoolbook L", 1, 18))); // NOI18N
 
@@ -424,9 +483,9 @@ public class Trabajos extends javax.swing.JInternalFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(busquedaAuto, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
+                .addComponent(busquedaAuto)
                 .addContainerGap())
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -490,61 +549,187 @@ public class Trabajos extends javax.swing.JInternalFrame {
 
         jPanel6.setLayout(new java.awt.GridLayout(7, 3, 1, 1));
 
-        filtroHabitaculo.setText("Cambio filtro habitáculo");
-        filtroHabitaculo.setEnabled(false);
-        jPanel6.add(filtroHabitaculo);
+        jPanel13.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        filtroAceite.setText("Cambio filtro aceite");
-        filtroAceite.setEnabled(false);
-        jPanel6.add(filtroAceite);
+        jLabel21.setText("Filtro combustible");
+        jPanel13.add(jLabel21);
 
-        filtroCombustible.setText("Cambio filtro combustible");
+        filtroCombustible.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "reviso", "cambio", "nada" }));
+        filtroCombustible.setSelectedIndex(2);
         filtroCombustible.setEnabled(false);
-        jPanel6.add(filtroCombustible);
+        filtroCombustible.setPreferredSize(new java.awt.Dimension(85, 21));
+        jPanel13.add(filtroCombustible);
 
-        filtroAire.setText("Cambio filtro aire");
+        jPanel6.add(jPanel13);
+
+        jPanel14.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel22.setText("Filtro habitáculo");
+        jPanel14.add(jLabel22);
+
+        filtroHabitaculo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "reviso", "cambio", "nada" }));
+        filtroHabitaculo.setSelectedIndex(2);
+        filtroHabitaculo.setEnabled(false);
+        filtroHabitaculo.setPreferredSize(new java.awt.Dimension(85, 21));
+        jPanel14.add(filtroHabitaculo);
+
+        jPanel6.add(jPanel14);
+
+        jPanel15.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel23.setText("Filtro aceite");
+        jPanel15.add(jLabel23);
+
+        filtroAceite.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "reviso", "cambio", "nada" }));
+        filtroAceite.setSelectedIndex(2);
+        filtroAceite.setEnabled(false);
+        filtroAceite.setPreferredSize(new java.awt.Dimension(85, 21));
+        jPanel15.add(filtroAceite);
+
+        jPanel6.add(jPanel15);
+
+        jPanel16.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel24.setText("Filtro aire");
+        jPanel16.add(jLabel24);
+
+        filtroAire.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "reviso", "cambio", "nada" }));
+        filtroAire.setSelectedIndex(2);
         filtroAire.setEnabled(false);
-        jPanel6.add(filtroAire);
+        filtroAire.setPreferredSize(new java.awt.Dimension(85, 21));
+        jPanel16.add(filtroAire);
 
-        aceiteDif.setText("Cambio aceite diferencial");
-        aceiteDif.setEnabled(false);
-        jPanel6.add(aceiteDif);
+        jPanel6.add(jPanel16);
 
-        aceiteCaja.setText("Cambio aceite caja");
+        jPanel17.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel25.setText("Aceite diferencial");
+        jPanel17.add(jLabel25);
+
+        aceiteDiferencial.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "reviso", "cambio", "nada" }));
+        aceiteDiferencial.setSelectedIndex(2);
+        aceiteDiferencial.setEnabled(false);
+        aceiteDiferencial.setPreferredSize(new java.awt.Dimension(85, 21));
+        jPanel17.add(aceiteDiferencial);
+
+        jPanel6.add(jPanel17);
+
+        jPanel18.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel26.setText("Aceite caja");
+        jPanel18.add(jLabel26);
+
+        aceiteCaja.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "reviso", "cambio", "nada" }));
+        aceiteCaja.setSelectedIndex(2);
         aceiteCaja.setEnabled(false);
-        jPanel6.add(aceiteCaja);
+        aceiteCaja.setPreferredSize(new java.awt.Dimension(85, 21));
+        aceiteCaja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aceiteCajaActionPerformed(evt);
+            }
+        });
+        jPanel18.add(aceiteCaja);
 
-        liquidoFreno.setText("Cambio líquido freno");
+        jPanel6.add(jPanel18);
+
+        jPanel19.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel27.setText("Líquido freno");
+        jPanel19.add(jLabel27);
+
+        liquidoFreno.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "reviso", "cambio", "nada" }));
+        liquidoFreno.setSelectedIndex(2);
         liquidoFreno.setEnabled(false);
-        jPanel6.add(liquidoFreno);
+        liquidoFreno.setPreferredSize(new java.awt.Dimension(85, 21));
+        liquidoFreno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                liquidoFrenoActionPerformed(evt);
+            }
+        });
+        jPanel19.add(liquidoFreno);
 
-        anticongelante.setText("Cambio anticongelante");
+        jPanel6.add(jPanel19);
+
+        jPanel20.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel28.setText("Anticongelante");
+        jPanel20.add(jLabel28);
+
+        anticongelante.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "reviso", "cambio", "nada" }));
+        anticongelante.setSelectedIndex(2);
         anticongelante.setEnabled(false);
-        jPanel6.add(anticongelante);
+        anticongelante.setPreferredSize(new java.awt.Dimension(85, 21));
+        jPanel20.add(anticongelante);
 
-        correaMulticanal.setText("Cambio correa multicanal");
+        jPanel6.add(jPanel20);
+
+        jPanel21.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel29.setText("Correa multicanal");
+        jPanel21.add(jLabel29);
+
+        correaMulticanal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "reviso", "cambio", "nada" }));
+        correaMulticanal.setSelectedIndex(2);
         correaMulticanal.setEnabled(false);
-        jPanel6.add(correaMulticanal);
+        correaMulticanal.setPreferredSize(new java.awt.Dimension(85, 21));
+        jPanel21.add(correaMulticanal);
 
-        tensorMulticanal.setText("Tensor correa multicanal");
-        tensorMulticanal.setEnabled(false);
-        jPanel6.add(tensorMulticanal);
+        jPanel6.add(jPanel21);
 
-        correaDistrib.setText("Cambio Correa distrib");
+        jPanel22.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel30.setText("Correa distrib");
+        jPanel22.add(jLabel30);
+
+        correaDistrib.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "reviso", "cambio", "nada" }));
+        correaDistrib.setSelectedIndex(2);
         correaDistrib.setEnabled(false);
-        jPanel6.add(correaDistrib);
+        correaDistrib.setPreferredSize(new java.awt.Dimension(85, 21));
+        jPanel22.add(correaDistrib);
 
-        tensores.setText("Cambio tensores");
+        jPanel6.add(jPanel22);
+
+        jPanel23.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel31.setText("Tensores");
+        jPanel23.add(jLabel31);
+
+        tensores.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "reviso", "cambio", "nada" }));
+        tensores.setSelectedIndex(2);
         tensores.setEnabled(false);
-        jPanel6.add(tensores);
+        tensores.setPreferredSize(new java.awt.Dimension(85, 21));
+        jPanel23.add(tensores);
 
-        bombaAgua.setText("Cambio bomba de agua");
+        jPanel6.add(jPanel23);
+
+        jPanel24.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel32.setText("Bomba de agua");
+        jPanel24.add(jLabel32);
+
+        bombaAgua.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "reviso", "cambio", "nada" }));
+        bombaAgua.setSelectedIndex(2);
         bombaAgua.setEnabled(false);
-        jPanel6.add(bombaAgua);
+        bombaAgua.setPreferredSize(new java.awt.Dimension(85, 21));
+        jPanel24.add(bombaAgua);
 
-        aceiteMotor.setText("Cambio aceite motor");
-        aceiteMotor.setEnabled(false);
-        jPanel6.add(aceiteMotor);
+        jPanel6.add(jPanel24);
+
+        jPanel25.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        jPanel6.add(jPanel25);
+
+        jPanel26.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel34.setText("Tensor correa multic");
+        jPanel26.add(jLabel34);
+
+        tensorCorreaMulti.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "reviso", "cambio", "nada" }));
+        tensorCorreaMulti.setSelectedIndex(2);
+        tensorCorreaMulti.setEnabled(false);
+        tensorCorreaMulti.setPreferredSize(new java.awt.Dimension(85, 21));
+        jPanel26.add(tensorCorreaMulti);
+
+        jPanel6.add(jPanel26);
 
         cambioBateria.setText("Cambio bateria");
         cambioBateria.setEnabled(false);
@@ -632,39 +817,77 @@ public class Trabajos extends javax.swing.JInternalFrame {
 
         jLabel11.setText("ID trabajo");
 
+        jLabel12.setText("Mecánico que lo realizó");
+
+        mecanico.setEnabled(false);
+
+        jLabel35.setText("Aceite motor");
+
+        aceiteMotor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "reviso", "cambio", "nada" }));
+        aceiteMotor.setSelectedIndex(2);
+        aceiteMotor.setEnabled(false);
+        aceiteMotor.setPreferredSize(new java.awt.Dimension(85, 21));
+        aceiteMotor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aceiteMotorActionPerformed(evt);
+            }
+        });
+        aceiteMotor.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                aceiteMotorPropertyChange(evt);
+            }
+        });
+
+        aceiteUsa.setToolTipText("Aceite que usa");
+        aceiteUsa.setEnabled(false);
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel9)
-                .addGap(18, 18, 18)
-                .addComponent(costoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(venta, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(kilometraje, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(3, 3, 3)
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(idTrabajo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel5)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel5Layout.createSequentialGroup()
+                            .addComponent(jLabel35)
+                            .addGap(0, 0, Short.MAX_VALUE)
+                            .addComponent(aceiteMotor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(aceiteUsa, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)))
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
+                        .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(kilometraje, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(3, 3, 3)
-                        .addComponent(jLabel11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(idTrabajo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(mecanico, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jLabel9)
+                        .addGap(18, 18, 18)
+                        .addComponent(costoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(venta, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(79, 79, 79))))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -681,18 +904,27 @@ public class Trabajos extends javax.swing.JInternalFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel5)
-                        .addGap(10, 10, 10)
-                        .addComponent(jScrollPane5))
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel35)
+                            .addComponent(aceiteMotor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(5, 5, 5)
+                        .addComponent(aceiteUsa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 196, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(costoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(venta))
                     .addComponent(jLabel9))
-                .addGap(5, 5, 5))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(mecanico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(13, 13, 13))
         );
 
         jPanel8.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -740,12 +972,13 @@ public class Trabajos extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 593, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, 0))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -792,35 +1025,74 @@ public class Trabajos extends javax.swing.JInternalFrame {
        tipoBateria.setText("");
     }//GEN-LAST:event_cambioBateriaActionPerformed
 
+    private void liquidoFrenoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_liquidoFrenoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_liquidoFrenoActionPerformed
+
+    private void aceiteCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceiteCajaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_aceiteCajaActionPerformed
+
+    private void aceiteMotorPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_aceiteMotorPropertyChange
+
+       
+    }//GEN-LAST:event_aceiteMotorPropertyChange
+
+    private void aceiteMotorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceiteMotorActionPerformed
+       if(aceiteMotor.getSelectedIndex()==1){
+           aceiteUsa.setEnabled(true);
+       }else{
+           aceiteUsa.setText("");
+           aceiteUsa.setEnabled(false);
+
+       }        // TODO add your handling code here:
+    }//GEN-LAST:event_aceiteMotorActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox aceiteCaja;
-    private javax.swing.JCheckBox aceiteDif;
-    private javax.swing.JCheckBox aceiteMotor;
-    private javax.swing.JCheckBox anticongelante;
+    private javax.swing.JComboBox aceiteCaja;
+    private javax.swing.JComboBox aceiteDiferencial;
+    private javax.swing.JComboBox aceiteMotor;
+    private javax.swing.JTextField aceiteUsa;
+    private javax.swing.JComboBox anticongelante;
     private javax.swing.JLabel auto;
-    private javax.swing.JCheckBox bombaAgua;
+    private javax.swing.JComboBox bombaAgua;
     private javax.swing.JButton borrar;
     private javax.swing.JButton botImprimir;
     private javax.swing.JTextField busquedaAuto;
     private javax.swing.JCheckBox cambioBateria;
-    private javax.swing.JCheckBox correaDistrib;
-    private javax.swing.JCheckBox correaMulticanal;
+    private javax.swing.JComboBox correaDistrib;
+    private javax.swing.JComboBox correaMulticanal;
     private javax.swing.JTextField costoTotal;
     private javax.swing.JTextField descripcionBateria;
     private javax.swing.JLabel duenio;
     private com.toedter.calendar.JDateChooser fecha;
-    private javax.swing.JCheckBox filtroAceite;
-    private javax.swing.JCheckBox filtroAire;
-    private javax.swing.JCheckBox filtroCombustible;
-    private javax.swing.JCheckBox filtroHabitaculo;
+    private javax.swing.JComboBox filtroAceite;
+    private javax.swing.JComboBox filtroAire;
+    private javax.swing.JComboBox filtroCombustible;
+    private javax.swing.JComboBox filtroHabitaculo;
     private javax.swing.JButton guardar;
     private javax.swing.JLabel idTrabajo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -828,6 +1100,20 @@ public class Trabajos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
+    private javax.swing.JPanel jPanel19;
+    private javax.swing.JPanel jPanel20;
+    private javax.swing.JPanel jPanel21;
+    private javax.swing.JPanel jPanel22;
+    private javax.swing.JPanel jPanel23;
+    private javax.swing.JPanel jPanel24;
+    private javax.swing.JPanel jPanel25;
+    private javax.swing.JPanel jPanel26;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -839,15 +1125,16 @@ public class Trabajos extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTextField kilometraje;
-    private javax.swing.JCheckBox liquidoFreno;
+    private javax.swing.JComboBox liquidoFreno;
+    private javax.swing.JTextField mecanico;
     private javax.swing.JButton modificar;
     private javax.swing.JButton nuevo;
     private javax.swing.JTextArea observGeneral;
     private javax.swing.JTextArea observaciones;
     private javax.swing.JTextField precioBateria;
     private javax.swing.JTable tablaAutos;
-    private javax.swing.JCheckBox tensorMulticanal;
-    private javax.swing.JCheckBox tensores;
+    private javax.swing.JComboBox tensorCorreaMulti;
+    private javax.swing.JComboBox tensores;
     private javax.swing.JTextField tipoBateria;
     private javax.swing.JButton venta;
     // End of variables declaration//GEN-END:variables

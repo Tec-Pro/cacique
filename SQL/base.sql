@@ -202,3 +202,8 @@ create table articulos_presupuestos (
 	check (precio_final>0),
     primary key(id) );
 ALTER TABLE `cacique`.`trabajos` ADD COLUMN `aceite_motor` INT(11) NULL  AFTER `auto_id` ;
+
+ALTER TABLE `cacique`.`trabajos` CHANGE COLUMN `aceite_caja` `aceite_caja` VARCHAR(6) NULL DEFAULT NULL  , CHANGE COLUMN `aceite_diferencial` `aceite_diferencial` VARCHAR(6) NULL DEFAULT NULL  , CHANGE COLUMN `filtro_aire` `filtro_aire` VARCHAR(6) NULL DEFAULT NULL  , CHANGE COLUMN `filtro_combustible` `filtro_combustible` VARCHAR(6) NULL DEFAULT NULL  , CHANGE COLUMN `filtro_aceite` `filtro_aceite` VARCHAR(6) NULL DEFAULT NULL  , CHANGE COLUMN `filtro_habitaculo` `filtro_habitaculo` VARCHAR(6) NULL DEFAULT NULL  , CHANGE COLUMN `liquido_freno` `liquido_freno` VARCHAR(6) NULL DEFAULT NULL  , CHANGE COLUMN `anticongelante` `anticongelante` VARCHAR(6) NULL DEFAULT NULL  , CHANGE COLUMN `correa_multicanal` `correa_multicanal` VARCHAR(6) NULL DEFAULT NULL  , CHANGE COLUMN `tensor_correa_multicanal` `tensor_correa_multicanal` VARCHAR(6) NULL DEFAULT NULL  , CHANGE COLUMN `correa_distribucion` `correa_distribucion` VARCHAR(6) NULL DEFAULT NULL  , CHANGE COLUMN `tensores` `tensores` VARCHAR(6) NULL DEFAULT NULL  , CHANGE COLUMN `bomba_agua` `bomba_agua` VARCHAR(6) NULL DEFAULT NULL  , CHANGE COLUMN `bateria` `bateria` VARCHAR(6) NULL DEFAULT NULL  , CHANGE COLUMN `aceite_motor` `aceite_motor` VARCHAR(6) NULL DEFAULT NULL  ;
+ALTER TABLE `cacique`.`trabajos` CHANGE COLUMN `bateria` `bateria` INT(11) NULL DEFAULT NULL  ;
+ALTER TABLE `cacique`.`trabajos` ADD COLUMN `mecanico` VARCHAR(45) NULL  AFTER `aceite_motor` ;
+ALTER TABLE `cacique`.`trabajos` ADD COLUMN `aceite_usa` VARCHAR(45) NULL  AFTER `mecanico` ;

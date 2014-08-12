@@ -54,11 +54,12 @@ public class ABMTrabajo {
 "descripcion_bateria",t.getString("descripcion_bateria"),
 "costo",t.getBigDecimal("costo").toString(),
 "descripcion_adicional",t.getString("descripcion_adicional"),
-"cliente_id",c.getId()
+"cliente_id",c.getId(),
+"aceite_motor", t.getBoolean("aceite_motor")
             );
             a.add(nuevo);
             nuevo.saveIt();
-            if(t.getBoolean("aceite_caja")){
+            if(t.getBoolean("aceite_motor")){
                 a.set("ult_cambio_aceite",t.getDate("fecha")).saveIt();
             }
             Base.commitTransaction();
@@ -106,11 +107,12 @@ public class ABMTrabajo {
 "descripcion_bateria",t.getString("descripcion_bateria"),
 "costo",t.getBigDecimal("costo").toString(),
 "descripcion_adicional",t.getString("descripcion_adicional"),
+"aceite_motor", t.getBoolean("aceite_motor"),
 "cliente_id",c.getId()
             );
              a.add(viejo);
              boolean ret=viejo.saveIt();
-               if(t.getBoolean("aceite_caja")){
+               if(t.getBoolean("aceite_motor")){
                 ret= a.set("ult_cambio_aceite",t.getDate("fecha")).saveIt();
             }     
                     Base.commitTransaction();

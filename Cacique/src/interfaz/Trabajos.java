@@ -68,6 +68,7 @@ public class Trabajos extends javax.swing.JInternalFrame {
          tensores.setEnabled(b);
          tipoBateria.setEnabled(b);
          tablaAutos.setEnabled(b);
+         aceiteMotor.setEnabled(b);
          if(b)
             actualizarBateria();
          
@@ -119,6 +120,7 @@ public class Trabajos extends javax.swing.JInternalFrame {
          duenio.setText("");
          auto.setText("");
          idTrabajo.setText("");
+         aceiteMotor.setSelected(false);
      }
 
      
@@ -146,6 +148,7 @@ public class Trabajos extends javax.swing.JInternalFrame {
          tensores.setSelected(t.getBoolean("tensores"));
          tipoBateria.setText(t.getString("tipo_bateria"));
          duenio.setText(t.parent(Cliente.class).getString("nombre"));
+         aceiteMotor.setSelected(t.getBoolean("aceite_motor"));
          auto.setText(t.parent(Auto.class).getString("patente"));
          actualizarBateria();
          Object idTrab= t.getId();
@@ -303,6 +306,12 @@ public class Trabajos extends javax.swing.JInternalFrame {
         return venta;
     }
 
+    public JCheckBox getAceiteMotor() {
+        return aceiteMotor;
+    }
+    
+    
+
      
      
      
@@ -349,6 +358,7 @@ public class Trabajos extends javax.swing.JInternalFrame {
         correaDistrib = new javax.swing.JCheckBox();
         tensores = new javax.swing.JCheckBox();
         bombaAgua = new javax.swing.JCheckBox();
+        aceiteMotor = new javax.swing.JCheckBox();
         jPanel7 = new javax.swing.JPanel();
         cambioBateria = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
@@ -531,6 +541,10 @@ public class Trabajos extends javax.swing.JInternalFrame {
         bombaAgua.setText("Cambio bomba de agua");
         bombaAgua.setEnabled(false);
         jPanel6.add(bombaAgua);
+
+        aceiteMotor.setText("Cambio aceite motor");
+        aceiteMotor.setEnabled(false);
+        jPanel6.add(aceiteMotor);
 
         cambioBateria.setText("Cambio bateria");
         cambioBateria.setEnabled(false);
@@ -782,6 +796,7 @@ public class Trabajos extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox aceiteCaja;
     private javax.swing.JCheckBox aceiteDif;
+    private javax.swing.JCheckBox aceiteMotor;
     private javax.swing.JCheckBox anticongelante;
     private javax.swing.JLabel auto;
     private javax.swing.JCheckBox bombaAgua;

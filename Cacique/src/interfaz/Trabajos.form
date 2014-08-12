@@ -460,6 +460,12 @@
                         <Property name="enabled" type="boolean" value="false"/>
                       </Properties>
                     </Component>
+                    <Component class="javax.swing.JCheckBox" name="aceiteMotor">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Cambio aceite motor"/>
+                        <Property name="enabled" type="boolean" value="false"/>
+                      </Properties>
+                    </Component>
                   </SubComponents>
                 </Container>
                 <Container class="javax.swing.JPanel" name="jPanel7">

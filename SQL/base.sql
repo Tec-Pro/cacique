@@ -201,3 +201,4 @@ create table articulos_presupuestos (
 	check (cantidad>0),
 	check (precio_final>0),
     primary key(id) );
+ALTER TABLE `cacique`.`trabajos` ADD COLUMN `aceite_motor` INT(11) NULL  AFTER `auto_id` ;

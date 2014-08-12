@@ -213,9 +213,11 @@ public class AplicacionGui extends javax.swing.JFrame {
         panelBotones.add(botCumple);
 
         botAuto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/auto.png"))); // NOI18N
+        botAuto.setToolTipText("Gestión de automóviles");
         panelBotones.add(botAuto);
 
         botTrabajos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/rsz_oil-change.png"))); // NOI18N
+        botTrabajos.setToolTipText("Realizar trabajos");
         panelBotones.add(botTrabajos);
 
         tocaCambio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/tocaCambio.png"))); // NOI18N

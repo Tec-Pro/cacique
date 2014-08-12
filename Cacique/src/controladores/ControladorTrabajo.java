@@ -285,7 +285,8 @@ trab.set(
 "importe_bateria",precioBat,
 "descripcion_bateria",trabajoGui.getDescripcionBateria().getText(),
 "costo",costo,
-"descripcion_adicional",trabajoGui.getObservGeneral().getText());
+"descripcion_adicional",trabajoGui.getObservGeneral().getText(),
+"aceite_motor",trabajoGui.getAceiteMotor().isSelected());
          }
          return ret;
      }

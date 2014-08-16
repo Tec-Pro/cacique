@@ -166,7 +166,7 @@ CREATE  TABLE `cacique`.`trabajos` (
   `aceite_diferencial` INT NULL ,
   `filtro_aire` INT NULL ,
   `filtro_combustible` INT NULL ,
-  `fiiltro_aceite` INT NULL ,
+  `filtro_aceite` INT NULL ,
   `filtro_habitaculo` INT NULL ,
   `liquido_freno` INT NULL ,
   `anticongelante` INT NULL ,

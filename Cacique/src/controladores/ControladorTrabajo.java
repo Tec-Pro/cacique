@@ -233,6 +233,7 @@ public class ControladorTrabajo implements ActionListener {
             trabajoGui.getBorrar().setEnabled(false);
             trabajoGui.getGuardar().setEnabled(true);
             trabajoGui.getModificar().setEnabled(false);
+             trabajoGui.getBotImprimir().setEnabled(false);
             
         }
       

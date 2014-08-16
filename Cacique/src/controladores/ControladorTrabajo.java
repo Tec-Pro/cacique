@@ -13,10 +13,13 @@ import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -25,6 +28,7 @@ import modelos.Auto;
 import modelos.Cliente;
 import modelos.Proveedor;
 import modelos.Trabajo;
+import net.sf.jasperreports.engine.JRException;
 import org.javalite.activejdbc.LazyList;
 
 /**
@@ -44,6 +48,7 @@ public class ControladorTrabajo implements ActionListener {
     private JTable tablaAutos;
     private Auto auto;
     private Cliente cliente;
+    private ControladorJReport reporteTrab;
 
     public ControladorTrabajo(Trabajos trabajoGui) {
         this.trabajoGui = trabajoGui;
@@ -58,7 +63,15 @@ public class ControladorTrabajo implements ActionListener {
         abmTrabajo = new ABMTrabajo();
         listAutos=Auto.findAll();
         actualizarLista();
-        // reporteArticulos = new ControladorJReport("listadoArticulos.jasper");
+        try {
+            reporteTrab = new ControladorJReport("trabajo.jasper");
+        } catch (JRException ex) {
+            Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         trabajoGui.getBusquedaAuto().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -143,6 +156,7 @@ public class ControladorTrabajo implements ActionListener {
             trabajoGui.getBorrar().setEnabled(false);
             trabajoGui.getModificar().setEnabled(false);
             trabajoGui.getGuardar().setEnabled(true);
+            trabajoGui.getBotImprimir().setEnabled(false);
         }
       if (e.getSource() == trabajoGui.getGuardar() && editandoInfo && isNuevo) {
             System.out.println("Boton guardar pulsado");
@@ -158,6 +172,16 @@ public class ControladorTrabajo implements ActionListener {
                     JOptionPane.showMessageDialog(trabajoGui, "¡trabjo guardado exitosamente!");
                     trabajoGui.getNuevo().setEnabled(true);
                     trabajoGui.getGuardar().setEnabled(false);
+                    try {
+                        System.out.println(abmTrabajo.getIdTrab());
+                        reporteTrab.mostrarTrabajo(abmTrabajo.getIdTrab());
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (JRException ex) {
+                        Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } else 
                     JOptionPane.showMessageDialog(trabajoGui, "ocurrió un error", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -185,6 +209,7 @@ public class ControladorTrabajo implements ActionListener {
                         trabajoGui.limpiarCampos();
                         trabajoGui.getBorrar().setEnabled(false);
                         trabajoGui.getModificar().setEnabled(false);
+                        trabajoGui.getBotImprimir().setEnabled(false);
                     } else {
                         JOptionPane.showMessageDialog(trabajoGui, "Ocurrió un error, no se borró el trabajo", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
@@ -225,6 +250,16 @@ public class ControladorTrabajo implements ActionListener {
                     JOptionPane.showMessageDialog(trabajoGui, "¡Trabajo modificado exitosamente!");
                     trabajoGui.getNuevo().setEnabled(true);
                     trabajoGui.getGuardar().setEnabled(false);
+                    try {
+                        System.out.println((Integer)abmTrabajo.getIdTrab());
+                        reporteTrab.mostrarTrabajo((Integer)abmTrabajo.getIdTrab());
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (JRException ex) {
+                        Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } else {
                     JOptionPane.showMessageDialog(trabajoGui, "Ocurrió un error,revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -234,6 +269,18 @@ public class ControladorTrabajo implements ActionListener {
                                     JOptionPane.showMessageDialog(trabajoGui, "Seleccione un auto", "Error!", JOptionPane.ERROR_MESSAGE);
 
             }
+      }
+      if(e.getSource()==trabajoGui.getBotImprimir()){
+          try {
+                        System.out.println((Integer)abmTrabajo.getIdTrab());
+                        reporteTrab.mostrarTrabajo(Integer.parseInt(trabajoGui.getIdTrabajo().getText()));
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (JRException ex) {
+                        Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
+                    }
       }
         
     

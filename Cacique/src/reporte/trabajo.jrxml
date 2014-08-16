@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="trabajo" language="groovy" pageWidth="212" pageHeight="283" columnWidth="172" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8d42da38-c7e8-4a79-8601-7751b6dc5b0f">
+	<property name="ireport.zoom" value="1.9487171000000025"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="107"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="logo" class="java.io.InputStream"/>
+	<parameter name="trabajo" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT fecha,observaciones, auto.marca,auto.patente,trab.aceite_usa,trab.kilometraje,trab.filtro_aceite,trab.filtro_aire,trab.filtro_combustible,trab.aceite_caja,trab.aceite_diferencial,trab.anticongelante,trab.filtro_habitaculo,trab.liquido_freno FROM cacique.trabajos as trab, cacique.autos as auto where auto.id=trab.auto_id and trab.id = $P{trabajo};]]>
+	</queryString>
+	<field name="fecha" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="observaciones" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="marca" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="patente" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="aceite_usa" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="kilometraje" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="filtro_aceite" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="filtro_aire" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="filtro_combustible" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="aceite_caja" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="aceite_diferencial" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="anticongelante" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="filtro_habitaculo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="liquido_freno" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="71" splitType="Stretch">
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle">
+				<reportElement x="0" y="0" width="49" height="60" uuid="a7423464-a5b6-4bfa-a00a-322135532ab1"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="70" y="0" width="102" height="20" uuid="b17e3757-b8c5-4ea1-8a24-014b5346369c"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom"/>
+				<text><![CDATA[LUBRICENTRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="49" y="20" width="123" height="20" uuid="ff4a7008-62e9-4cec-8a87-825a89f72d8a"/>
+				<textElement>
+					<font size="13" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[EL CACIQUE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="49" y="40" width="123" height="10" uuid="e2d75a82-b82f-4cab-be8b-1f2e23a1a037"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[venta de aceites-filtros y aditivos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="49" y="50" width="121" height="10" uuid="00367710-1096-480d-b77e-b157b60442ce"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[MANO DE OBRA SIN CARGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="60" width="172" height="10" uuid="ef0fc514-065a-43fd-95b1-c42fe1bb7133"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Blumetti 355-Cinco Saltos R.N Tel./Fax: 0299-498 3444]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="171" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="35" width="99" height="10" uuid="394350d9-e196-4aa3-9eaf-9396fea42d78"/>
+				<textElement>
+					<font fontName="SansSerif" size="7" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[PATENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="14" width="99" height="10" uuid="21170369-6f9e-4eb8-80e3-daf355c0a3d7"/>
+				<textElement>
+					<font fontName="SansSerif" size="7" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[MARCA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="46" width="99" height="10" uuid="1ac0e18f-5859-482a-bb97-4892cffbfdf4"/>
+				<textElement>
+					<font fontName="SansSerif" size="7" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[ACEITE QUE USA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="57" width="99" height="10" uuid="9c179b2c-1234-435d-8795-7c7c1accefbf"/>
+				<textElement>
+					<font size="7" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[KILOMETRAJE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="68" width="99" height="10" uuid="4213d3c2-6c65-4fa7-ac4c-573bcde630c4"/>
+				<textElement>
+					<font size="7" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[FILTRO DE ACEITE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="79" width="99" height="10" uuid="a4d0a0cf-d1cc-4248-b86e-5804ddea6308"/>
+				<textElement>
+					<font size="7" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[FILTRO DE AIRE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="90" width="99" height="10" uuid="e6f953ea-96d6-408c-a1c2-26f73df016a0"/>
+				<textElement>
+					<font size="7" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[FILTRO COMBUST.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="101" width="99" height="10" uuid="b2dff23f-3f48-4ac1-b5f1-c7467cd05222"/>
+				<textElement>
+					<font size="7" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[ACEITE DE CAJA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="112" width="99" height="10" uuid="a59ce1a7-6019-4f07-b773-f70b2fc43b18"/>
+				<textElement>
+					<font size="7" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[ACEITE DIFERENC.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="123" width="99" height="10" uuid="f9c9c73a-9e35-4dd8-9769-2a8a9fd35190"/>
+				<textElement>
+					<font size="7" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[ANTICONGELANTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="134" width="99" height="10" uuid="8296d8b7-01a5-4769-a5f2-31d6ea2c9e38"/>
+				<textElement>
+					<font size="7" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[FILTRO HABITÁC.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="145" width="99" height="10" uuid="27b2c590-6872-4cd6-804f-66501a6b094a"/>
+				<textElement>
+					<font size="7" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[LÍQUIDO DE FRENOS]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="99" y="14" width="71" height="10" uuid="9dbcdf95-32f6-4146-8f89-f7fa88427591"/>
+				<textElement>
+					<font fontName="SansSerif" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{marca}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="99" y="35" width="71" height="10" uuid="b7779530-66a1-4603-9053-03d2056b1f82"/>
+				<textElement>
+					<font fontName="SansSerif" size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{patente}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="99" y="46" width="71" height="10" uuid="e38d1f5e-a09a-4eb1-80ff-899c44e4b090"/>
+				<textElement>
+					<font fontName="SansSerif" size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{aceite_usa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="99" y="57" width="71" height="10" uuid="ffe600c0-c280-4086-ad47-0f2fb63a53e4"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{kilometraje}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement x="99" y="68" width="71" height="10" uuid="f5a27a18-02fa-4474-b42d-4e127b6fad4b"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{filtro_aceite} == "nada" ? "":  $F{filtro_aceite}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="99" y="79" width="71" height="10" uuid="826e8495-ea13-4d04-8dc5-029e77be5207"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{filtro_aire} == "nada" ?  "" : $F{filtro_aire}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="99" y="90" width="71" height="10" uuid="d6ad7058-86c6-48c6-a43b-f07f69750100"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{filtro_combustible} == "nada" ?  "" : $F{filtro_combustible}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="99" y="101" width="71" height="10" uuid="ae09133f-df47-48e7-870d-a59e1f210b91"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{aceite_caja} == "nada" ?  "" : $F{aceite_caja}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="99" y="112" width="71" height="10" uuid="a5dab497-ef5c-42f4-b44c-3be650014bff"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{aceite_diferencial}  == "nada" ?  "" :$F{aceite_diferencial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="99" y="123" width="71" height="10" uuid="2460309e-f4ae-44f8-a799-9f0b66135067"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{anticongelante}  == "nada" ?  "" : $F{anticongelante}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="99" y="145" width="71" height="10" uuid="b4df3db7-67fa-4f86-8e78-0a7a8087d207"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{liquido_freno} == "nada" ?  "" : $F{liquido_freno}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="5" width="99" height="10" uuid="35668f35-3eac-4ad8-9797-f0cf7a41633c"/>
+				<textElement>
+					<font fontName="SansSerif" size="7" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="25" width="99" height="9" uuid="694016ea-90d6-4d5b-8900-2dec593ff9df"/>
+				<textElement>
+					<font fontName="SansSerif" size="7" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[OBSERVACIONES]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="99" y="5" width="71" height="10" uuid="04d8c9be-31f3-459b-a4d3-e3aaca57737b"/>
+				<textElement>
+					<font fontName="SansSerif" size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="99" y="25" width="71" height="9" uuid="e469c466-ac6b-4da5-8a06-70d200fb54cb"/>
+				<textElement>
+					<font fontName="SansSerif" size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{observaciones}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="99" y="134" width="71" height="10" uuid="0ea1c956-9462-4f2e-b7c8-84fdf1e592ef"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{filtro_habitaculo}  == "nada" ?  "" : $F{filtro_habitaculo}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="14" width="172" height="1" forecolor="#BDBDBD" uuid="ed63f46c-dfc1-409c-99ea-4d5b67e1a994"/>
+			</line>
+			<line>
+				<reportElement x="0" y="24" width="172" height="1" forecolor="#BDBDBD" uuid="a3c4c7ee-f7fe-4536-8f51-fde325c87580"/>
+			</line>
+			<line>
+				<reportElement x="0" y="34" width="172" height="1" forecolor="#BDBDBD" uuid="506c59d8-7b2a-4e9f-8f88-63c36bc9d601"/>
+			</line>
+			<line>
+				<reportElement x="0" y="67" width="172" height="1" forecolor="#BDBDBD" uuid="6644c1e6-db68-4283-b7bb-1b082f6ab77b"/>
+			</line>
+			<line>
+				<reportElement x="0" y="56" width="172" height="1" forecolor="#BDBDBD" uuid="852eb512-fb42-417d-96a7-f69ba101fbb9"/>
+			</line>
+			<line>
+				<reportElement x="0" y="45" width="172" height="1" forecolor="#BDBDBD" uuid="80b8e010-b47b-4067-9ced-eecb29850be7"/>
+			</line>
+			<line>
+				<reportElement x="0" y="100" width="172" height="1" forecolor="#BDBDBD" uuid="aa5010d5-8e61-4f38-926e-589d5bfdf1bd"/>
+			</line>
+			<line>
+				<reportElement x="0" y="89" width="172" height="1" forecolor="#BDBDBD" uuid="bd4c71a0-8d43-48fd-87b0-825aa02bf3db"/>
+			</line>
+			<line>
+				<reportElement x="0" y="78" width="172" height="1" forecolor="#BDBDBD" uuid="054655f3-309b-472b-842b-45709a5b5758"/>
+			</line>
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="0" width="172" height="171" uuid="cbdce237-b10e-417d-bdfb-19661d42d3ee"/>
+			</rectangle>
+			<line>
+				<reportElement x="0" y="133" width="172" height="1" forecolor="#BDBDBD" uuid="979c3238-9474-4dc1-8645-bb438a0549ab"/>
+			</line>
+			<line>
+				<reportElement x="0" y="122" width="172" height="1" forecolor="#BDBDBD" uuid="504eb520-446a-440f-bb22-417f5e1f5df2"/>
+			</line>
+			<line>
+				<reportElement x="0" y="111" width="172" height="1" forecolor="#BDBDBD" uuid="fedbaead-7993-4406-9ac0-137765e75525"/>
+			</line>
+			<line>
+				<reportElement x="0" y="154" width="172" height="1" forecolor="#BDBDBD" uuid="cc1a0e47-23e7-4630-8b14-9bf7b6c39d5a"/>
+			</line>
+			<line>
+				<reportElement x="0" y="144" width="172" height="1" forecolor="#BDBDBD" uuid="48585785-5f78-4923-9589-2a30eafb6fd9"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="154" width="99" height="10" uuid="66da1581-dcc4-41f6-aae5-c46ae4e686f1"/>
+				<textElement>
+					<font size="7" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[PRÓX. CAMBIO]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

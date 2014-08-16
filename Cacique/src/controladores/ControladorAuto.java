@@ -138,12 +138,14 @@ public class ControladorAuto  implements ActionListener {
             trabajoGui.setAutoModel(t.parent((Auto.class)));
             trabajoGui.setClienteModel(t.parent(Cliente.class));
             trabajoGui.cargarTrabajo(t);
-
+            
             trabajoGui.bloquearCampos(false);
             
             trabajoGui.getModificar().setEnabled(true);
             trabajoGui.getGuardar().setEnabled(false);
+            trabajoGui.getBotImprimir().setEnabled(true);
                         trabajoGui.setVisible(true);
+                        
             trabajoGui.toFront();
         }
     }

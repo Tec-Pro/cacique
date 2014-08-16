@@ -43,6 +43,7 @@ public class Trabajos extends javax.swing.JInternalFrame {
         this.nuevo.addActionListener(lis);
         this.modificar.addActionListener(lis);
         this.venta.addActionListener(lis);
+        this.botImprimir.addActionListener(lis);
      }
      
      public void bloquearCampos(Boolean b){

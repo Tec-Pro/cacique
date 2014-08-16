@@ -42,13 +42,14 @@ public class ControladorJReport {
        
     }
 
-    public void mostrarFactura(int venta) throws ClassNotFoundException, SQLException, JRException {
+    public void mostrarTrabajo(int trabajo) throws ClassNotFoundException, SQLException, JRException {
         Class.forName("com.mysql.jdbc.Driver");
 
         Connection connection = DriverManager.getConnection("jdbc:mysql://"+ManejoIp.ipServer+"/cacique", "tecpro", "tecpro");
         Map parametros = new HashMap();
         parametros.clear();
-        parametros.put("numFactura", venta);
+        parametros.put("trabajo", trabajo);
+        parametros.put("logo", this.getClass().getResourceAsStream(logo));
         JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, connection);
         JasperViewer.viewReport(jasperPrint, false);
     }

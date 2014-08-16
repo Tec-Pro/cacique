@@ -11,7 +11,6 @@ import modelos.Auto;
 import modelos.Cliente;
 import modelos.Trabajo;
 import org.javalite.activejdbc.Base;
-import org.javalite.activejdbc.LazyList;
 
 
 /**
@@ -19,6 +18,8 @@ import org.javalite.activejdbc.LazyList;
  * @author jacinto
  */
 public class ABMTrabajo {
+    
+    private Integer idTrab;
     
      public Trabajo getTrabajo(Trabajo c) {
         return Trabajo.findById(c.getId());
@@ -63,6 +64,7 @@ public class ABMTrabajo {
                 a.set("ult_cambio_aceite",t.getDate("fecha")).saveIt();
                 nuevo.set("aceite_usa",t.getString("aceite_usa"));
             }
+            idTrab= nuevo.getInteger("id");
                         nuevo.saveIt();
             Base.commitTransaction();
             return true;
@@ -121,12 +123,17 @@ public class ABMTrabajo {
                                 viejo.set("aceite_usa",t.getString("aceite_usa"));
 
             }     
+               idTrab= viejo.getInteger("id");
                              ret=ret&&viejo.saveIt();
 
                     Base.commitTransaction();
             return ret;
         }
         return false;
+    }
+
+    public Integer getIdTrab() {
+        return idTrab;
     }
     
     public static void main(String[] args){

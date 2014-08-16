@@ -132,7 +132,9 @@ public class ConfigurarServerGui extends javax.swing.JDialog {
     }//GEN-LAST:event_isServerActionPerformed
 
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
-
+        if (!Base.hasConnection()) {
+            Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/cacique", "tecpro", "tecpro");
+        }
         boolean res;
         if (isServer.isSelected()) {
             res = manejo.modificarDatos("localhost", true);

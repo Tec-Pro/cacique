@@ -125,7 +125,6 @@ public class ControladorApliacion implements ActionListener {
         aplicacionGui.getContenedor().add(presupuestoGui);
         aplicacionGui.getContenedor().add(articulosSinStock);
         aplicacionGui.getContenedor().add(presupuestoRealizadosGui);
-        aplicacionGui.getContenedor().add(articulosSinStock);
         aplicacionGui.setCursor(Cursor.DEFAULT_CURSOR);
 
     }

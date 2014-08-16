@@ -24,6 +24,7 @@ CREATE  TABLE `cacique`.`proveedors` (
   `telefono` VARCHAR(45) NULL ,
   `celular` VARCHAR(45) NULL ,
   `email` VARCHAR(45) NULL ,
+  `cuenta_corriente` FLOAT NULL DEFAULT 0,
   `forma_de_pago` VARCHAR(45) NULL ,
   PRIMARY KEY (`id`) );
 

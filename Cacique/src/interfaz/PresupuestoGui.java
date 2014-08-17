@@ -55,9 +55,6 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
         this.borrarArticulosSeleccionados.addActionListener(lis);
     }
 
-    public JTextField getBusquedaFram() {
-        return busquedaFram;
-    }
 
     public JTextField getBusquedaNombre() {
         return busquedaNombre;
@@ -68,7 +65,6 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
          tablaFactura.setEnabled(!si);
          tablaClientes.setEnabled(!si);
          busquedaNombre.setEnabled(!si);
-         busquedaFram.setEnabled(!si);
          busquedaCodigoArticulo.setEnabled(!si);
          calendarioFactura.setEnabled(!si);
          borrarArticulosSeleccionados.setEnabled(!si);
@@ -286,9 +282,7 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
         jScrollPane6 = new javax.swing.JScrollPane();
         tablaArticulos = new javax.swing.JTable();
         labelBusquedaCodigo = new javax.swing.JLabel();
-        labelBusquedaNombre = new javax.swing.JLabel();
         busquedaCodigoArticulo = new javax.swing.JTextField();
-        busquedaFram = new javax.swing.JTextField();
         panelClientes = new javax.swing.JPanel();
         busquedaNombre = new javax.swing.JTextField();
         labelApellido = new javax.swing.JLabel();
@@ -362,12 +356,7 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
         labelBusquedaCodigo.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
         labelBusquedaCodigo.setText("Código");
 
-        labelBusquedaNombre.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
-        labelBusquedaNombre.setText("Equivalencia");
-
         busquedaCodigoArticulo.setToolTipText("Filtrar por código");
-
-        busquedaFram.setToolTipText("Filtrar por nombre");
 
         javax.swing.GroupLayout panelArticulosLayout = new javax.swing.GroupLayout(panelArticulos);
         panelArticulos.setLayout(panelArticulosLayout);
@@ -375,13 +364,9 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
             panelArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelArticulosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelBusquedaNombre)
-                    .addComponent(labelBusquedaCodigo))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(busquedaCodigoArticulo, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
-                    .addComponent(busquedaFram)))
+                .addComponent(labelBusquedaCodigo)
+                .addGap(54, 54, 54)
+                .addComponent(busquedaCodigoArticulo, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE))
             .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         panelArticulosLayout.setVerticalGroup(
@@ -391,11 +376,7 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
                     .addComponent(labelBusquedaCodigo)
                     .addComponent(busquedaCodigoArticulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelBusquedaNombre)
-                    .addComponent(busquedaFram, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE))
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE))
         );
 
         panelClientes.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Clientes", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Schoolbook L", 3, 18))); // NOI18N
@@ -448,7 +429,7 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
                     .addComponent(busquedaNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelApellido))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE))
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelClientesAarticulosLayout = new javax.swing.GroupLayout(panelClientesAarticulos);
@@ -628,7 +609,6 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton borrarArticulosSeleccionados;
     private javax.swing.JTextField busquedaCodigoArticulo;
-    private javax.swing.JTextField busquedaFram;
     private javax.swing.JTextField busquedaNombre;
     private com.toedter.calendar.JDateChooser calendarioFactura;
     private javax.swing.JTextField clienteFactura;
@@ -642,7 +622,6 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JLabel labelApellido;
     private javax.swing.JLabel labelBusquedaCodigo;
-    private javax.swing.JLabel labelBusquedaNombre;
     private javax.swing.JLabel labelCliente;
     private javax.swing.JLabel labelTotal;
     private javax.swing.JPanel panelArticulos;

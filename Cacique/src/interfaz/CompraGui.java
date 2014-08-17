@@ -10,9 +10,7 @@ import java.sql.Date;
 import java.util.Calendar;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -225,7 +223,6 @@ public class CompraGui extends javax.swing.JInternalFrame {
          tablaCompra.setEnabled(!si);
          tablaProveedores.setEnabled(!si);
          busquedaNombreProveedor.setEnabled(!si);
-         fram.setEnabled(!si);
          codigo.setEnabled(!si);
          calendarioCompra.setEnabled(!si);
          borrarArticulosSeleccionados.setEnabled(!si);
@@ -259,11 +256,6 @@ public class CompraGui extends javax.swing.JInternalFrame {
         return codigo;
     }
 
-    public JTextField getFram() {
-        return fram;
-    }
-
-
     public JCheckBox getAbonaSi() {
         return abonaSi;
     }
@@ -291,8 +283,6 @@ public class CompraGui extends javax.swing.JInternalFrame {
         tablaArticulos = new javax.swing.JTable();
         labelNombre1 = new javax.swing.JLabel();
         codigo = new javax.swing.JTextField();
-        labelNombre2 = new javax.swing.JLabel();
-        fram = new javax.swing.JTextField();
         panelProveedores = new javax.swing.JPanel();
         busquedaNombreProveedor = new javax.swing.JTextField();
         labelNombre = new javax.swing.JLabel();
@@ -372,24 +362,15 @@ public class CompraGui extends javax.swing.JInternalFrame {
 
         codigo.setToolTipText("Filtrar busqueda por codigo");
 
-        labelNombre2.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
-        labelNombre2.setText("Fram");
-
-        fram.setToolTipText("Filtrar busqueda por equivalencia en fram");
-
         javax.swing.GroupLayout panelArticulosLayout = new javax.swing.GroupLayout(panelArticulos);
         panelArticulos.setLayout(panelArticulosLayout);
         panelArticulosLayout.setHorizontalGroup(
             panelArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addGroup(panelArticulosLayout.createSequentialGroup()
-                .addGroup(panelArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelNombre1)
-                    .addComponent(labelNombre2))
+                .addComponent(labelNombre1)
                 .addGap(17, 17, 17)
-                .addGroup(panelArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fram)
-                    .addComponent(codigo)))
+                .addComponent(codigo, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE))
         );
         panelArticulosLayout.setVerticalGroup(
             panelArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -397,12 +378,8 @@ public class CompraGui extends javax.swing.JInternalFrame {
                 .addGroup(panelArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelNombre1))
-                .addGap(10, 10, 10)
-                .addGroup(panelArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fram, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelNombre2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE))
         );
 
         panelProveedores.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Proveedores", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Schoolbook L", 3, 18))); // NOI18N
@@ -473,7 +450,7 @@ public class CompraGui extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelClientesAarticulosLayout.createSequentialGroup()
                 .addComponent(panelProveedores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
-                .addComponent(panelArticulos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(panelArticulos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         panelCompra.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Compra", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Schoolbook L", 3, 18))); // NOI18N
@@ -488,14 +465,14 @@ public class CompraGui extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "ID", "Cantidad", "Articulo","Descripcion" , "Precio Compra", "Precio Venta", "importe"
+                "ID", "Cantidad", "Articulo","Descripcion" , "Precio", "importe"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.math.BigDecimal.class, java.lang.String.class, java.lang.String.class, java.math.BigDecimal.class, java.math.BigDecimal.class, java.math.BigDecimal.class
+                java.lang.Integer.class, java.math.BigDecimal.class, java.lang.String.class, java.lang.String.class, java.math.BigDecimal.class, java.math.BigDecimal.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, false, false, true, true, true
+                false, true, false, true, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -665,7 +642,6 @@ public class CompraGui extends javax.swing.JInternalFrame {
     private javax.swing.JButton compraNueva;
     private javax.swing.JLabel descuento;
     private javax.swing.JPanel fondoImagen;
-    private javax.swing.JTextField fram;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
@@ -676,7 +652,6 @@ public class CompraGui extends javax.swing.JInternalFrame {
     private javax.swing.JLabel labelCliente;
     private javax.swing.JLabel labelNombre;
     private javax.swing.JLabel labelNombre1;
-    private javax.swing.JLabel labelNombre2;
     private javax.swing.JLabel labelTotal;
     private javax.swing.JLabel labelTotalConDes;
     private javax.swing.JPanel panelArticulos;

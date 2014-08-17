@@ -29,8 +29,6 @@ import modelos.Cliente;
 import modelos.Presupuesto;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.util.Pair;
-import org.javalite.activejdbc.Base;
-
 /**
  *
  * @author jacinto
@@ -83,14 +81,6 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
             }
         });
         tablafac = presupuestoGui.getTablaFactura();
-        textFram = presupuestoGui.getBusquedaFram();
-        textFram.addKeyListener(new java.awt.event.KeyAdapter() {
-            @Override
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                busquedaProductoKeyReleased(evt);
-            }
-        });
-
         textcodprod = presupuestoGui.getBusquedaCodigoArticulo();
         textcodprod.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -133,8 +123,7 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
                     cols[4] = BigDecimal.valueOf(p.getFloat("precio_venta")).setScale(2, RoundingMode.CEILING);
                     cols[5] = p.getBigDecimal("stock_actual");
                     cols[6] = BigDecimal.valueOf(p.getFloat("precio_venta")).setScale(2, RoundingMode.CEILING);
-                    if (Base.hasConnection()) {
-                    }
+                   
                     PresupuestoGui.getTablaFacturaDefault().addRow(cols);
                     setCellEditor();
                     actualizarPrecio();
@@ -217,8 +206,6 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
                 } else {
                     JOptionPane.showMessageDialog(apgui, "Ocurrió un error inesperado, presupuesto no realizada");
                 }
-                if (Base.hasConnection()) {
-                }
             }
         }
     }
@@ -240,8 +227,6 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
             row[1] = a.getString("nombre");
             tablaClientes.addRow(row);
         }
-        if (Base.hasConnection()) {
-        }
     }
 
     private void actualizarListaProd() {
@@ -256,31 +241,7 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
             rowArray[2] = a.getString("marca");
             rowArray[3] = a.getString("descripcion");
             tablaProd.addRow(rowArray);
-        } // VER (EQUIVALENCIAS BUSCADOR)
-        Articulo a = Articulo.findFirst("codigo = ?", textcodprod.getText());
-        if (a != null) {
-            String fram = a.getString("equivalencia_fram");
-            if (!(fram.equals(""))) {
-                prodlista = busqueda.filtroProducto2(fram);
-                it = prodlista.iterator();
-                while (it.hasNext()) {
-                    Articulo b = it.next();
-                    if (!(b.getInteger("id").equals(a.getInteger("id")))) {
-                        String rowArray[] = new String[4];
-                        rowArray[0] = b.getId().toString();
-                        rowArray[1] = b.getString("codigo");
-                        rowArray[2] = b.getString("marca");
-                        rowArray[3] = a.getString("descripcion");
-                        tablaProd.addRow(rowArray);
-                        {
-                        }
-                    }
-                }
-
-            }
-        }
-        if (Base.hasConnection()) {
-        }
+        } // VER (EQUIVALENCIAS BUSCADOR)       
     }
 
     private boolean existeProdFacc(int id) {

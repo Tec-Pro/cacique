@@ -43,7 +43,6 @@ import org.javalite.activejdbc.Base;
  */
 public class ControladorVenta implements ActionListener, CellEditorListener {
 
-
     private JTextField textan;
     private JTextField textFram;
     private JTextField textcodprod;
@@ -91,14 +90,6 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
             }
         });
         tablafac = ventaGui.getTablaFactura();
-        textFram = ventaGui.getBusquedaFram();
-        textFram.addKeyListener(new java.awt.event.KeyAdapter() {
-            @Override
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                busquedaProductoKeyReleased(evt);
-            }
-        });
-
         textcodprod = ventaGui.getBusquedaCodigoArticulo();
         textcodprod.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -126,12 +117,11 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
     }
 
     private void tablaProdMouseClicked(MouseEvent evt) {
-        
+
         BigDecimal porcentaje;
         int[] rows = ventaGui.getTablaArticulos().getSelectedRows();
         if (rows.length > 0) {
             for (int i = 0; i < rows.length; i++) {
-                
                 if (!existeProdFacc(Integer.valueOf((String) tablap.getValueAt(rows[i], 0)))) {
                     Articulo p = Articulo.findFirst("id = ?", (tablap.getValueAt(rows[i], 0)));
                     Object cols[] = new Object[7];
@@ -142,9 +132,7 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
                     cols[4] = BigDecimal.valueOf(p.getFloat("precio_venta")).setScale(2, RoundingMode.CEILING);
                     cols[5] = p.getBigDecimal("stock_actual");
                     cols[6] = BigDecimal.valueOf(p.getFloat("precio_venta")).setScale(2, RoundingMode.CEILING);
-                    if (Base.hasConnection()) {
-                        
-                    }
+
                     ventaGui.getTablaFacturaDefault().addRow(cols);
                     setCellEditor();
                     actualizarPrecio();
@@ -198,7 +186,7 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
                 JOptionPane.showMessageDialog(ventaGui, "Fecha, cliente vacio o no hay productos cargados", "Error!", JOptionPane.ERROR_MESSAGE);
             } else {
                 System.out.println("entre a registrar venta");
-                
+
                 Venta v = new Venta();
                 LinkedList<Pair> parDeProductos = new LinkedList();
                 LinkedList<BigDecimal> preciosFinales = new LinkedList();
@@ -207,7 +195,7 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
                 Integer idCliente = Integer.valueOf(cliente.split(" ")[0]); //saco el id cliente
                 v.set("cliente_id", idCliente);
                 for (int i = 0; i < ventaGui.getTablaFactura().getRowCount(); i++) {
-                    
+
                     Articulo producto = Articulo.findFirst("id = ?", tablafac.getValueAt(i, 0));
                     BigDecimal cantidad = ((BigDecimal) tablafac.getValueAt(i, 1)).setScale(2, RoundingMode.CEILING); //saco la cantidad
                     BigDecimal precioFinal = ((BigDecimal) tablafac.getValueAt(i, 6)).setScale(2, RoundingMode.CEILING);
@@ -226,17 +214,15 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
                 BigDecimal bd = new BigDecimal(ventaGui.getTotalFactura().getText());
                 v.set("monto", bd);
                 if (ventaGui.getAbonaSi().isSelected()) {
-                    
                     Base.openTransaction();
                     Pago pago = Pago.createIt("fecha", laFecha, "monto", bd, "cliente_id", idCliente);
                     Base.commitTransaction();
-                    
                     System.out.println(pago.getId() + " " + laFecha + " " + bd + " " + idCliente);
                     String pagoId = pago.getString("id");//Pago.findFirst("fecha = ? and monto = ? and cliente_id = ?", laFecha, bd, idCliente).getString("id");
                     System.out.println("el pago id es:  " + pagoId);
                     v.set("pago_id", pagoId);
                 }
-                
+
                 if (abmVenta.alta(v)) {
                     JOptionPane.showMessageDialog(apgui, "Venta realizada con exito.");
                     ventaGui.limpiarVentana();
@@ -254,9 +240,6 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
                 } else {
                     JOptionPane.showMessageDialog(apgui, "Ocurrió un error inesperado, venta no realizada");
                 }
-                if (Base.hasConnection()) {
-                    
-                }
             }
         }
     }
@@ -266,8 +249,8 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
         actualizarListaProd();
     }
 
-    private void actualizarListaCliente() {
-        
+    public void actualizarListaCliente() {
+
         tablaClientes.setRowCount(0);
         clientelista = busqueda.filtroCliente(textan.getText(), "");
         Iterator<Cliente> it = clientelista.iterator();
@@ -278,15 +261,12 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
             row[1] = a.getString("nombre");
             tablaClientes.addRow(row);
         }
-        if (Base.hasConnection()) {
-            
-        }
     }
 
     private void actualizarListaProd() {
-        
+
         tablaProd.setRowCount(0);
-        prodlista = Articulo.where("codigo like ? or descripcion like ?", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%");
+        prodlista = Articulo.where("codigo like ? or descripcion like ? or equivalencia_1 like ? or equivalencia_2 like ? or equivalencia_3 like ?", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%");
         Iterator<Articulo> it = prodlista.iterator();
         while (it.hasNext()) {
             Articulo a = it.next();
@@ -297,34 +277,7 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
             rowArray[3] = a.getString("descripcion");
             tablaProd.addRow(rowArray);
         } // VER (EQUIVALENCIAS BUSCADOR)
-        Articulo a = Articulo.findFirst("codigo = ?", textcodprod.getText());
-        if (a != null) {
-            String fram = a.getString("equivalencia_fram");
-            if (!(fram.equals(""))) {
-                prodlista = busqueda.filtroProducto2(fram);
-                it = prodlista.iterator();
-                while (it.hasNext()) {
-                    Articulo b = it.next();
-                    if (!(b.getInteger("id").equals(a.getInteger("id")))) {
-                        String rowArray[] = new String[4];
-                        rowArray[0] = b.getId().toString();
-                        rowArray[1] = b.getString("codigo");
-                        rowArray[2] = b.getString("marca");
-                        rowArray[3] = a.getString("descripcion");
-                        tablaProd.addRow(rowArray);
-                        {
-                        }
-                    }
-                }
-
-            }
-        }
-        if (Base.hasConnection()) {
-            
-        }
     }
-
-
 
     private boolean existeProdFacc(int id) {
         boolean ret = false;
@@ -337,7 +290,7 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
     public void setCellEditor() {
         for (int i = 0; i < tablafac.getRowCount(); i++) {
             tablafac.getCellEditor(i, 1).addCellEditorListener(this);
-            tablafac.getCellEditor(i, 3).addCellEditorListener(this);
+            tablafac.getCellEditor(i, 4).addCellEditorListener(this);
         }
     }
 

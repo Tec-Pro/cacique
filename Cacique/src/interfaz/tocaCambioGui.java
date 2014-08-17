@@ -67,7 +67,7 @@ public class tocaCambioGui extends javax.swing.JInternalFrame {
         Calendar c1 = GregorianCalendar.getInstance();
         c1.add(Calendar.MONTH, -6);
         Date d = c1.getTime();
-        LazyList<Auto> auto = Auto.where("ult_cambio_aceite <= ?", d, false);
+        LazyList<Auto> auto = Auto.where("ult_cambio_aceite <= ?", d);
         Iterator<Auto> it = auto.iterator();
         while (it.hasNext()) {
             Auto au = it.next();

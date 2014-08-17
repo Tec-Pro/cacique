@@ -49,15 +49,14 @@ public class ControladorTrabajo implements ActionListener {
     private Auto auto;
     private Cliente cliente;
     private ControladorJReport reporteTrab;
-private AplicacionGui appGui;
 
-    public ControladorTrabajo(Trabajos trabajoGui, AplicacionGui appGui) {
+    public ControladorTrabajo(Trabajos trabajoGui) {
         this.trabajoGui = trabajoGui;
         this.trabajoGui.setActionListener(this);
         isNuevo = true; //para saber si es nuevo o no
         editandoInfo = false; // se esta editando la info
         trabajo = new Trabajo();
-	this.appGui = appGui;
+
         tablaAutosDefault = trabajoGui.getAutosDefault();
         tablaAutos = trabajoGui.getTablaAutos();
         listAutos = new LinkedList();
@@ -284,25 +283,6 @@ private AplicacionGui appGui;
                         Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
                     }
       }
-if (e.getSource() == trabajoGui.getVenta()) {
-            VentaGui hcg = new VentaGui();
-            hcg.getBusquedaNombre().setText(cliente.getString("nombre"));
-            ControladorVenta hcc;
-            try {
-                hcc = new ControladorVenta(hcg, appGui);
-                hcc.actualizarListaCliente();
-                appGui.getContenedor().add(hcg);
-                hcg.setVisible(true);
-                hcg.toFront();
-            } catch (JRException ex) {
-                Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        }
         
     
     }

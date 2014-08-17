@@ -10,7 +10,6 @@ import busqueda.Busqueda;
 import interfaz.AplicacionGui;
 import interfaz.CompraGui;
 import interfaz.RealizarPagoGui;
-//import interfaz.RealizarPagoGui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -52,7 +51,6 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
     private JTable tablaprov;
     private JTable tablaprod;
     private JTextField textCodProd;
-    private JTextField textFram;
     private JTextField textProvCompra;
     private List prodlista;
     private List provlista;
@@ -98,13 +96,6 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
                 tablafacMouseClicked(evt);
             }
         });
-        textFram = compraGui.getFram();
-        textFram.addKeyListener(new java.awt.event.KeyAdapter() {
-            @Override
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                busquedaProductoKeyReleased(evt);
-            }
-        });
         textCodProd = compraGui.getCodigo();
         textCodProd.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -145,11 +136,9 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
     }
 
     private void tablaProdMouseClicked(MouseEvent evt) {
-
         int[] rows = compraGui.getTablaArticulos().getSelectedRows();
         if (rows.length > 0) {
             for (int i = 0; i < rows.length; i++) {
-
                 if (!existeProdFacc(Integer.valueOf((String) tablaprod.getValueAt(rows[i], 0)))) {
                     Articulo p = Articulo.findFirst("id = ?", (tablaprod.getValueAt(rows[i], 0)));
                     Object cols[] = new Object[7];
@@ -161,8 +150,6 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
                     cols[4] = BigDecimal.valueOf(p.getFloat("precio_compra")).setScale(2, RoundingMode.CEILING);
                     cols[5] = BigDecimal.valueOf(p.getFloat("precio_venta")).setScale(2, RoundingMode.CEILING);
                     cols[6] = BigDecimal.valueOf(p.getFloat("precio_compra")).setScale(2, RoundingMode.CEILING);
-                    if (Base.hasConnection()) {
-                    }
                     compraGui.getTablaCompraDefault().addRow(cols);
                     setCellEditor();
                     actualizarPrecio();
@@ -174,8 +161,32 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
     }
 
     public void cargarTodos() {
-        actualizarListaProd();
-        actualizarListaProveedor();
+        if (!Base.hasConnection()) {
+            Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://" + ManejoIp.ipServer + "/cacique", "tecpro", "tecpro");
+
+        }
+        tablaProveedores.setRowCount(0);
+        provlista = busqueda.filtroProveedor("", "");
+        Iterator<Proveedor> it = provlista.iterator();
+        while (it.hasNext()) {
+            Proveedor a = it.next();
+            String row[] = new String[2];
+            row[0] = a.getId().toString();
+            row[1] = a.getString("nombre");
+            tablaProveedores.addRow(row);
+        }
+        tablaProd.setRowCount(0);
+        prodlista = Articulo.findAll();
+        Iterator<Articulo> it2 = prodlista.iterator();
+        while (it2.hasNext()) {
+            Articulo a = it2.next();
+            String rowArray[] = new String[4];
+            rowArray[0] = a.getId().toString();
+            rowArray[1] = a.getString("codigo");
+            rowArray[2] = a.getString("marca");
+            rowArray[3] = a.getString("descripcion");
+            tablaProd.addRow(rowArray);
+        }
     }
 
     private void provFacMouseClicked(MouseEvent evt) {
@@ -185,7 +196,6 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
     }
 
     public void actualizarListaProveedor() {
-
         tablaProveedores.setRowCount(0);
         provlista = busqueda.filtroProveedor(textnom.getText(), "");
         Iterator<Proveedor> it = provlista.iterator();
@@ -196,14 +206,11 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
             row[1] = a.getString("nombre");
             tablaProveedores.addRow(row);
         }
-        if (Base.hasConnection()) {
-        }
     }
 
     public void actualizarListaProd() {
-
         tablaProd.setRowCount(0);
-        prodlista = Articulo.where("codigo like ? or descripcion like ?", "%" + textCodProd.getText() + "%", "%" + textCodProd.getText() + "%");
+        prodlista = Articulo.where("codigo like ? or descripcion like ? or equivalencia_1 like ? or equivalencia_2 like ? or equivalencia_3 like ?", "%" + textCodProd.getText() + "%", "%" + textCodProd.getText() + "%", "%" + textCodProd.getText() + "%", "%" + textCodProd.getText() + "%", "%" + textCodProd.getText() + "%");
         Iterator<Articulo> it = prodlista.iterator();
         while (it.hasNext()) {
             Articulo a = it.next();
@@ -213,30 +220,6 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
             rowArray[2] = a.getString("marca");
             rowArray[3] = a.getString("descripcion");
             tablaProd.addRow(rowArray);
-        }
-        Articulo a = Articulo.findFirst("codigo = ?", textCodProd.getText());
-        if (a != null) {
-            String fram = a.getString("equivalencia_fram");
-            if (!(fram.equals(""))) {
-                prodlista = busqueda.filtroProducto2(fram);
-                it = prodlista.iterator();
-                while (it.hasNext()) {
-                    Articulo b = it.next();
-                    if (!(b.getInteger("id").equals(a.getInteger("id")))) {
-                        String rowArray[] = new String[4];
-                        rowArray[0] = b.getId().toString();
-                        rowArray[1] = b.getString("codigo");
-                        rowArray[2] = b.getString("marca");
-                        rowArray[3] = b.getString("descripcion");
-                        tablaProd.addRow(rowArray);
-                        {
-                        }
-                    }
-                }
-
-            }
-        }
-        if (Base.hasConnection()) {
         }
     }
 
@@ -274,56 +257,57 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
             if (compraGui.getCalendarioFacturaText().getText().equals("") || compraGui.getTablaCompra().getRowCount() == 0) {
                 JOptionPane.showMessageDialog(compraGui, "Falta la fecha o no hay productos cargados", "Error!", JOptionPane.ERROR_MESSAGE);
             } else {
-                Compra v = new Compra();
-                LinkedList<Pair> parDeProductos = new LinkedList();
-                String laFecha = compraGui.getCalendarioFacturaText().getText(); //saco la fecha
-                String cliente = compraGui.getProveedorCompra().getText();
-                if (!cliente.equals("")) {
-                    Integer idCliente = Integer.valueOf(cliente.split(" ")[0]); //saco el id prov
-                    v.set("proveedor_id", idCliente);
-                }
-                for (int i = 0; i < compraGui.getTablaCompra().getRowCount(); i++) {
-
-                    Articulo producto = Articulo.findFirst("id = ?", tablafac.getValueAt(i, 0));
-                    BigDecimal cantidad = ((BigDecimal) tablafac.getValueAt(i, 1)).setScale(2, RoundingMode.CEILING); //saco la cantidad
-                    BigDecimal precioFinal = ((BigDecimal) tablafac.getValueAt(i, 4)).setScale(2, RoundingMode.CEILING);
-                    producto.set("precio_compra", precioFinal);
-                    producto.saveIt();
-                    Pair par = new Pair(producto, cantidad); //creo el par
-                    parDeProductos.add(par); //meto el par a la lista
-                }
-                v.set("fecha", laFecha);
-                v.setProductos(parDeProductos);
-                if (compraGui.getAbonaSi().isSelected()) {
-                    v.set("pago", true);
+                if (compraGui.getProveedorCompra().getText().equals("")) {
+                    JOptionPane.showMessageDialog(compraGui, "Proveedor no seleccionado", "Error!", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    v.set("pago", false);
-                }
-                BigDecimal bd = new BigDecimal(compraGui.getTotalCompra().getText());
-                v.set("monto", bd);
-
-                if (abmCompra.alta(v)) {
-                    JOptionPane.showMessageDialog(apgui, "Compra realizada con exito.");
-                    compraGui.limpiarVentana();
-                    Proveedor prov = Proveedor.findById(v.get("proveedor_id"));
-                    if (!(prov == null) && (compraGui.getAbonaSi().isSelected())) {
-                        BigDecimal cuentaCorriente = prov.getBigDecimal("cuenta_corriente").subtract(v.getBigDecimal("monto"));
-                        prov.set("cuenta_corriente", cuentaCorriente);
-                        v = Compra.findById(ABMCompra.idCompraAlta);
-                        realizarPagoGui = new RealizarPagoGui(apgui, true, prov, v);
-                        realizarPagoGui.setLocationRelativeTo(compraGui);
-                        realizarPagoGui.setVisible(true);
-                    } else if (!(prov == null)) {
-                        BigDecimal cuentaCorriente = prov.getBigDecimal("cuenta_corriente").subtract(v.getBigDecimal("monto"));
-                        Base.openTransaction();
-                        prov.set("cuenta_corriente", cuentaCorriente);
-                        prov.saveIt();
-                        Base.commitTransaction();
+                    Compra v = new Compra();
+                    LinkedList<Pair> parDeProductos = new LinkedList();
+                    String laFecha = compraGui.getCalendarioFacturaText().getText(); //saco la fecha
+                    String cliente = compraGui.getProveedorCompra().getText();
+                    if (!cliente.equals("")) {
+                        Integer idCliente = Integer.valueOf(cliente.split(" ")[0]); //saco el id prov
+                        v.set("proveedor_id", idCliente);
                     }
-                } else {
-                    JOptionPane.showMessageDialog(apgui, "Ocurrió un error inesperado, compra no realizada");
-                }
-                if (Base.hasConnection()) {
+                    for (int i = 0; i < compraGui.getTablaCompra().getRowCount(); i++) {
+
+                        Articulo producto = Articulo.findFirst("id = ?", tablafac.getValueAt(i, 0));
+                        BigDecimal cantidad = ((BigDecimal) tablafac.getValueAt(i, 1)).setScale(2, RoundingMode.CEILING); //saco la cantidad
+                        BigDecimal precioFinal = ((BigDecimal) tablafac.getValueAt(i, 4)).setScale(2, RoundingMode.CEILING);
+                        producto.set("precio_compra", precioFinal);
+                        producto.saveIt();
+                        Pair par = new Pair(producto, cantidad); //creo el par
+                        parDeProductos.add(par); //meto el par a la lista
+                    }
+                    v.set("fecha", laFecha);
+                    v.setProductos(parDeProductos);
+                    if (compraGui.getAbonaSi().isSelected()) {
+                        v.set("pago", true);
+                    } else {
+                        v.set("pago", false);
+                    }
+                    BigDecimal bd = new BigDecimal(compraGui.getTotalCompra().getText());
+                    v.set("monto", bd);
+                    if (abmCompra.alta(v)) {
+                        JOptionPane.showMessageDialog(apgui, "Compra realizada con exito.");
+                        compraGui.limpiarVentana();
+                        Proveedor prov = Proveedor.findById(v.get("proveedor_id"));
+                        if (!(prov == null) && (compraGui.getAbonaSi().isSelected())) {
+                            BigDecimal cuentaCorriente = prov.getBigDecimal("cuenta_corriente").subtract(v.getBigDecimal("monto"));
+                            prov.set("cuenta_corriente", cuentaCorriente);
+                            v = Compra.findById(ABMCompra.idCompraAlta);
+                            realizarPagoGui = new RealizarPagoGui(apgui, true, prov, v);
+                            realizarPagoGui.setLocationRelativeTo(compraGui);
+                            realizarPagoGui.setVisible(true);
+                        } else if (!(prov == null)) {
+                            BigDecimal cuentaCorriente = prov.getBigDecimal("cuenta_corriente").subtract(v.getBigDecimal("monto"));
+                            Base.openTransaction();
+                            prov.set("cuenta_corriente", cuentaCorriente);
+                            prov.saveIt();
+                            Base.commitTransaction();
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(apgui, "Ocurrió un error inesperado, compra no realizada");
+                    }
                 }
             }
         }
@@ -346,7 +330,8 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
     public void setCellEditor() {
         for (int i = 0; i < tablafac.getRowCount(); i++) {
             tablafac.getCellEditor(i, 1).addCellEditorListener(this);
-            tablafac.getCellEditor(i, 3).addCellEditorListener(this);
+            tablafac.getCellEditor(i, 4).addCellEditorListener(this);
+            tablafac.getCellEditor(i, 5).addCellEditorListener(this);
         }
     }
 

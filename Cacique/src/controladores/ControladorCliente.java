@@ -336,7 +336,7 @@ public class ControladorCliente implements ActionListener {
         if (e.getSource() == clienteGui.getCobrarFactura()) {
             int row = tablaVentas.getSelectedRow();
             if (row > -1) {
-                String p = (String) tablaVentas.getValueAt(row, 0);
+                String p = (String) tablaVentas.getValueAt(row, 4);
                 if (p.equals("Si")) {
                     JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, la venta ya ha sido abonada", "Error!", JOptionPane.ERROR_MESSAGE);
                 } else {
@@ -363,15 +363,14 @@ public class ControladorCliente implements ActionListener {
                         String clienteId = clienteGui.getId().getText();
                         int idCliente2 = Integer.parseInt(clienteId);
                         Calendar c = Calendar.getInstance();
-                        c.setTime(new Date());
-                        String d = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH + 1) + "-" + c.get(Calendar.DATE);
-                        Base.openTransaction();
+                        Date d = c.getTime();
+                      //  Base.openTransaction();
                         Pago pago = Pago.createIt("fecha", d, "monto", monto, "cliente_id", idCliente2);
                         pago.saveIt();
                         String pagoId = pago.getString("id");//Pago.findFirst("fecha = ? and monto = ? and cliente_id = ?", d, monto, idCliente2).getString("id");
                         v.set("pago_id", pagoId);
                         v.saveIt();
-                        Base.commitTransaction();
+                      //  Base.commitTransaction();
                         JOptionPane.showMessageDialog(clienteGui, "¡Cobro registrado exitosamente!");
                         cargarVentas();
                         calcularCtaCte();

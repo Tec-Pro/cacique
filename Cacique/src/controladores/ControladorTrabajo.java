@@ -7,7 +7,9 @@ package controladores;
 
 import abm.ABMArticulo;
 import abm.ABMTrabajo;
+import interfaz.AplicacionGui;
 import interfaz.Trabajos;
+import interfaz.VentaGui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;

@@ -22,6 +22,7 @@ import interfaz.PresupuestoRealizadosGui;
 import interfaz.ProveedorGui;
 import interfaz.Trabajos;
 import interfaz.VentaGui;
+import interfaz.tocaCambioGui;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -73,6 +74,7 @@ public class ControladorApliacion implements ActionListener {
     private ControladorPresupuesto controladorPresupuesto;
     private ControladorPresupuestosRealizados controladorPresupuestosRealizados;
     private PresupuestoRealizadosGui presupuestoRealizadosGui;
+    private tocaCambioGui tocacambioGui;
 
     public ControladorApliacion() throws JRException, ClassNotFoundException, SQLException {
         try {

@@ -24,7 +24,6 @@ import modelos.ArticulosVentas;
 import modelos.Cliente;
 import modelos.Pago;
 import modelos.Venta;
-import org.javalite.activejdbc.Base;
 
 /**
  *
@@ -50,10 +49,6 @@ public class RealizarPagoVentaControlador implements ActionListener {
         CargarDatosCli();
         busqueda = new Busqueda();
         this.cl = cl;
-    }
-
-    RealizarPagoVentaControlador() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private void CargarDatosCli() {
@@ -89,7 +84,7 @@ public class RealizarPagoVentaControlador implements ActionListener {
                 if (queCobrar == -1) {
                     JOptionPane.showMessageDialog(pagoFacturaGui, "Por favor ingrese que cuenta corriente se debe cobrar", "Error!", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    
+
                     String clienteId = cli.getString("id");
                     int idCliente = cli.getInteger("id");
                     BigDecimal entrega = new BigDecimal(pagoFacturaGui.getMonto().getText());
@@ -126,7 +121,7 @@ public class RealizarPagoVentaControlador implements ActionListener {
                             }
                         }
                         if (sePuedePagar) {
-                            
+
                             entrega = entrega.subtract(montoVentaAPagar);
                             ambV.pagar(ventaAPagar, montoVentaAPagar);
                             ventaAPagar.set("pago_id", pagoId);
@@ -140,27 +135,23 @@ public class RealizarPagoVentaControlador implements ActionListener {
                     cli.set("cuenta", entrega);
                     cli.saveIt();
                     JOptionPane.showMessageDialog(apgui, "¡Cobro registrado exitosamente!");
-                    
+
                 }
             }
-        }
-        cl.cargarVentas();
-        cl.calcularCtaCte();
-        cl.calcularCtaCteActual();
-        pagoFacturaGui.dispose();
-        try {
-            this.finalize();
-        } catch (Throwable ex) {
-            Logger.getLogger(RealizarPagoVentaControlador.class.getName()).log(Level.SEVERE, null, ex);
+            cl.cargarVentas();
+            cl.calcularCtaCte();
+            cl.calcularCtaCteActual();
+            pagoFacturaGui.dispose();
+            try {
+                this.finalize();
+            } catch (Throwable ex) {
+                Logger.getLogger(RealizarPagoVentaControlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
-
-
-
-
     public LinkedList<Venta> cargarDeuda(String id) {
-        
+
         Iterator<Venta> itr = busqueda.filtroVenta(id, "0-0-0", "9999-0-0").iterator();
         LinkedList<Venta> retorno = new LinkedList<Venta>();
         while (itr.hasNext()) {
@@ -173,7 +164,7 @@ public class RealizarPagoVentaControlador implements ActionListener {
     }
 
     public BigDecimal montoVentaNoAbonada(String id) {
-        
+
         BigDecimal montox = null;
         BigDecimal cuenta;
         Iterator<ArticulosVentas> itr2 = busqueda.filtroVendidos(id).iterator();

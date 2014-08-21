@@ -9,7 +9,6 @@ import controladores.ControladorAuto;
 import java.awt.event.MouseEvent;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -32,7 +31,7 @@ public class tocaCambioGui extends javax.swing.JInternalFrame {
      */
     public tocaCambioGui(AplicacionGui aplicacionGui) {
         initComponents();
-       this.aplicacionGui = aplicacionGui;
+        this.aplicacionGui = aplicacionGui;
         tocaCambioDefault = (DefaultTableModel) tocaCambio.getModel();
         tocaCambio.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -54,7 +53,7 @@ public class tocaCambioGui extends javax.swing.JInternalFrame {
             AutoGui hcg = new AutoGui();
             hcg.getBusqueda().setText((String) tocaCambio.getValueAt(tocaCambio.getSelectedRow(), 1));
             Trabajos t = new Trabajos();
-            ControladorAuto hcc = new ControladorAuto(hcg,t);
+            ControladorAuto hcc = new ControladorAuto(hcg, t);
             hcc.realizarBusquedaDuenio();
             aplicacionGui.getContenedor().add(hcg);
             hcg.setVisible(true);
@@ -64,20 +63,19 @@ public class tocaCambioGui extends javax.swing.JInternalFrame {
 
     public void cargarCumple() {
         tocaCambioDefault.setRowCount(0);
-        Calendar c1 = GregorianCalendar.getInstance();
-        c1.add(Calendar.MONTH, -6);
-        Date d = c1.getTime();
-        LazyList<Auto> auto = Auto.where("ult_cambio_aceite <= ?", d);
+        Date referenceDate = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(referenceDate);
+        c.add(Calendar.MONTH, -6);
+        LazyList<Auto> auto = Auto.where("ult_cambio_aceite <= ?", c.getTime());
         Iterator<Auto> it = auto.iterator();
         while (it.hasNext()) {
             Auto au = it.next();
-            LazyList<Cliente> clie = au.getAll(Cliente.class);
-            Iterator<Cliente> it2 = clie.iterator();
-            Cliente cli = it2.next();
+            Cliente cli = Cliente.findById(au.get("cliente_id"));
             String cols[] = new String[8];
             cols[0] = au.getString("id");
             cols[1] = au.getString("patente");
-            cols[2] = dateToMySQLDate(au.getDate("ult_cambio_aceite"),true);;
+            cols[2] = dateToMySQLDate(au.getDate("ult_cambio_aceite"), true);;
             cols[3] = cli.getString("nombre");
             cols[4] = cli.getString("telefono");
             cols[5] = cli.getString("celular");

@@ -120,7 +120,7 @@ public class ABMCompra {
             cant = (BigDecimal) par.second();//saco la cantidad del par
             cant = prodViejo.getBigDecimal("stock_actual").add(cant);//asigno a cant el valor nuevo del stock
             resultOp = resultOp && prodViejo.setInteger("stock_actual", cant).saveIt();//actualizo el stock del producto
-            Proveedor.findById(prodViejo.get("proveedor_id")).add(prodViejo);//creo la relacion
+//            Proveedor.findById(prodViejo.get("proveedor_id")).add(prodViejo);//creo la relacion
         }
         return resultOp;
     }
@@ -140,7 +140,7 @@ public class ABMCompra {
             cant = (BigDecimal) par.second();//saco la cantidad del par
             cant = prodViejo.getBigDecimal("stock_actual").add(cant);//devuelvo el stock anterior a la venta del producto
             resultOp = resultOp && prodViejo.setInteger("stock_actual", cant).saveIt();//actualizo el stock del producto
-            Proveedor.findById(prodViejo.get("proveedor_id")).add(prodViejo);//creo la relacion
+           // Proveedor.findById(prodViejo.get("proveedor_id")).add(prodViejo);//creo la relacion
         }
         return resultOp;
     }

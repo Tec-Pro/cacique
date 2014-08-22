@@ -135,11 +135,7 @@ public class ControladorCliente implements ActionListener {
                     Articulo producto = Articulo.findFirst("id = ?", prod.get("articulo_id"));
                     if (producto != null) {
                         BigDecimal precio;
-                        if (factura.getBoolean("pago")) {
-                            precio = prod.getBigDecimal("precio_final").setScale(2, RoundingMode.CEILING);
-                        } else {
-                            precio = producto.getBigDecimal("precio_venta").setScale(2, RoundingMode.CEILING);
-                        }
+                        precio = prod.getBigDecimal("precio_final").setScale(2, RoundingMode.CEILING);
                         BigDecimal cantidad = prod.getBigDecimal("cantidad").setScale(2, RoundingMode.CEILING);
                         Object cols[] = new Object[7];
                         cols[0] = producto.get("id");
@@ -152,12 +148,7 @@ public class ControladorCliente implements ActionListener {
                         ventaGui.getTablaFacturaDefault().addRow(cols);
                     }
                 }
-                if (factura.getBoolean("pago")) {
-                    ventaGui.getTotalFactura().setText(String.valueOf(factura.getFloat("monto")));
-                } else {
-                    actualizarPrecio();
-                }
-
+                ventaGui.getTotalFactura().setText(String.valueOf(factura.getFloat("monto")));
                 System.out.println("sali");
                 ventaGui.paraVerVenta(true);
                 ventaGui.setVisible(true);
@@ -364,13 +355,13 @@ public class ControladorCliente implements ActionListener {
                         int idCliente2 = Integer.parseInt(clienteId);
                         Calendar c = Calendar.getInstance();
                         Date d = c.getTime();
-                      //  Base.openTransaction();
+                        //  Base.openTransaction();
                         Pago pago = Pago.createIt("fecha", d, "monto", monto, "cliente_id", idCliente2);
                         pago.saveIt();
                         String pagoId = pago.getString("id");//Pago.findFirst("fecha = ? and monto = ? and cliente_id = ?", d, monto, idCliente2).getString("id");
                         v.set("pago_id", pagoId);
                         v.saveIt();
-                      //  Base.commitTransaction();
+                        //  Base.commitTransaction();
                         JOptionPane.showMessageDialog(clienteGui, "¡Cobro registrado exitosamente!");
                         cargarVentas();
                         calcularCtaCte();
@@ -407,6 +398,8 @@ public class ControladorCliente implements ActionListener {
         }
     }
 
+    
+       //CODIGO MUERTO?
     public void actualizarPrecio() {
         BigDecimal importe;
         BigDecimal total = new BigDecimal(0);

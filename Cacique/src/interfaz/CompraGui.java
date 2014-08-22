@@ -465,14 +465,14 @@ public class CompraGui extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "ID", "Cantidad", "Articulo","Descripcion" , "Precio", "importe"
+                "ID", "Cantidad", "Articulo","Descripcion" , "Precio Compra","Precio Venta", "importe"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.math.BigDecimal.class, java.lang.String.class, java.lang.String.class, java.math.BigDecimal.class, java.math.BigDecimal.class
+                java.lang.Integer.class, java.math.BigDecimal.class, java.lang.String.class, java.lang.String.class, java.math.BigDecimal.class, java.math.BigDecimal.class, java.math.BigDecimal.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, false,false, true, false
+                false, true, false,false, true, true, false
             };
 
             public Class getColumnClass(int columnIndex) {

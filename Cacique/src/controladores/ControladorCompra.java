@@ -16,9 +16,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -262,6 +264,7 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
                 } else {
                     Compra v = new Compra();
                     LinkedList<Pair> parDeProductos = new LinkedList();
+                    LinkedList<BigDecimal> precioFinales = new LinkedList();
                     String laFecha = compraGui.getCalendarioFacturaText().getText(); //saco la fecha
                     String cliente = compraGui.getProveedorCompra().getText();
                     if (!cliente.equals("")) {
@@ -273,13 +276,18 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
                         Articulo producto = Articulo.findFirst("id = ?", tablafac.getValueAt(i, 0));
                         BigDecimal cantidad = ((BigDecimal) tablafac.getValueAt(i, 1)).setScale(2, RoundingMode.CEILING); //saco la cantidad
                         BigDecimal precioFinal = ((BigDecimal) tablafac.getValueAt(i, 4)).setScale(2, RoundingMode.CEILING);
+                        BigDecimal precioVentaFinal = ((BigDecimal) tablafac.getValueAt(i, 5)).setScale(2, RoundingMode.CEILING);
                         producto.set("precio_compra", precioFinal);
+                        producto.set("precio_venta",precioVentaFinal);
+                        producto.set("fecha_ult_compra", laFecha);
                         producto.saveIt();
+                        precioFinales.add(precioFinal);
                         Pair par = new Pair(producto, cantidad); //creo el par
                         parDeProductos.add(par); //meto el par a la lista
                     }
                     v.set("fecha", laFecha);
                     v.setProductos(parDeProductos);
+                    v.setPreciosFinales(precioFinales);
                     if (compraGui.getAbonaSi().isSelected()) {
                         v.set("pago", true);
                     } else {
@@ -340,10 +348,10 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
         BigDecimal total = new BigDecimal(0);
         for (int i = 0; i < tablafac.getRowCount(); i++) {
             importe = ((BigDecimal) tablafac.getValueAt(i, 1)).multiply((BigDecimal) compraGui.getTablaCompra().getValueAt(i, 4)).setScale(2, RoundingMode.CEILING);
-            tablafac.setValueAt(importe, i, 5);
+            tablafac.setValueAt(importe, i, 6);
         }
         for (int i = 0; i < tablafac.getRowCount(); i++) {
-            total = total.add((BigDecimal) tablafac.getValueAt(i, 5)).setScale(2, RoundingMode.CEILING);;
+            total = total.add((BigDecimal) tablafac.getValueAt(i, 6)).setScale(2, RoundingMode.CEILING);;
         }
         compraGui.getTotalCompra().setText(total.toString());
     }
@@ -353,14 +361,14 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
         actualizarPrecio();
         for (int i = 0; i < tablafac.getRowCount(); i++) {
             Articulo a = Articulo.findById(tablafac.getValueAt(i, 0));
-            if (!(a.getBigDecimal("precio_compra").equals(tablafac.getValueAt(i, 4)))) {
-                a.setBigDecimal("precio_compra", tablafac.getValueAt(i, 4));
-                a.saveIt();
-            }
-            if (!(a.getBigDecimal("precio_venta").equals(tablafac.getValueAt(i, 5)))) {
-                a.setBigDecimal("precio_venta", tablafac.getValueAt(i, 5));
-                a.saveIt();
-            }
+//            if (!(a.getBigDecimal("precio_compra").equals(tablafac.getValueAt(i, 4)))) {
+//                a.setBigDecimal("precio_compra", tablafac.getValueAt(i, 4));
+//                a.saveIt();
+//            }
+//            if (!(a.getBigDecimal("precio_venta").equals(tablafac.getValueAt(i, 5)))) {
+//                a.setBigDecimal("precio_venta", tablafac.getValueAt(i, 5));
+//                a.saveIt();
+//            }
         }
     }
 

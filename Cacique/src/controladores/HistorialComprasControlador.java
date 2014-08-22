@@ -4,26 +4,20 @@
  */
 package controladores;
 
-import abm.ManejoIp;
+
 import busqueda.Busqueda;
 import com.toedter.calendar.JDateChooser;
 import interfaz.AplicacionGui;
 import interfaz.ClienteGui;
 import interfaz.HistorialComprasGui;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import modelos.Articulo;
@@ -31,7 +25,6 @@ import modelos.ArticulosVentas;
 import modelos.Cliente;
 import modelos.Pago;
 import modelos.Venta;
-import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
 
 /**

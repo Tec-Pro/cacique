@@ -255,7 +255,8 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
     public void setCellEditor() {
         for (int i = 0; i < tablafac.getRowCount(); i++) {
             tablafac.getCellEditor(i, 1).addCellEditorListener(this);
-            tablafac.getCellEditor(i, 3).addCellEditorListener(this);
+            tablafac.getCellEditor(i, 4).addCellEditorListener(this);
+            
         }
     }
 

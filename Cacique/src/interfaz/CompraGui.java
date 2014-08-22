@@ -472,7 +472,7 @@ public class CompraGui extends javax.swing.JInternalFrame {
                 java.lang.Integer.class, java.math.BigDecimal.class, java.lang.String.class, java.lang.String.class, java.math.BigDecimal.class, java.math.BigDecimal.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, false, true, false
+                false, true, false,false, true, false
             };
 
             public Class getColumnClass(int columnIndex) {

@@ -38,6 +38,8 @@ public class ControladorLogin extends Thread {
         log.getPass().requestFocus();
         log.getPass().addKeyListener(new KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
+                if(Base.hasConnection())
+                    Base.close();
                 if(!Base.hasConnection()){
              Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://" + ManejoIp.ipServer + "/cacique", "tecpro", "tecpro");
              

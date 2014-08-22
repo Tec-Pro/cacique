@@ -255,13 +255,25 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
         calendarioFactura.setDate(Date.valueOf(anio + "-" + (mes + 1) + "-" + diaHoy));
         clienteFactura.setText("");
         totalFactura.setText("");
+        realizado.setText("");
+        patente.setText("");
 
     }
 
     public JTextField getCalenFacturaText() {
         return ((JTextField) calendarioFactura.getDateEditor().getUiComponent());
     }
+    
+    public JTextField getPatente() {
+        return patente;
+    }
 
+    public JTextField getRealizado() {
+        return realizado;
+    }
+
+    
+    
        
     /**
      * This method is called from within the constructor to initialize the form.
@@ -298,6 +310,10 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         borrarArticulosSeleccionados = new javax.swing.JButton();
         calendarioFactura = new com.toedter.calendar.JDateChooser();
+        realizado = new javax.swing.JTextField();
+        labelTotal3 = new javax.swing.JLabel();
+        patente = new javax.swing.JTextField();
+        labelTotal1 = new javax.swing.JLabel();
         panelControlFactura = new javax.swing.JPanel();
         facturaNueva = new javax.swing.JButton();
         realizarVenta = new javax.swing.JButton();
@@ -366,7 +382,7 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(labelBusquedaCodigo)
                 .addGap(54, 54, 54)
-                .addComponent(busquedaCodigoArticulo, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE))
+                .addComponent(busquedaCodigoArticulo, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE))
             .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         panelArticulosLayout.setVerticalGroup(
@@ -419,7 +435,7 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
             .addGroup(panelClientesLayout.createSequentialGroup()
                 .addComponent(labelApellido)
                 .addGap(17, 17, 17)
-                .addComponent(busquedaNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE))
+                .addComponent(busquedaNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE))
             .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         panelClientesLayout.setVerticalGroup(
@@ -469,7 +485,7 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
                 java.lang.Integer.class, java.math.BigDecimal.class, java.lang.String.class, java.lang.String.class,java.math.BigDecimal.class,java.math.BigDecimal.class, java.math.BigDecimal.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, false, false, true, false, false
+                false, true, false, true, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -496,11 +512,23 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
 
         calendarioFactura.setDateFormatString("yyyy-MM-dd");
 
+        realizado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                realizadoActionPerformed(evt);
+            }
+        });
+
+        labelTotal3.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
+        labelTotal3.setText("Realizado por");
+
+        labelTotal1.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
+        labelTotal1.setText("Patente");
+
         javax.swing.GroupLayout panelFacturaLayout = new javax.swing.GroupLayout(panelFactura);
         panelFactura.setLayout(panelFacturaLayout);
         panelFacturaLayout.setHorizontalGroup(
             panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE)
+            .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
             .addGroup(panelFacturaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelCliente)
@@ -510,12 +538,25 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
                 .addComponent(jLabel3)
                 .addGap(4, 4, 4)
                 .addComponent(calendarioFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFacturaLayout.createSequentialGroup()
-                .addComponent(borrarArticulosSeleccionados)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(labelTotal)
-                .addGap(0, 0, 0)
-                .addComponent(totalFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(panelFacturaLayout.createSequentialGroup()
+                .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelFacturaLayout.createSequentialGroup()
+                        .addComponent(labelTotal3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(realizado, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(labelTotal1))
+                    .addComponent(borrarArticulosSeleccionados))
+                .addGap(18, 18, 18)
+                .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelFacturaLayout.createSequentialGroup()
+                        .addComponent(labelTotal)
+                        .addGap(0, 0, 0)
+                        .addComponent(totalFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(panelFacturaLayout.createSequentialGroup()
+                        .addComponent(patente, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         panelFacturaLayout.setVerticalGroup(
             panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -527,14 +568,20 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
                         .addComponent(jLabel3))
                     .addComponent(calendarioFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(borrarArticulosSeleccionados, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(panelFacturaLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(totalFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelTotal)))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(realizado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(labelTotal3)
+                        .addComponent(labelTotal1))
+                    .addComponent(patente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(borrarArticulosSeleccionados, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(totalFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(labelTotal))))
         );
 
         panelControlFactura.setLayout(new java.awt.GridLayout(1, 0));
@@ -556,8 +603,8 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
                 .addComponent(panelClientesAarticulos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(fondoImagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelFactura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelControlFactura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(panelControlFactura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelFactura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         fondoImagenLayout.setVerticalGroup(
             fondoImagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -606,6 +653,10 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void realizadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_realizadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_realizadoActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton borrarArticulosSeleccionados;
     private javax.swing.JTextField busquedaCodigoArticulo;
@@ -624,12 +675,16 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
     private javax.swing.JLabel labelBusquedaCodigo;
     private javax.swing.JLabel labelCliente;
     private javax.swing.JLabel labelTotal;
+    private javax.swing.JLabel labelTotal1;
+    private javax.swing.JLabel labelTotal3;
     private javax.swing.JPanel panelArticulos;
     private javax.swing.JPanel panelClientes;
     private javax.swing.JPanel panelClientesAarticulos;
     private javax.swing.JPanel panelControlFactura;
     private javax.swing.JPanel panelFactura;
     private org.edisoncor.gui.panel.PanelImage panelTitulo;
+    private javax.swing.JTextField patente;
+    private javax.swing.JTextField realizado;
     private javax.swing.JButton realizarVenta;
     private javax.swing.JTable tablaArticulos;
     private javax.swing.JTable tablaClientes;

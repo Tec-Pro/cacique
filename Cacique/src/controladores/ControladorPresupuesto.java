@@ -199,6 +199,8 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
                 v.setProductos(parDeProductos);
                 BigDecimal bd = new BigDecimal(PresupuestoGui.getTotalFactura().getText());
                 v.set("monto", bd);
+                v.set("realizado",PresupuestoGui.getRealizado().getText());
+                v.set("patente",PresupuestoGui.getPatente().getText() );
                 if (abmPresupuesto.alta(v)) {
                     JOptionPane.showMessageDialog(apgui, "Presupuesto realizada con exito.");
                     PresupuestoGui.limpiarVentana();

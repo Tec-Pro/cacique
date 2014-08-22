@@ -193,6 +193,9 @@ public class ControladorPresupuestosRealizados implements ActionListener {
 
     public void tablaFacturasMouseReleased(java.awt.event.MouseEvent evt) {
         int r = tablaFacturas.getSelectedRow();
+        Presupuesto p = Presupuesto.findById(tablaFacturas.getValueAt(r, 0));
+        presupuestosRealizadosGui.getPatente().setText(p.getString("patente"));
+        presupuestosRealizadosGui.getRealizado().setText(p.getString("realizado"));
         Cliente c = buscar.buscarCliente(tablaFacturas.getValueAt(r, 0));
         presupuestosRealizadosGui.getClienteFactura().setText(tablaFacturas.getValueAt(r, 1).toString());
         presupuestosRealizadosGui.getCalendarioFactura().setDate(Date.valueOf(tablaFacturas.getValueAt(r, 2).toString()));
@@ -205,7 +208,7 @@ public class ControladorPresupuestosRealizados implements ActionListener {
     private void limpiarFactura() {
         factDefault.setRowCount(0);
         presupuestosRealizadosGui.getClienteFactura().setText("");
-        presupuestosRealizadosGui.getCalendarioFactura().setDate(Date.valueOf("0000-1-1"));
+//        presupuestosRealizadosGui.getCalendarioFactura().setDate(Date.valueOf("0000-1-1"));
         presupuestosRealizadosGui.getTotalFactura().setText("");
     }
 

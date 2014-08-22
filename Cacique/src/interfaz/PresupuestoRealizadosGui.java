@@ -61,6 +61,14 @@ public class PresupuestoRealizadosGui extends javax.swing.JInternalFrame {
         return hasta;
     }
 
+    public JTextField getPatente() {
+        return patente;
+    }
+
+    public JTextField getRealizado() {
+        return realizado;
+    }
+
     
     
     /**
@@ -222,6 +230,10 @@ public class PresupuestoRealizadosGui extends javax.swing.JInternalFrame {
         totalFactura = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         calendarioFactura = new com.toedter.calendar.JDateChooser();
+        labelTotal1 = new javax.swing.JLabel();
+        realizado = new javax.swing.JTextField();
+        patente = new javax.swing.JTextField();
+        labelTotal2 = new javax.swing.JLabel();
         panelControlFactura = new javax.swing.JPanel();
         eliminarPresupuesto = new javax.swing.JButton();
 
@@ -381,11 +393,21 @@ public class PresupuestoRealizadosGui extends javax.swing.JInternalFrame {
 
         calendarioFactura.setDateFormatString("yyyy-MM-dd");
 
+        labelTotal1.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
+        labelTotal1.setText("Realizado por");
+
+        realizado.setEditable(false);
+
+        patente.setEditable(false);
+
+        labelTotal2.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
+        labelTotal2.setText("Patente");
+
         javax.swing.GroupLayout panelFacturaLayout = new javax.swing.GroupLayout(panelFactura);
         panelFactura.setLayout(panelFacturaLayout);
         panelFacturaLayout.setHorizontalGroup(
             panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE)
+            .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(panelFacturaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelCliente)
@@ -396,7 +418,14 @@ public class PresupuestoRealizadosGui extends javax.swing.JInternalFrame {
                 .addGap(4, 4, 4)
                 .addComponent(calendarioFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFacturaLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(labelTotal1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(realizado, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelTotal2)
+                .addGap(8, 8, 8)
+                .addComponent(patente, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(labelTotal)
                 .addGap(0, 0, 0)
                 .addComponent(totalFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -415,7 +444,12 @@ public class PresupuestoRealizadosGui extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(totalFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelTotal))
+                    .addComponent(labelTotal)
+                    .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(patente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(labelTotal2)
+                        .addComponent(realizado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(labelTotal1)))
                 .addGap(4, 4, 4))
         );
 
@@ -429,7 +463,7 @@ public class PresupuestoRealizadosGui extends javax.swing.JInternalFrame {
         fondoImagen.setLayout(fondoImagenLayout);
         fondoImagenLayout.setHorizontalGroup(
             fondoImagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 825, Short.MAX_VALUE)
+            .addComponent(panelTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(fondoImagenLayout.createSequentialGroup()
                 .addComponent(panelClientesAarticulos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -501,11 +535,15 @@ public class PresupuestoRealizadosGui extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JLabel labelCliente;
     private javax.swing.JLabel labelTotal;
+    private javax.swing.JLabel labelTotal1;
+    private javax.swing.JLabel labelTotal2;
     private javax.swing.JPanel panelClientesAarticulos;
     private javax.swing.JPanel panelControlFactura;
     private javax.swing.JPanel panelFactura;
     private javax.swing.JPanel panelImage1;
     private org.edisoncor.gui.panel.PanelImage panelTitulo;
+    private javax.swing.JTextField patente;
+    private javax.swing.JTextField realizado;
     private javax.swing.JTable tablaFactura;
     private javax.swing.JTable tablaFacturas;
     private javax.swing.JLabel titulo;

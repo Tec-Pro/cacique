@@ -186,7 +186,6 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
                 JOptionPane.showMessageDialog(ventaGui, "Fecha, cliente vacio o no hay productos cargados", "Error!", JOptionPane.ERROR_MESSAGE);
             } else {
                 System.out.println("entre a registrar venta");
-
                 Venta v = new Venta();
                 LinkedList<Pair> parDeProductos = new LinkedList();
                 LinkedList<BigDecimal> preciosFinales = new LinkedList();
@@ -195,10 +194,9 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
                 Integer idCliente = Integer.valueOf(cliente.split(" ")[0]); //saco el id cliente
                 v.set("cliente_id", idCliente);
                 for (int i = 0; i < ventaGui.getTablaFactura().getRowCount(); i++) {
-
                     Articulo producto = Articulo.findFirst("id = ?", tablafac.getValueAt(i, 0));
                     BigDecimal cantidad = ((BigDecimal) tablafac.getValueAt(i, 1)).setScale(2, RoundingMode.CEILING); //saco la cantidad
-                    BigDecimal precioFinal = ((BigDecimal) tablafac.getValueAt(i, 6)).setScale(2, RoundingMode.CEILING);
+                    BigDecimal precioFinal = ((BigDecimal) tablafac.getValueAt(i, 4)).setScale(2, RoundingMode.CEILING);
                     preciosFinales.add(precioFinal);
                     Pair par = new Pair(producto, cantidad); //creo el par
                     parDeProductos.add(par); //meto el par a la lista

@@ -398,8 +398,6 @@ public class ControladorCliente implements ActionListener {
         }
     }
 
-    
-       //CODIGO MUERTO?
     public void actualizarPrecio() {
         BigDecimal importe;
         BigDecimal total = new BigDecimal(0);

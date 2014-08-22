@@ -35,7 +35,7 @@ public class ABMPresupuesto {
             resultOp = false;
         } else {
             Integer idCliente = (Integer) v.get("cliente_id");
-            Presupuesto presupuesto = Presupuesto.create("monto", v.get("monto"), "cliente_id", idCliente, "fecha", v.get("fecha"));
+            Presupuesto presupuesto = Presupuesto.create("monto", v.get("monto"), "cliente_id", idCliente, "fecha", v.get("fecha"),"patente",v.get("patente"),"realizado",v.get("realizado"));
             resultOp = resultOp && presupuesto.saveIt();//guardo la venta
             int idPresupuesto = presupuesto.getInteger("id");
             ultimoIdPresupuesto = idPresupuesto;

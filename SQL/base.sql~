@@ -24,6 +24,7 @@ CREATE  TABLE `cacique`.`proveedors` (
   `telefono` VARCHAR(45) NULL ,
   `celular` VARCHAR(45) NULL ,
   `email` VARCHAR(45) NULL ,
+  `cuenta_corriente` FLOAT NULL DEFAULT 0,
   `forma_de_pago` VARCHAR(45) NULL ,
   PRIMARY KEY (`id`) );
 
@@ -166,7 +167,7 @@ CREATE  TABLE `cacique`.`trabajos` (
   `aceite_diferencial` INT NULL ,
   `filtro_aire` INT NULL ,
   `filtro_combustible` INT NULL ,
-  `fiiltro_aceite` INT NULL ,
+  `filtro_aceite` INT NULL ,
   `filtro_habitaculo` INT NULL ,
   `liquido_freno` INT NULL ,
   `anticongelante` INT NULL ,

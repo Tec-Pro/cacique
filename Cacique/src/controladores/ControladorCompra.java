@@ -279,7 +279,7 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
                         BigDecimal precioVentaFinal = ((BigDecimal) tablafac.getValueAt(i, 5)).setScale(2, RoundingMode.CEILING);
                         producto.set("precio_compra", precioFinal);
                         producto.set("precio_venta",precioVentaFinal);
-                        producto.set("fecha_ult_compra", laFecha);
+                        producto.set("ultima_compra", laFecha);
                         producto.saveIt();
                         precioFinales.add(precioFinal);
                         Pair par = new Pair(producto, cantidad); //creo el par

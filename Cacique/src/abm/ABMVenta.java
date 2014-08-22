@@ -124,24 +124,14 @@ public class ABMVenta {
         Pair par;
         BigDecimal cant;
         Venta v = Venta.findById(idVenta);
-        if (v.getBoolean("pago")) {
-            Iterator itr2 = preciosFinales.iterator();
-            while (itr.hasNext()) {
-                par = (Pair) itr.next(); //saco el par de la lista
-                BigDecimal precioFinal = (BigDecimal) itr2.next();
-                prod = (Articulo) par.first(); //saco el producto del par
-                cant = ((BigDecimal) par.second()).setScale(2, RoundingMode.CEILING);//saco la cantidad del par
-                ArticulosVentas prodVendido = ArticulosVentas.create("venta_id", idVenta, "articulo_id", prod.get("id"), "cantidad", cant, "precio_final", precioFinal);
-                resultOp = resultOp && prodVendido.saveIt();
-            }
-        } else {
-            while (itr.hasNext()) {
-                par = (Pair) itr.next(); //saco el par de la lista
-                prod = (Articulo) par.first(); //saco el producto del par
-                cant = ((BigDecimal) par.second()).setScale(2, RoundingMode.CEILING);//saco la cantidad del par
-                ArticulosVentas prodVendido = ArticulosVentas.create("venta_id", idVenta, "articulo_id", prod.get("id"), "cantidad", cant);
-                resultOp = resultOp && prodVendido.saveIt();
-            }
+        Iterator itr2 = preciosFinales.iterator();
+        while (itr.hasNext()) {
+            par = (Pair) itr.next(); //saco el par de la lista
+            BigDecimal precioFinal = (BigDecimal) itr2.next();
+            prod = (Articulo) par.first(); //saco el producto del par
+            cant = ((BigDecimal) par.second()).setScale(2, RoundingMode.CEILING);//saco la cantidad del par
+            ArticulosVentas prodVendido = ArticulosVentas.create("venta_id", idVenta, "articulo_id", prod.get("id"), "cantidad", cant, "precio_final", precioFinal);
+            resultOp = resultOp && prodVendido.saveIt();
         }
         return resultOp;
     }
@@ -272,7 +262,7 @@ public class ABMVenta {
             par = null;
             par = (Pair) itr.next(); //saco el par de la lista
             prodViejo = (Articulo) par.first(); //saco el producto del par
-            cant = ( BigDecimal) par.second();//saco la cantidad del par
+            cant = (BigDecimal) par.second();//saco la cantidad del par
             cant = prodViejo.getBigDecimal("stock_actual").add(cant);//devuelvo el stock anterior a la venta del producto
             resultOp = resultOp && prodViejo.setInteger("stock_actual", cant).saveIt();//actualizo el stock del producto
             if (Articulo.findById(prodViejo.get("proveedor_id")) != null) {

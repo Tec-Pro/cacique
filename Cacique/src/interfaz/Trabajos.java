@@ -73,6 +73,7 @@ public class Trabajos extends javax.swing.JInternalFrame {
          aceiteMotor.setEnabled(b);
          mecanico.setEnabled(b);
          aceiteUsa.setEnabled(b);
+         proxCambio.setEnabled(b);
          
          if(b){
             actualizarBateria();
@@ -95,6 +96,9 @@ public class Trabajos extends javax.swing.JInternalFrame {
 
     public JTextField getAceiteUsa() {
         return aceiteUsa;
+    }
+    public JTextField getProxCambio() {
+        return proxCambio;
     }
 
     public void setClienteModel(Cliente clienteModel) {
@@ -134,6 +138,7 @@ public class Trabajos extends javax.swing.JInternalFrame {
          aceiteMotor.setSelectedItem("nada");
          mecanico.setText("");
          aceiteUsa.setText("");
+         proxCambio.setText("");
      }
 
      
@@ -165,6 +170,7 @@ public class Trabajos extends javax.swing.JInternalFrame {
          auto.setText(t.parent(Auto.class).getString("patente"));
          mecanico.setText(t.getString("mecanico"));
          aceiteUsa.setText(t.getString("aceite_usa"));
+         proxCambio.setText(t.getString("proximo_cambio"));
          actualizarBateria();
          actualizarAceite();
          Object idTrab= t.getId();
@@ -435,6 +441,8 @@ public class Trabajos extends javax.swing.JInternalFrame {
         jLabel35 = new javax.swing.JLabel();
         aceiteMotor = new javax.swing.JComboBox();
         aceiteUsa = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        proxCambio = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         borrar = new javax.swing.JButton();
         nuevo = new javax.swing.JButton();
@@ -842,6 +850,10 @@ public class Trabajos extends javax.swing.JInternalFrame {
         aceiteUsa.setToolTipText("Aceite que usa");
         aceiteUsa.setEnabled(false);
 
+        jLabel13.setText("Próx. Cambio");
+
+        proxCambio.setEnabled(false);
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -869,8 +881,7 @@ public class Trabajos extends javax.swing.JInternalFrame {
                             .addComponent(aceiteMotor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(aceiteUsa, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)))
+                        .addComponent(aceiteUsa, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -880,15 +891,18 @@ public class Trabajos extends javax.swing.JInternalFrame {
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(mecanico, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(mecanico, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(proxCambio))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addGap(18, 18, 18)
                         .addComponent(costoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(venta, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(79, 79, 79))))
+                        .addComponent(venta, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(79, 79, 79))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -924,7 +938,9 @@ public class Trabajos extends javax.swing.JInternalFrame {
                 .addGap(6, 6, 6)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(mecanico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(mecanico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13)
+                    .addComponent(proxCambio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(13, 13, 13))
         );
 
@@ -1078,6 +1094,7 @@ public class Trabajos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
@@ -1133,6 +1150,7 @@ public class Trabajos extends javax.swing.JInternalFrame {
     private javax.swing.JTextArea observGeneral;
     private javax.swing.JTextArea observaciones;
     private javax.swing.JTextField precioBateria;
+    private javax.swing.JTextField proxCambio;
     private javax.swing.JTable tablaAutos;
     private javax.swing.JComboBox tensorCorreaMulti;
     private javax.swing.JComboBox tensores;

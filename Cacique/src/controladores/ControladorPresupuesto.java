@@ -18,6 +18,8 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -48,8 +50,7 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
     private DefaultTableModel tablaClientes;
     private DefaultTableModel tablaProd;
     private JTable tablafac;
-//    private ControladorJReport reporteFactura;
-//    private ControladorJReport reporteFacturaSinPagar;
+    private ControladorJReport reporte;
     private AplicacionGui apgui;
 
     public ControladorPresupuesto(PresupuestoGui presupuestoGui, AplicacionGui apgui) throws JRException, ClassNotFoundException, SQLException {
@@ -95,7 +96,7 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
         actualizarListaCliente();
         actualizarListaProd();
          this.PresupuestoGui.setActionListener(this);
-
+         reporte = new ControladorJReport("presupuesto.jasper");
     }
 
     private void busquedaClienteKeyReleased(KeyEvent evt) {
@@ -202,8 +203,17 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
                 v.set("realizado",PresupuestoGui.getRealizado().getText());
                 v.set("patente",PresupuestoGui.getPatente().getText() );
                 if (abmPresupuesto.alta(v)) {
-                    JOptionPane.showMessageDialog(apgui, "Presupuesto realizada con exito.");
-                    PresupuestoGui.limpiarVentana();
+                    try {
+                        JOptionPane.showMessageDialog(apgui, "Presupuesto realizada con exito.");
+                        PresupuestoGui.limpiarVentana();
+                        reporte.mostrarPresupuesto(abmPresupuesto.getUltimoIdPresupuesto());
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(ControladorPresupuesto.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ControladorPresupuesto.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (JRException ex) {
+                        Logger.getLogger(ControladorPresupuesto.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
                 } else {
                     JOptionPane.showMessageDialog(apgui, "Ocurrió un error inesperado, presupuesto no realizada");

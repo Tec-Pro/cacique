@@ -209,3 +209,4 @@ ALTER TABLE `cacique`.`trabajos` CHANGE COLUMN `bateria` `bateria` INT(11) NULL 
 ALTER TABLE `cacique`.`trabajos` ADD COLUMN `mecanico` VARCHAR(45) NULL  AFTER `aceite_motor` ;
 ALTER TABLE `cacique`.`trabajos` ADD COLUMN `aceite_usa` VARCHAR(45) NULL  AFTER `mecanico` ;
 ALTER TABLE `cacique`.`presupuestos` ADD COLUMN `patente` VARCHAR(45) NULL  AFTER `fecha` , ADD COLUMN `realizado` VARCHAR(70) NULL  AFTER `patente` ;
+ALTER TABLE `cacique`.`trabajos` ADD COLUMN `proximo_cambio` VARCHAR(45) NULL  AFTER `forma_de_pago` ;

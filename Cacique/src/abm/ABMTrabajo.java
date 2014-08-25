@@ -57,6 +57,7 @@ public class ABMTrabajo {
 "descripcion_adicional",t.getString("descripcion_adicional"),
 "cliente_id",c.getId(),
 "mecanico",t.getString("mecanico"),
+"proximo_cambio",t.getString("proximo_cambio"),
 "aceite_motor", t.getString("aceite_motor")
             );
             a.add(nuevo);
@@ -113,6 +114,7 @@ public class ABMTrabajo {
 "descripcion_adicional",t.getString("descripcion_adicional"),
 "aceite_motor", t.getString("aceite_motor"),
 "mecanico",t.getString("mecanico"),
+"proximo_cambio",t.getString("proximo_cambio"),
 
 "cliente_id",c.getId()
             );

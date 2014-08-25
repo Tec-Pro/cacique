@@ -42,7 +42,7 @@ private DefaultTableModel tablaComprasDefault;
     /**
      * Creates new form ComprasRealizadas
      */
-    public ComprasRealizadas(java.awt.Frame parent, boolean modal,Proveedor proveedor) {
+    public ComprasRealizadas(java.awt.Frame parent, boolean modal,Proveedor proveedor,CompraGui compraGui) {
         
         super(parent, modal);
         initComponents();
@@ -52,7 +52,7 @@ private DefaultTableModel tablaComprasDefault;
         tablaComprasDefault=(DefaultTableModel) tablaCompras.getModel();
                 this.compraGui = compraGui;
                         listCompras = new LinkedList();
-
+                        cargarCompras();
 
         tablaCompras.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -114,13 +114,14 @@ private DefaultTableModel tablaComprasDefault;
                     String codigo = art.getString("codigo");
                     BigDecimal precio = prodCom.getBigDecimal("precio_final").setScale(2, RoundingMode.CEILING);
                     BigDecimal cantidad = prodCom.getBigDecimal("cantidad").setScale(2, RoundingMode.CEILING);
-                    Object cols[] = new Object[6];
+                    Object cols[] = new Object[7];
                     cols[0] = numeroProducto;
                     cols[1] = cantidad;
                     cols[2] = codigo;
                     cols[3]=    art.getString("descripcion");
                     cols[4] = precio;
-                    cols[5] = (precio.multiply(cantidad)).setScale(2, RoundingMode.CEILING);
+                    
+                    cols[6] = (precio.multiply(cantidad)).setScale(2, RoundingMode.CEILING);
                     compraGui.getTablaCompraDefault().addRow(cols);
                 }
             }
@@ -128,7 +129,7 @@ private DefaultTableModel tablaComprasDefault;
             compraGui.getDescuento().setVisible(true);
             compraGui.getLabelTotalConDes().setVisible(true);
             compraGui.getDescuento().setText(compra.getBigDecimal("monto").subtract(compra.getBigDecimal("descuento").multiply(compra.getBigDecimal("monto").divide(new BigDecimal(100)))).setScale(2, RoundingMode.CEILING)+" ("+compra.getString("descuento")+" %)");
-            
+            this.dispose();
             compraGui.setVisible(true);
             compraGui.toFront();
         }

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="92df01c3-9629-4fbb-9de6-591a7498e160">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="56"/>
+	<parameter name="numFactura" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select
+v.id as numVenta,v.fecha,
+c.id as id_clien ,c.nombre,c.telefono,c.celular,
+pv.cantidad,p.id, p.codigo,p.marca, p.descripcion
+from
+ventas v
+inner join clientes c on v.cliente_id=c.id
+inner join articulos_ventas pv on v.id=pv.venta_id
+inner join articulos p on pv.articulo_id=p.id
+where v.id=$P{numFactura};]]>
+	</queryString>
+	<field name="numVenta" class="java.lang.Integer"/>
+	<field name="fecha" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_clien" class="java.lang.Integer"/>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="telefono" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="celular" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cantidad" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codigo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="marca" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="137" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="0" y="0" width="555" height="44" backcolor="#00FF99" uuid="d3955eba-8aa6-4165-b205-410ba0276a62"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="12" width="555" height="32" uuid="8f3ef5be-87a0-485e-a42c-e403fc66ff4e"/>
+				<textElement textAlignment="Center">
+					<font size="17" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRESUPUESTO]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="9" y="56" width="259" height="53" backcolor="#CCCCCC" uuid="a7f7f78b-7db1-4acf-b126-fa7f900dbb78"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="4" y="55" width="538" height="54" uuid="f0cfc84f-0c48-4cac-ba40-ac90d91ed4ac"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="8" y="53" width="534" height="20" uuid="d5e090c3-6b60-43c0-95d0-ae45207679fb"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sapo Lubricentro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="73" width="533" height="14" uuid="1bb461bb-8182-4d37-91ba-9ac2f4341cb4"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rio Cuarto - Argentina]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="87" width="533" height="15" uuid="37be0eb0-e872-4bcc-b7a5-4013eb25bce9"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dirección: Av A Sabattini 2217]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="4" y="113" width="538" height="20" uuid="23132924-da32-421b-be14-7fdfad1b21bf"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="8" y="116" width="113" height="15" uuid="a3a2ac2a-9d27-45e2-9eea-49181ee1e5cd"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de emisión:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="121" y="116" width="147" height="15" uuid="62049bb9-458d-483f-bc43-d27e17e8d17f"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="43" splitType="Stretch">
+			<staticText>
+				<reportElement x="15" y="8" width="57" height="15" uuid="c2ae4dc8-011d-4a9b-bb77-e984250a4e77"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Señor(es):]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="72" y="8" width="240" height="15" uuid="af29f5e4-a3c7-42ff-8776-f6a2347043bc"/>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="15" y="23" width="67" height="15" uuid="3a6a357a-dbbe-41e5-9d84-208b4890596a"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Telefono fijo]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="82" y="23" width="230" height="15" uuid="309b3ed0-5fde-4a08-874c-6ff652bb4f14"/>
+				<textFieldExpression><![CDATA[$F{telefono}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="0" y="1" width="555" height="23" backcolor="#CCCCCC" uuid="0ff1eef1-7ec0-45c9-a3a4-92ef21ecc553"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="9" y="5" width="86" height="14" uuid="12804b07-10bf-4abb-b338-0be64ccb63fe"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" isUnderline="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Detalle]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="464" y="5" width="78" height="14" uuid="44a52339-b85c-4a46-81ba-4324baa0b6d0"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="5" width="382" height="14" uuid="58fbed02-3bab-4355-ba63-af58dd519c65"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" isUnderline="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="29" splitType="Stretch">
+			<textField>
+				<reportElement x="4" y="6" width="91" height="14" uuid="57622d8b-0e6f-4e8d-83fe-17e36f065b4f"/>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="464" y="6" width="90" height="14" uuid="6767d604-e4ca-4d55-864e-5083346eddce"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="-6" width="1" height="35" uuid="df1dac5a-c5a4-4583-b3cb-40000a0b0650"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="554" y="-6" width="1" height="35" uuid="05ad7f0f-b770-4889-9d2d-1b4101e9ca18"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="95" y="0" width="369" height="26" uuid="2b01a2ad-76dc-4de8-9ad7-8bbb2654892b"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="28" width="555" height="1" uuid="803ba590-3c83-43f2-84d1-fd423ae97e0c"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="4" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="5" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="55" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="1" y="6" width="554" height="40" backcolor="#CCCCFF" uuid="db62f59e-d016-46d0-a5ab-91145714cf36"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+		</band>
+	</summary>
+</jasperReport>

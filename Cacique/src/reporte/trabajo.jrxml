@@ -10,12 +10,15 @@
 	<parameter name="logo" class="java.io.InputStream"/>
 	<parameter name="trabajo" class="java.lang.Integer"/>
 	<queryString>
-		<![CDATA[SELECT fecha,observaciones, auto.marca,auto.patente,trab.aceite_usa,trab.kilometraje,trab.filtro_aceite,trab.filtro_aire,trab.filtro_combustible,trab.aceite_caja,trab.aceite_diferencial,trab.anticongelante,trab.filtro_habitaculo,trab.liquido_freno FROM cacique.trabajos as trab, cacique.autos as auto where auto.id=trab.auto_id and trab.id = $P{trabajo};]]>
+		<![CDATA[SELECT fecha,observaciones,proximo_cambio, auto.marca,auto.patente,trab.aceite_usa,trab.kilometraje,trab.filtro_aceite,trab.filtro_aire,trab.filtro_combustible,trab.aceite_caja,trab.aceite_diferencial,trab.anticongelante,trab.filtro_habitaculo,trab.liquido_freno FROM cacique.trabajos as trab, cacique.autos as auto where auto.id=trab.auto_id and trab.id = $P{trabajo};]]>
 	</queryString>
 	<field name="fecha" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="observaciones" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="proximo_cambio" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="marca" class="java.lang.String">
@@ -94,7 +97,7 @@
 				<textElement>
 					<font size="6"/>
 				</textElement>
-				<text><![CDATA[Blumetti 355-Cinco Saltos R.N Tel./Fax: 0299-498 3444]]></text>
+				<text><![CDATA[Blumetti 375-Cinco Saltos R.N Tel./Fax: 0299-498 3444]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -122,7 +125,7 @@
 				<textElement>
 					<font fontName="SansSerif" size="7" isBold="true" isItalic="true"/>
 				</textElement>
-				<text><![CDATA[ACEITE QUE USA]]></text>
+				<text><![CDATA[ACEITE UTILIZADO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="57" width="99" height="10" uuid="9c179b2c-1234-435d-8795-7c7c1accefbf"/>
@@ -351,6 +354,13 @@
 				</textElement>
 				<text><![CDATA[PRÓX. CAMBIO]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="101" y="154" width="71" height="10" uuid="9e9fd6d8-7d95-4413-a524-e70cacc934bb"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proximo_cambio} ]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<summary>

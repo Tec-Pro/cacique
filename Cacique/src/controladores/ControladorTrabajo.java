@@ -358,6 +358,7 @@ trab.set(
 "descripcion_adicional",trabajoGui.getObservGeneral().getText(),
 "aceite_motor",trabajoGui.getAceiteMotor().getSelectedItem(),
 "mecanico",trabajoGui.getMecanico().getText(),
+"proximo_cambio",trabajoGui.getProxCambio().getText(),
 "aceite_usa",trabajoGui.getAceiteUsa().getText());
          }
          return ret;

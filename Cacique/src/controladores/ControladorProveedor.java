@@ -59,7 +59,7 @@ public class ControladorProveedor implements ActionListener {
     private RealizarPagoGui realizarPagoGui;
     private AplicacionGui aplicacionGui;
     private ArticuloGui articuloGui;
-    
+    private CompraGui compraGui;
     private ControladorJReport reporteProveedor;
     
 
@@ -68,6 +68,7 @@ public class ControladorProveedor implements ActionListener {
         isNuevo = true;
         editandoInfo = false;
         this.proveedorGui = proveedorGui;
+        this.compraGui= compraGui;
         this.proveedorGui.setActionListener(this);
         tablaProvDefault = proveedorGui.getProveedores();
         tablaPagosDefault = proveedorGui.getPagosDefault();
@@ -320,7 +321,7 @@ public class ControladorProveedor implements ActionListener {
             }
         }
         if(e.getSource()==proveedorGui.getComprasRealizadas()){
-            ComprasRealizadas comprasRealizadas= new ComprasRealizadas(aplicacionGui, true, proveedor);
+            ComprasRealizadas comprasRealizadas= new ComprasRealizadas(aplicacionGui, true, proveedor,compraGui);
             comprasRealizadas.setVisible(true);
             proveedor= abmProveedor.getProveedor(proveedor);
             proveedorGui.CargarCampos(proveedor);

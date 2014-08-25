@@ -241,9 +241,6 @@ public class ABMVenta {
             cant = (BigDecimal) par.second();//saco la cantidad del par
             cant = prodViejo.getBigDecimal("stock_actual").subtract(cant);//asigno a cant el valor nuevo del stock
             resultOp = resultOp && prodViejo.setBigDecimal("stock_actual", cant).saveIt();//actualizo el stock del producto
-            if (Articulo.findById(prodViejo.get("proveedor_id")) != null) {
-                Articulo.findById(prodViejo.get("proveedor_id")).add(prodViejo);//creo la relacion
-            }
         }
         return resultOp;
     }
@@ -265,9 +262,6 @@ public class ABMVenta {
             cant = (BigDecimal) par.second();//saco la cantidad del par
             cant = prodViejo.getBigDecimal("stock_actual").add(cant);//devuelvo el stock anterior a la venta del producto
             resultOp = resultOp && prodViejo.setInteger("stock_actual", cant).saveIt();//actualizo el stock del producto
-            if (Articulo.findById(prodViejo.get("proveedor_id")) != null) {
-                Articulo.findById(prodViejo.get("proveedor_id")).add(prodViejo);//creo la relacion
-            }
         }
         return resultOp;
     }

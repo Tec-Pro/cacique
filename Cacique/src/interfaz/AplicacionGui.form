@@ -253,6 +253,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/interfaz/Icons/tocaCambio.png"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Autos con m&#xe1;s de 6 meses sin cambio de aceite"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="presupuesto">
@@ -260,6 +261,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/interfaz/Icons/presupuesto.png"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Realizar presupuesto"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="historialPresupuestos">
@@ -267,6 +269,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/interfaz/Icons/historialPresupuestos.png"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Presupuestos realizados"/>
           </Properties>
         </Component>
       </SubComponents>

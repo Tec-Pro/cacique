@@ -25,6 +25,7 @@ public class ControladorJReport {
 
     private JasperReport reporte;
     private final String logo = "/reporte/logo.png";
+     private final String logoPres = "/reporte/logo1.png";
 
     public ControladorJReport(String jasper) throws JRException, ClassNotFoundException, SQLException {
         reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reporte/" + jasper));//cargo el reporte
@@ -62,6 +63,9 @@ public class ControladorJReport {
         parametros.clear();
         System.out.println(presu);
         parametros.put("numFactura", presu);
+         parametros.put("logo", this.getClass().getResourceAsStream(logoPres));
+                  
+
         JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, connection);
         JasperViewer.viewReport(jasperPrint, false);
         connection.close();

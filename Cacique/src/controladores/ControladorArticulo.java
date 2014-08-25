@@ -224,7 +224,11 @@ public class ControladorArticulo implements ActionListener, FocusListener {
             articuloGui.getGuardar().setEnabled(true);
             articuloGui.getModificar().setEnabled(false);
             cargarProveedores();
-            articuloGui.getProveedores().setSelectedItem(articulo.getNombreProv());
+            Proveedor prov=articulo.parent(Proveedor.class);
+            String nombreProv= "";
+            if (prov!=null)
+                nombreProv=prov.getString("nombre");
+            articuloGui.getProveedores().setSelectedItem(nombreProv);
         }
 
         if (e.getSource() == articuloGui.getGuardar() && editandoInfo && !isNuevo) {
@@ -318,10 +322,7 @@ public class ControladorArticulo implements ActionListener, FocusListener {
         try {
             Float stock= Float.valueOf(articuloGui.getStock().getText());
             art.set("stock_actual", articuloGui.getStock().getText());
-            if(stock<0){
-                            JOptionPane.showMessageDialog(articuloGui, "Stock negativo", "Error!", JOptionPane.ERROR_MESSAGE);
-            ret = false;
-            }
+
                  } catch (NumberFormatException | ClassCastException e) {
             ret = false;
             JOptionPane.showMessageDialog(articuloGui, "Error en el stock", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -330,10 +331,7 @@ public class ControladorArticulo implements ActionListener, FocusListener {
         try {
             Float stock= Float.valueOf(articuloGui.getStockMinimo().getText());
             art.set("stock_minimo", articuloGui.getStockMinimo().getText());
-            if(stock<0){
-                            JOptionPane.showMessageDialog(articuloGui, "Stock minimo negativo", "Error!", JOptionPane.ERROR_MESSAGE);
-            ret = false;
-            }
+
                  } catch (NumberFormatException | ClassCastException e) {
             ret = false;
             JOptionPane.showMessageDialog(articuloGui, "Error en el stock minimo", "Error!", JOptionPane.ERROR_MESSAGE);

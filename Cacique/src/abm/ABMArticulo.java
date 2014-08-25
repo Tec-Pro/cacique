@@ -93,6 +93,9 @@ public class ABMArticulo {
             if (p != null) {
                 p.add(art);
             }
+            else
+                ret=ret&&viejo.set("proveedor_id", null).saveIt();
+          
 
             Base.commitTransaction();
         }

@@ -221,12 +221,15 @@ public class AplicacionGui extends javax.swing.JFrame {
         panelBotones.add(botTrabajos);
 
         tocaCambio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/tocaCambio.png"))); // NOI18N
+        tocaCambio.setToolTipText("Autos con más de 6 meses sin cambio de aceite");
         panelBotones.add(tocaCambio);
 
         presupuesto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/presupuesto.png"))); // NOI18N
+        presupuesto.setToolTipText("Realizar presupuesto");
         panelBotones.add(presupuesto);
 
         historialPresupuestos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/historialPresupuestos.png"))); // NOI18N
+        historialPresupuestos.setToolTipText("Presupuestos realizados");
         panelBotones.add(historialPresupuestos);
 
         jMenu1.setText("Archivo");

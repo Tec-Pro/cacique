@@ -43,6 +43,7 @@ public class ControladorArticulo implements ActionListener, FocusListener {
     private Boolean isNuevo;
     private Boolean editandoInfo;
     private Articulo articulo;
+    private ControladorJReport reporteArticulos;
 
     public ControladorArticulo(ArticuloGui articuloGui) throws JRException, ClassNotFoundException, SQLException {
         isNuevo = true; //para saber si es nuevo o no
@@ -59,7 +60,7 @@ public class ControladorArticulo implements ActionListener, FocusListener {
         listArticulos = Articulo.findAll();
         
         actualizarLista();
-       // reporteArticulos = new ControladorJReport("listadoArticulos.jasper");
+        reporteArticulos = new ControladorJReport("listadoPrecios.jasper");
         articuloGui.getBusqueda().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -251,13 +252,13 @@ public class ControladorArticulo implements ActionListener, FocusListener {
                 realizarBusqueda();
             }
         }
-       /* if (e.getSource() == articuloGui.getExportar()) {
+        if (e.getSource() == articuloGui.getExportar()) {
             try {
                 reporteArticulos.mostrarReporte();
             } catch (ClassNotFoundException | SQLException | JRException ex) {
-                Logger.getLogger(AplicacionGui.class.getName()).log(Level.SEVERE, null, ex);
+                
             }
-        }*/
+        }
     }
 
     /*private void actualizarPrecioVenta() {

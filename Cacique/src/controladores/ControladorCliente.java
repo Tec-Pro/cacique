@@ -14,6 +14,7 @@ import interfaz.AutoGui;
 import interfaz.ClienteGui;
 import interfaz.HistorialComprasGui;
 import interfaz.PagoFacturaGui;
+import interfaz.PagosRealizadosClienteGui;
 import interfaz.PresupuestoRealizadosGui;
 import interfaz.Trabajos;
 import interfaz.VentaGui;
@@ -181,6 +182,7 @@ public class ControladorCliente implements ActionListener {
             clienteGui.getRealizarEntrega().setEnabled(true);
             clienteGui.getAutos().setEnabled(true);
             clienteGui.getPresupuestos().setEnabled(true);
+            clienteGui.getPagos().setEnabled(true);
             System.out.println("hice doble click en un cliente");
             clienteGui.limpiarCampos();
 
@@ -207,6 +209,7 @@ public class ControladorCliente implements ActionListener {
             clienteGui.getGuardar().setEnabled(true);
             clienteGui.getAutos().setEnabled(false);
             clienteGui.getPresupuestos().setEnabled(false);
+            clienteGui.getPagos().setEnabled(false);
         }
         if (e.getSource() == clienteGui.getGuardar() && editandoInfo && isNuevo) { //Guardar
             System.out.println("Boton guardar pulsado");
@@ -245,6 +248,7 @@ public class ControladorCliente implements ActionListener {
                         clienteGui.getRealizarEntrega().setEnabled(false);
                         clienteGui.getAutos().setEnabled(false);
                         clienteGui.getPresupuestos().setEnabled(false);
+                        clienteGui.getPagos().setEnabled(false);
                     } else {
                         JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, no se borró el cliente", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
@@ -264,12 +268,12 @@ public class ControladorCliente implements ActionListener {
             clienteGui.getRealizarEntrega().setEnabled(false);
             clienteGui.getAutos().setEnabled(false);
             clienteGui.getPresupuestos().setEnabled(false);
+            clienteGui.getPagos().setEnabled(false);
         }
 
         if (e.getSource() == clienteGui.getGuardar() && editandoInfo && !isNuevo) {
             System.out.println("Boton guardar pulsado");
             if (cargarDatosCliente(cliente)) {
-
                 if (abmCliente.modificar(cliente)) {
                     clienteGui.habilitarCampos(false);
                     clienteGui.limpiarCampos();
@@ -279,6 +283,7 @@ public class ControladorCliente implements ActionListener {
                     clienteGui.getGuardar().setEnabled(false);
                     clienteGui.getAutos().setEnabled(false);
                     clienteGui.getPresupuestos().setEnabled(false);
+                    clienteGui.getPagos().setEnabled(false);
                 } else {
                     JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error,revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -356,7 +361,7 @@ public class ControladorCliente implements ActionListener {
                         Calendar c = Calendar.getInstance();
                         Date d = c.getTime();
                         //  Base.openTransaction();
-                        Pago pago = Pago.createIt("fecha", d, "monto", monto, "cliente_id", idCliente2);
+                        Pago pago = Pago.createIt("fecha", d, "monto", monto, "cliente_id", idCliente2,"descripcion","Cobro de factura con id: "+v.getString("id"));
                         pago.saveIt();
                         String pagoId = pago.getString("id");//Pago.findFirst("fecha = ? and monto = ? and cliente_id = ?", d, monto, idCliente2).getString("id");
                         v.set("pago_id", pagoId);
@@ -396,6 +401,14 @@ public class ControladorCliente implements ActionListener {
             hcg.setVisible(true);
             hcg.toFront();
         }
+        if (e.getSource() == clienteGui.getPagos()) {
+            PagosRealizadosClienteGui hcg = new PagosRealizadosClienteGui(cliente);
+            aplicacionGui.getContenedor().add(hcg);
+            hcg.setVisible(true);
+            hcg.toFront();
+        }
+        
+        
     }
 
     public void actualizarPrecio() {

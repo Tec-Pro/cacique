@@ -72,7 +72,7 @@
                           <Component id="jPanel4" alignment="0" pref="381" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="jPanel6" pref="465" max="32767" attributes="0"/>
+                      <Component id="jPanel6" pref="464" max="32767" attributes="0"/>
                       <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -486,7 +486,7 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jPanel1" alignment="0" pref="453" max="32767" attributes="0"/>
+                      <Component id="jPanel1" alignment="0" pref="452" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Component id="jScrollPane5" alignment="0" pref="0" max="32767" attributes="0"/>
@@ -650,6 +650,12 @@
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="autosActionPerformed"/>
                           </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="pagos">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Pagos"/>
+                            <Property name="enabled" type="boolean" value="false"/>
+                          </Properties>
                         </Component>
                         <Component class="javax.swing.JButton" name="presupuestos">
                           <Properties>

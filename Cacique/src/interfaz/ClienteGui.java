@@ -53,6 +53,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         this.realizarEntrega.addActionListener(lis);
         this.autos.addActionListener(lis);
         this.presupuestos.addActionListener(lis);
+        this.pagos.addActionListener(lis);
     }
 
     public void habilitarCamposVentas(boolean b) {
@@ -106,6 +107,12 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         email.setText(cliente.getString("email"));
     }
 
+    public JButton getPagos() {
+        return pagos;
+    }
+
+    
+    
     public DefaultTableModel getClientes() {
         return clientes;
     }
@@ -286,6 +293,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         autos = new javax.swing.JButton();
+        pagos = new javax.swing.JButton();
         presupuestos = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         verHistorial = new javax.swing.JButton();
@@ -351,7 +359,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
                 .addGap(2, 2, 2)
                 .addComponent(busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos del cliente", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Schoolbook L", 3, 15))); // NOI18N
@@ -453,7 +461,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
                         .addComponent(jLabel9)
                         .addGap(55, 55, 55)
                         .addComponent(nacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 79, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -581,7 +589,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
 
         jPanel1.setLayout(new java.awt.GridLayout(2, 1));
 
-        jPanel3.setLayout(new java.awt.GridLayout());
+        jPanel3.setLayout(new java.awt.GridLayout(1, 0));
 
         autos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/auto.png"))); // NOI18N
         autos.setText(" ");
@@ -595,6 +603,10 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         });
         jPanel3.add(autos);
 
+        pagos.setText("Pagos");
+        pagos.setEnabled(false);
+        jPanel3.add(pagos);
+
         presupuestos.setText("Presupuestos");
         presupuestos.setEnabled(false);
         presupuestos.setPreferredSize(new java.awt.Dimension(72, 28));
@@ -602,7 +614,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
 
         jPanel1.add(jPanel3);
 
-        jPanel5.setLayout(new java.awt.GridLayout());
+        jPanel5.setLayout(new java.awt.GridLayout(1, 0));
 
         verHistorial.setFont(new java.awt.Font("Cantarell", 0, 12)); // NOI18N
         verHistorial.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/Details.png"))); // NOI18N
@@ -631,10 +643,10 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addComponent(jLabel10)
@@ -677,7 +689,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
                     .addComponent(panelClientes, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
         panelEnteroClientesLayout.setVerticalGroup(
@@ -688,7 +700,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
         );
 
         scroolClientes.setViewportView(panelEnteroClientes);
@@ -771,6 +783,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
     private com.toedter.calendar.JDateChooser nacimiento;
     private javax.swing.JTextField nombre;
     private javax.swing.JButton nuevo;
+    private javax.swing.JButton pagos;
     private javax.swing.JPanel panelClientes;
     private javax.swing.JPanel panelEnteroClientes;
     private javax.swing.JButton presupuestos;

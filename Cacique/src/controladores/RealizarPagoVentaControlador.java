@@ -5,7 +5,6 @@
 package controladores;
 
 import abm.ABMVenta;
-import abm.ManejoIp;
 import busqueda.Busqueda;
 import interfaz.AplicacionGui;
 import interfaz.PagoFacturaGui;
@@ -92,6 +91,7 @@ public class RealizarPagoVentaControlador implements ActionListener {
                     pago.set("fecha", pagoFacturaGui.getCalendarioText().getText());
                     pago.set("monto", entrega);
                     pago.set("cliente_id", idCliente);
+                    pago.set("descripcion", pagoFacturaGui.getDescripcion().getText());
                     pago.saveIt();
                     String pagoId = Pago.findFirst("fecha = ? and monto = ? and cliente_id = ?", pagoFacturaGui.getCalendarioText().getText(), entrega, idCliente).getString("id");
                     BigDecimal cuentaCliente = new BigDecimal(cli.getString("cuenta"));
@@ -121,7 +121,6 @@ public class RealizarPagoVentaControlador implements ActionListener {
                             }
                         }
                         if (sePuedePagar) {
-
                             entrega = entrega.subtract(montoVentaAPagar);
                             ambV.pagar(ventaAPagar, montoVentaAPagar);
                             ventaAPagar.set("pago_id", pagoId);

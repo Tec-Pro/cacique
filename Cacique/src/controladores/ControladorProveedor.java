@@ -413,11 +413,12 @@ public class ControladorProveedor implements ActionListener {
         Iterator<Pago> it = listPagos.iterator();
         while (it.hasNext()) {
             Pago pago = it.next();
-            Object row[] = new String[2];
+            Object row[] = new String[3];
             Date sqlFecha = pago.getDate("fecha");
             SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
             row[0] = sdf.format(sqlFecha);
             row[1] = pago.getBigDecimal("monto").setScale(2, RoundingMode.CEILING).toString();
+            row[2]= pago.getString("descripcion");
             tablaPagosDefault.addRow(row);
         }
                     

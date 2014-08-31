@@ -411,14 +411,14 @@ public class ProveedorGui extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Fecha", "Cantidad"
+                "Fecha", "Cantidad", "Descripcion"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {

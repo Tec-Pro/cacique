@@ -62,6 +62,7 @@ public class ABMArticulo {
         if (findArticulo(art)) {
             Base.openTransaction();
             ret = art.delete();
+            art.defrost();
             Base.commitTransaction();
         }
         return ret;

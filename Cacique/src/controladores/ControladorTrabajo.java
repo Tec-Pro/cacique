@@ -138,8 +138,10 @@ private AplicacionGui appGui;
             row[1] = aut.getString("patente");
             row[2] = aut.getString("modelo");
             row[3] = aut.getString("cliente_id");
+            if(cli!=null){
             row[4] = cli.getString("nombre");
             row[5] = cli.getString("dni");
+            }
             tablaAutosDefault.addRow(row);
 
         }

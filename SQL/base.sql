@@ -210,3 +210,4 @@ ALTER TABLE `cacique`.`trabajos` ADD COLUMN `mecanico` VARCHAR(45) NULL  AFTER `
 ALTER TABLE `cacique`.`trabajos` ADD COLUMN `aceite_usa` VARCHAR(45) NULL  AFTER `mecanico` ;
 ALTER TABLE `cacique`.`presupuestos` ADD COLUMN `patente` VARCHAR(45) NULL  AFTER `fecha` , ADD COLUMN `realizado` VARCHAR(70) NULL  AFTER `patente` ;
 ALTER TABLE `cacique`.`trabajos` ADD COLUMN `proximo_cambio` VARCHAR(45) NULL  AFTER `forma_de_pago` ;
+ALTER TABLE `cacique`.`pagos` ADD COLUMN `descripcion` VARCHAR(200) NULL  AFTER `cliente_id` ;

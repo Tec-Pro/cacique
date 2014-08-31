@@ -179,7 +179,9 @@ public class ControladorAuto  implements ActionListener {
             row[1] = auto.getString("marca");
             row[2] = auto.getString("modelo");
             Cliente cli= auto.parent(Cliente.class);
+            if(cli!=null){
             row[3] = cli.getString("nombre");
+            }
             row[4]= dateToMySQLDate(auto.getDate("ult_cambio_aceite"), true);
             
             autosDefault.addRow(row);

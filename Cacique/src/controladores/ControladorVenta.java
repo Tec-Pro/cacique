@@ -56,7 +56,7 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
     private DefaultTableModel tablaClientes;
     private DefaultTableModel tablaProd;
     private JTable tablafac;
-//    private ControladorJReport reporteFactura;
+    private ControladorJReport reportePago;
 //    private ControladorJReport reporteFacturaSinPagar;
     private AplicacionGui apgui;
 
@@ -103,7 +103,7 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
         prodlista = busqueda.filtroProducto("", "");
         actualizarListaCliente();
         actualizarListaProd();
-//        reporteFactura = new ControladorJReport(("factura.jasper"));
+        reportePago = new ControladorJReport(("pago.jasper"));
 //        reporteFacturaSinPagar = new ControladorJReport(("facturaSinPago.jasper"));
 
     }
@@ -211,19 +211,25 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
                 }
                 BigDecimal bd = new BigDecimal(ventaGui.getTotalFactura().getText());
                 v.set("monto", bd);
+
+
+                if (abmVenta.alta(v)) {
+                    try {
+                        JOptionPane.showMessageDialog(apgui, "Venta realizada con exito.");
+                        ventaGui.limpiarVentana();
+                                        Integer idPago=-1;
                 if (ventaGui.getAbonaSi().isSelected()) {
                     Base.openTransaction();
-                    Pago pago = Pago.createIt("fecha", laFecha, "monto", bd, "cliente_id", idCliente);
+                    Pago pago = Pago.createIt("fecha", laFecha, "monto", bd, "cliente_id", idCliente, "descripcion", "Cobro de factura con nro : "+abmVenta.getUltimoIdVenta());
                     Base.commitTransaction();
                     System.out.println(pago.getId() + " " + laFecha + " " + bd + " " + idCliente);
                     String pagoId = pago.getString("id");//Pago.findFirst("fecha = ? and monto = ? and cliente_id = ?", laFecha, bd, idCliente).getString("id");
                     System.out.println("el pago id es:  " + pagoId);
+                    idPago=Integer.valueOf(pagoId);
                     v.set("pago_id", pagoId);
                 }
-
-                if (abmVenta.alta(v)) {
-                    JOptionPane.showMessageDialog(apgui, "Venta realizada con exito.");
-                    ventaGui.limpiarVentana();
+                        if(idPago>-1)
+                            reportePago.mostrarPago(idPago);
 //                        try {
 //                            {
 //                                reporteFactura.mostrarFactura(abmVenta.getUltimoIdVenta());
@@ -235,6 +241,13 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
 //                        } catch (JRException ex) {
 //                            Logger.getLogger(ControladorVenta.class.getName()).log(Level.SEVERE, null, ex);
 //                        }
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(ControladorVenta.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ControladorVenta.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (JRException ex) {
+                        Logger.getLogger(ControladorVenta.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } else {
                     JOptionPane.showMessageDialog(apgui, "Ocurrió un error inesperado, venta no realizada");
                 }

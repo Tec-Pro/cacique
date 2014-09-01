@@ -51,6 +51,13 @@ public class PagosRealizadosClienteGui extends javax.swing.JInternalFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         pagosRealizados = new javax.swing.JTable();
 
+        setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+        setTitle("Pagos realizados por el cliente");
+
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Pagos realizados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Schoolbook L", 3, 14))); // NOI18N
 
         pagosRealizados.setAutoCreateRowSorter(true);

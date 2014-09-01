@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -23,6 +24,8 @@ import modelos.ArticulosVentas;
 import modelos.Cliente;
 import modelos.Pago;
 import modelos.Venta;
+import net.sf.jasperreports.engine.JRException;
+import org.javalite.activejdbc.Base;
 
 /**
  *
@@ -37,17 +40,27 @@ public class RealizarPagoVentaControlador implements ActionListener {
     private Busqueda busqueda;
     private AplicacionGui apgui;
     private ControladorCliente cl;
+    private ControladorJReport reportePago;
 
     public RealizarPagoVentaControlador(PagoFacturaGui pagoFacturaGui, Cliente cli, BigDecimal ctaCte, BigDecimal ctaCteActual, AplicacionGui apgui, ControladorCliente cl) {
-        this.apgui = apgui;
-        this.pagoFacturaGui = pagoFacturaGui;
-        this.pagoFacturaGui.setActionListener(this);
-        this.cli = cli;
-        this.ctaCte = ctaCte;
-        this.ctaCteActual = ctaCteActual;
-        CargarDatosCli();
-        busqueda = new Busqueda();
-        this.cl = cl;
+        try {
+            this.apgui = apgui;
+            this.pagoFacturaGui = pagoFacturaGui;
+            this.pagoFacturaGui.setActionListener(this);
+            this.cli = cli;
+            this.ctaCte = ctaCte;
+            this.ctaCteActual = ctaCteActual;
+            CargarDatosCli();
+            busqueda = new Busqueda();
+            this.cl = cl;
+            reportePago=  new ControladorJReport("pago.jasper");
+        } catch (JRException ex) {
+            Logger.getLogger(RealizarPagoVentaControlador.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(RealizarPagoVentaControlador.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(RealizarPagoVentaControlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void CargarDatosCli() {
@@ -83,57 +96,67 @@ public class RealizarPagoVentaControlador implements ActionListener {
                 if (queCobrar == -1) {
                     JOptionPane.showMessageDialog(pagoFacturaGui, "Por favor ingrese que cuenta corriente se debe cobrar", "Error!", JOptionPane.ERROR_MESSAGE);
                 } else {
-
-                    String clienteId = cli.getString("id");
-                    int idCliente = cli.getInteger("id");
-                    BigDecimal entrega = new BigDecimal(pagoFacturaGui.getMonto().getText());
-                    Pago pago = new Pago();
-                    pago.set("fecha", pagoFacturaGui.getCalendarioText().getText());
-                    pago.set("monto", entrega);
-                    pago.set("cliente_id", idCliente);
-                    pago.set("descripcion", pagoFacturaGui.getDescripcion().getText());
-                    pago.saveIt();
-                    String pagoId = Pago.findFirst("fecha = ? and monto = ? and cliente_id = ?", pagoFacturaGui.getCalendarioText().getText(), entrega, idCliente).getString("id");
-                    BigDecimal cuentaCliente = new BigDecimal(cli.getString("cuenta"));
-                    entrega = entrega.add(cuentaCliente);
-                    Iterator<Venta> itrVenta = cargarDeuda(clienteId).iterator();
-                    Venta ventaAPagar = null;
-                    boolean sePuedePagar = true;
-                    BigDecimal montoVentaAPagar = new BigDecimal(0);
-                    BigDecimal aux;
-                    ABMVenta ambV = new ABMVenta();
-                    while (sePuedePagar) {
-                        sePuedePagar = false;
-                        while (itrVenta.hasNext()) {
-                            Venta venta = itrVenta.next();
-                            String ventaId = venta.getString("id");
-                            if (queCobrar == 1) {
-                                aux = montoVentaNoAbonada(ventaId);
-                            } else {
-                                aux = venta.getBigDecimal("monto");
-                            }
-                            if (entrega.compareTo(aux) >= 0) {
-                                sePuedePagar = true;
-                                if (montoVentaAPagar.compareTo(aux) <= 0) {
-                                    ventaAPagar = Venta.findById(ventaId);
-                                    montoVentaAPagar = new BigDecimal(aux.toString());
+                    try {
+                        Base.openTransaction();
+                        String clienteId = cli.getString("id");
+                        int idCliente = cli.getInteger("id");
+                        BigDecimal entrega = new BigDecimal(pagoFacturaGui.getMonto().getText());
+                        Pago pago = new Pago();
+                        pago.set("fecha", pagoFacturaGui.getCalendarioText().getText());
+                        pago.set("monto", entrega);
+                        pago.set("cliente_id", idCliente);
+                        pago.set("descripcion", pagoFacturaGui.getDescripcion().getText());
+                        pago.saveIt();
+                        String pagoId = Pago.findFirst("fecha = ? and monto = ? and cliente_id = ?", pagoFacturaGui.getCalendarioText().getText(), entrega, idCliente).getString("id");
+                        BigDecimal cuentaCliente = new BigDecimal(cli.getString("cuenta"));
+                        entrega = entrega.add(cuentaCliente);
+                        Iterator<Venta> itrVenta = cargarDeuda(clienteId).iterator();
+                        Venta ventaAPagar = null;
+                        boolean sePuedePagar = true;
+                        BigDecimal montoVentaAPagar = new BigDecimal(0);
+                        BigDecimal aux;
+                        ABMVenta ambV = new ABMVenta();
+                        while (sePuedePagar) {
+                            sePuedePagar = false;
+                            while (itrVenta.hasNext()) {
+                                Venta venta = itrVenta.next();
+                                String ventaId = venta.getString("id");
+                                if (queCobrar == 1) {
+                                    aux = montoVentaNoAbonada(ventaId);
+                                } else {
+                                    aux = venta.getBigDecimal("monto");
+                                }
+                                if (entrega.compareTo(aux) >= 0) {
+                                    sePuedePagar = true;
+                                    if (montoVentaAPagar.compareTo(aux) <= 0) {
+                                        ventaAPagar = Venta.findById(ventaId);
+                                        montoVentaAPagar = new BigDecimal(aux.toString());
+                                    }
                                 }
                             }
+                            if (sePuedePagar) {
+                                entrega = entrega.subtract(montoVentaAPagar);
+                                ambV.pagar(ventaAPagar, montoVentaAPagar);
+                                ventaAPagar.set("pago_id", pagoId);
+                                ventaAPagar.saveIt();
+                                itrVenta = cargarDeuda(clienteId).iterator();
+                                montoVentaAPagar = new BigDecimal(0);
+                                aux = null;
+                                ventaAPagar = null;
+                            }
                         }
-                        if (sePuedePagar) {
-                            entrega = entrega.subtract(montoVentaAPagar);
-                            ambV.pagar(ventaAPagar, montoVentaAPagar);
-                            ventaAPagar.set("pago_id", pagoId);
-                            ventaAPagar.saveIt();
-                            itrVenta = cargarDeuda(clienteId).iterator();
-                            montoVentaAPagar = new BigDecimal(0);
-                            aux = null;
-                            ventaAPagar = null;
-                        }
+                        cli.set("cuenta", entrega);
+                        cli.saveIt();
+                        Base.commitTransaction();
+                        JOptionPane.showMessageDialog(apgui, "¡Cobro registrado exitosamente!");
+                        reportePago.mostrarPago(Integer.valueOf(pagoId));
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(RealizarPagoVentaControlador.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(RealizarPagoVentaControlador.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (JRException ex) {
+                        Logger.getLogger(RealizarPagoVentaControlador.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    cli.set("cuenta", entrega);
-                    cli.saveIt();
-                    JOptionPane.showMessageDialog(apgui, "¡Cobro registrado exitosamente!");
 
                 }
             }

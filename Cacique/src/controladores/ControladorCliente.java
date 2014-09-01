@@ -25,10 +25,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -39,6 +42,7 @@ import modelos.ArticulosVentas;
 import modelos.Cliente;
 import modelos.Pago;
 import modelos.Venta;
+import net.sf.jasperreports.engine.JRException;
 import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
 
@@ -67,47 +71,57 @@ public class ControladorCliente implements ActionListener {
     VentaGui ventaGui;
     private Color Color;
     private JDateChooser nacimiento;
+    private ControladorJReport reportePago;
 
     public ControladorCliente(ClienteGui clienteGui, AplicacionGui aplicacionGui, VentaGui ventaGui) {
-        this.aplicacionGui = aplicacionGui;
-        this.clienteGui = clienteGui;
-        this.ventaGui = ventaGui;
-        this.clienteGui.setActionListener(this);
-        isNuevo = true;
-        editandoInfo = false;
-        busqueda = new Busqueda();
-        tablaCliDefault = clienteGui.getClientes();
-        tablaVentasDefault = clienteGui.getVentasDefault();
-        tablaVentas = clienteGui.getVentasRealizadas();
-        tablaCliente = clienteGui.getTablaClientes();;
-        listClientes = new LinkedList();
-        abmCliente = new ABMCliente();
-        cliente = new Cliente();
-
-        nacimiento = clienteGui.getNacimiento();
-        listClientes = Cliente.findAll();
-
-        actualizarLista();
-        nomcli = clienteGui.getBusqueda();
-        nomcli.addKeyListener(new java.awt.event.KeyAdapter() {
-            @Override
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                busquedaKeyReleased(evt);
-            }
-        });
-        tablaCliente.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaClienteMouseClicked(evt);
-            }
-        });
-        tablaVentas.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaVentasMouseClicked(evt);
-            }
-        });
-        ver = clienteGui.getVer();
+        try {
+            this.aplicacionGui = aplicacionGui;
+            this.clienteGui = clienteGui;
+            this.ventaGui = ventaGui;
+            this.clienteGui.setActionListener(this);
+            isNuevo = true;
+            editandoInfo = false;
+            busqueda = new Busqueda();
+            tablaCliDefault = clienteGui.getClientes();
+            tablaVentasDefault = clienteGui.getVentasDefault();
+            tablaVentas = clienteGui.getVentasRealizadas();
+            tablaCliente = clienteGui.getTablaClientes();;
+            listClientes = new LinkedList();
+            abmCliente = new ABMCliente();
+            cliente = new Cliente();
+            
+            nacimiento = clienteGui.getNacimiento();
+            listClientes = Cliente.findAll();
+            
+            actualizarLista();
+            nomcli = clienteGui.getBusqueda();
+            nomcli.addKeyListener(new java.awt.event.KeyAdapter() {
+                @Override
+                public void keyReleased(java.awt.event.KeyEvent evt) {
+                    busquedaKeyReleased(evt);
+                }
+            });
+            tablaCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    tablaClienteMouseClicked(evt);
+                }
+            });
+            tablaVentas.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    tablaVentasMouseClicked(evt);
+                }
+            });
+            ver = clienteGui.getVer();
+            reportePago= new ControladorJReport("pago.jasper");
+        } catch (JRException ex) {
+            Logger.getLogger(ControladorCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ControladorCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void busquedaKeyReleased(KeyEvent evt) {
@@ -338,39 +352,49 @@ public class ControladorCliente implements ActionListener {
                 } else {
                     int reply = JOptionPane.showConfirmDialog(null, "¿Desea cobrar la factura con el precio actual?", "¿Cuanto Cobrar?", JOptionPane.YES_NO_OPTION);
                     if (reply == JOptionPane.YES_OPTION || reply == JOptionPane.NO_OPTION) {
-                        boolean cobroNuevo = false;
-                        if (reply == JOptionPane.YES_OPTION) {
-                            cobroNuevo = true;
-                        }
+                        try {
+                            boolean cobroNuevo = false;
+                            if (reply == JOptionPane.YES_OPTION) {
+                                cobroNuevo = true;
+                            }
+                            
+                            String id = (String) tablaVentas.getValueAt(row, 0);
+                            BigDecimal monto = null;
+                            if (cobroNuevo) {
+                                monto = new BigDecimal((String) tablaVentas.getValueAt(row, 3));
+                            } else {
+                                monto = new BigDecimal((String) tablaVentas.getValueAt(row, 2));
+                            }
+                            Venta v = Venta.findById(id);
+                            ABMVenta ambV = new ABMVenta();
+                            v.set("pago", true);
+                            v.set("monto", monto);
+                            v.saveIt();
+                            ambV.pagar(v, monto);
+                            String clienteId = clienteGui.getId().getText();
+                            int idCliente2 = Integer.parseInt(clienteId);
+                            Calendar c = Calendar.getInstance();
+                            Date d = c.getTime();
+                              Base.openTransaction();
+                            Pago pago = Pago.createIt("fecha", d, "monto", monto, "cliente_id", idCliente2,"descripcion","Cobro de factura con nro : "+v.getString("id"));
+                            pago.saveIt();
+                            String pagoId = pago.getString("id");//Pago.findFirst("fecha = ? and monto = ? and cliente_id = ?", d, monto, idCliente2).getString("id");
+                            v.set("pago_id", pagoId);
+                            v.saveIt();
+                              Base.commitTransaction();
+                            JOptionPane.showMessageDialog(clienteGui, "¡Cobro registrado exitosamente!");
+                                                        reportePago.mostrarPago(Integer.valueOf(pagoId));
 
-                        String id = (String) tablaVentas.getValueAt(row, 0);
-                        BigDecimal monto = null;
-                        if (cobroNuevo) {
-                            monto = new BigDecimal((String) tablaVentas.getValueAt(row, 3));
-                        } else {
-                            monto = new BigDecimal((String) tablaVentas.getValueAt(row, 2));
+                            cargarVentas();
+                            calcularCtaCte();
+                            calcularCtaCteActual();
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(ControladorCliente.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(ControladorCliente.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (JRException ex) {
+                            Logger.getLogger(ControladorCliente.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        Venta v = Venta.findById(id);
-                        ABMVenta ambV = new ABMVenta();
-                        v.set("pago", true);
-                        v.set("monto", monto);
-                        v.saveIt();
-                        ambV.pagar(v, monto);
-                        String clienteId = clienteGui.getId().getText();
-                        int idCliente2 = Integer.parseInt(clienteId);
-                        Calendar c = Calendar.getInstance();
-                        Date d = c.getTime();
-                        //  Base.openTransaction();
-                        Pago pago = Pago.createIt("fecha", d, "monto", monto, "cliente_id", idCliente2,"descripcion","Cobro de factura con id: "+v.getString("id"));
-                        pago.saveIt();
-                        String pagoId = pago.getString("id");//Pago.findFirst("fecha = ? and monto = ? and cliente_id = ?", d, monto, idCliente2).getString("id");
-                        v.set("pago_id", pagoId);
-                        v.saveIt();
-                        //  Base.commitTransaction();
-                        JOptionPane.showMessageDialog(clienteGui, "¡Cobro registrado exitosamente!");
-                        cargarVentas();
-                        calcularCtaCte();
-                        calcularCtaCteActual();
 
                     } else {
                         JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, el cobro no ha sido registrado", "Error!", JOptionPane.ERROR_MESSAGE);

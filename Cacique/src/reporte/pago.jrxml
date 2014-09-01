@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pago" language="groovy" pageWidth="595" pageHeight="280" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8d42da38-c7e8-4a79-8601-7751b6dc5b0f">
+	<property name="ireport.zoom" value="1.4641000000000017"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="logo" class="java.io.InputStream"/>
+	<parameter name="pago" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT p.fecha,p.monto,p.descripcion,c.nombre FROM cacique.pagos as p, cacique.clientes as c where p.cliente_id= c.id and p.id = $P{pago};]]>
+	</queryString>
+	<field name="fecha" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="monto" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="91" splitType="Stretch">
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle">
+				<reportElement x="0" y="0" width="88" height="73" uuid="a7423464-a5b6-4bfa-a00a-322135532ab1"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="88" y="0" width="435" height="38" uuid="ff4a7008-62e9-4cec-8a87-825a89f72d8a"/>
+				<textElement textAlignment="Center">
+					<font size="20" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[LUBRICENTRO EL CACIQUE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="73" width="557" height="16" uuid="ef0fc514-065a-43fd-95b1-c42fe1bb7133"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[Blumetti 375-Cinco Saltos R.N Tel./Fax: 0299-498 3444]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="88" y="38" width="469" height="35" forecolor="#0025FF" uuid="fea9182b-524b-4577-a6f7-fbad2e4824f5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="30" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[   RECIBO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="141" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="5" width="106" height="16" uuid="b887f11e-b3c7-46c9-908d-dc9e15ad81ca"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[He recibido de]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="106" y="5" width="449" height="16" uuid="e730c74b-6636-4abd-a83f-9774be2a47c2"/>
+				<textElement>
+					<font size="13" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="10">
+				<reportElement x="10" y="34" width="532" height="40" uuid="3c9ec0ec-173a-46f9-aaa3-534959eafcad"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="21" y="44" width="100" height="20" uuid="5354d2cb-cc34-48b9-9b1a-fa01fc8ccd5e"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[Importe]]></text>
+			</staticText>
+			<rectangle radius="10">
+				<reportElement x="135" y="44" width="388" height="20" backcolor="#E2D9D9" uuid="eceb79e8-8e0b-429e-a085-d11e24fce9ba"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="10" y="84" width="100" height="18" uuid="9aa212b0-4cb1-4733-a5ad-7e8ee7d62241"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[En concepto de ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="110" y="84" width="432" height="32" uuid="f4a26b05-4116-4ba7-a8d4-71f911494cfc"/>
+				<textElement>
+					<font size="11" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="116" width="42" height="20" uuid="01703061-cd96-4960-9aff-e5903cfb57e3"/>
+				<textElement textAlignment="Center">
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[Son]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Transparent" x="10" y="116" width="200" height="20" uuid="23dc3707-02cf-46ea-a3fb-3e36249c4021"/>
+			</rectangle>
+			<textField pattern="###0.00">
+				<reportElement x="52" y="116" width="102" height="20" uuid="5a78688f-be66-471f-aab8-9c474921a821"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{monto} ]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="288" y="116" width="254" height="20" uuid="dd433707-83b4-41fd-bb14-999edea065a5"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="154" y="44" width="369" height="20" uuid="42acd419-6d41-4866-8517-e3fc554fd4ad"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="154" y="116" width="45" height="20" uuid="01dff06f-26c0-442f-925b-6ca39431b819"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[Pesos]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

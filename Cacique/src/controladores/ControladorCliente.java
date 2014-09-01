@@ -211,7 +211,7 @@ public class ControladorCliente implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == clienteGui.getNuevo()) { //crear un nuevo cliente
+        if (e.getSource() == clienteGui.getNuevo()) { //crear un nuevo cliente  
             System.out.println("Boton nuevo pulsado");
             clienteGui.limpiarCampos();
             clienteGui.habilitarCampos(true);
@@ -227,8 +227,8 @@ public class ControladorCliente implements ActionListener {
         }
         if (e.getSource() == clienteGui.getGuardar() && editandoInfo && isNuevo) { //Guardar
             System.out.println("Boton guardar pulsado");
-            if (cargarDatosCliente(cliente)) {
-
+            Base.openTransaction();
+            if (cargarDatosCliente(cliente)) {                
                 if (abmCliente.alta(cliente)) {
                     clienteGui.habilitarCampos(false);
                     clienteGui.limpiarCampos();
@@ -239,20 +239,19 @@ public class ControladorCliente implements ActionListener {
                 } else {
                     JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
-
                 realizarBusqueda();
             }
+            Base.commitTransaction();
 
         }
         if (e.getSource() == clienteGui.getBorrar()) { //borrar cliente 
             System.out.println("Boton borrar pulsado");
+            Base.openTransaction();
             clienteGui.habilitarCampos(false);
             if (cliente.getString("id") != null && !editandoInfo) {
                 Integer resp = JOptionPane.showConfirmDialog(clienteGui, "¿Desea borrar el cliente " + clienteGui.getNombre().getText(), "Confirmar borrado", JOptionPane.YES_NO_OPTION);
                 if (resp == JOptionPane.YES_OPTION) {
-
                     Boolean seBorro = abmCliente.baja(cliente);
-
                     if (seBorro) {
                         JOptionPane.showMessageDialog(clienteGui, "¡Cliente borrado exitosamente!");
                         clienteGui.limpiarCampos();
@@ -266,8 +265,10 @@ public class ControladorCliente implements ActionListener {
                     } else {
                         JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, no se borró el cliente", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
+                    Base.commitTransaction();
                 }
             } else {
+                Base.commitTransaction();
                 JOptionPane.showMessageDialog(clienteGui, "No se seleccionó un cliente");
             }
         }
@@ -287,6 +288,7 @@ public class ControladorCliente implements ActionListener {
 
         if (e.getSource() == clienteGui.getGuardar() && editandoInfo && !isNuevo) {
             System.out.println("Boton guardar pulsado");
+            Base.openTransaction();
             if (cargarDatosCliente(cliente)) {
                 if (abmCliente.modificar(cliente)) {
                     clienteGui.habilitarCampos(false);
@@ -302,8 +304,8 @@ public class ControladorCliente implements ActionListener {
                     JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error,revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
                 realizarBusqueda();
-
             }
+            Base.commitTransaction();
         }
         if (e.getSource() == clienteGui.getRealizarEntrega()) {
             PagoFacturaGui pagoFacturaGui = new PagoFacturaGui();
@@ -317,8 +319,8 @@ public class ControladorCliente implements ActionListener {
         }
         if (e.getSource() == clienteGui.getEliminarVenta()) {
             int row = tablaVentas.getSelectedRow();
+            Base.openTransaction();
             if (row > -1) {
-
                 String id = (String) tablaVentas.getValueAt(row, 0);
                 Venta v = Venta.findById(id);
                 ABMVenta abmV = new ABMVenta();
@@ -330,8 +332,8 @@ public class ControladorCliente implements ActionListener {
                 }
                 calcularCtaCte();
                 calcularCtaCteActual();
-
             }
+            Base.commitTransaction();
         }
         if (e.getSource() == clienteGui.getVer()) {
             cargarVentas();
@@ -345,6 +347,7 @@ public class ControladorCliente implements ActionListener {
         }
         if (e.getSource() == clienteGui.getCobrarFactura()) {
             int row = tablaVentas.getSelectedRow();
+            Base.openTransaction();
             if (row > -1) {
                 String p = (String) tablaVentas.getValueAt(row, 4);
                 if (p.equals("Si")) {
@@ -400,8 +403,9 @@ public class ControladorCliente implements ActionListener {
                         JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, el cobro no ha sido registrado", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
                 }
-
+                Base.commitTransaction();
             } else {
+                Base.commitTransaction();
                 JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, el cobro no ha sido registrado", "Error!", JOptionPane.ERROR_MESSAGE);
 
             }

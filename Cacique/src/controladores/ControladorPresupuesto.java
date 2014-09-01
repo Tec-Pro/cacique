@@ -31,6 +31,7 @@ import modelos.Cliente;
 import modelos.Presupuesto;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.util.Pair;
+import org.javalite.activejdbc.Base;
 /**
  *
  * @author jacinto
@@ -177,8 +178,8 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
             if (PresupuestoGui.getClienteFactura().getText().equals("") || PresupuestoGui.getCalenFacturaText().getText().equals("") || PresupuestoGui.getTablaFactura().getRowCount() == 0) {
                 JOptionPane.showMessageDialog(PresupuestoGui, "Fecha, cliente vacio o no hay productos cargados", "Error!", JOptionPane.ERROR_MESSAGE);
             } else {
+                Base.openTransaction();
                 System.out.println("entre a registrar venta");
-
                 Presupuesto v = new Presupuesto();
                 LinkedList<Pair> parDeProductos = new LinkedList();
                 LinkedList<BigDecimal> preciosFinales = new LinkedList();
@@ -214,8 +215,9 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
                     } catch (JRException ex) {
                         Logger.getLogger(ControladorPresupuesto.class.getName()).log(Level.SEVERE, null, ex);
                     }
-
+                    Base.commitTransaction();
                 } else {
+                    Base.commitTransaction();
                     JOptionPane.showMessageDialog(apgui, "Ocurrió un error inesperado, presupuesto no realizada");
                 }
             }

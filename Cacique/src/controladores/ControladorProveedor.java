@@ -196,8 +196,8 @@ public class ControladorProveedor implements ActionListener {
         }
         if (e.getSource() == proveedorGui.getGuardar() && editandoInfo && isNuevo) {
             System.out.println("Boton guardar pulsado");
-            if (cargarDatosProv(proveedor)) {
-                
+            Base.openTransaction();
+            if (cargarDatosProv(proveedor)) {                
                 if (abmProveedor.alta(proveedor)) {
                     proveedorGui.habilitarCampos(false);
                     proveedorGui.limpiarCampos();
@@ -211,10 +211,11 @@ public class ControladorProveedor implements ActionListener {
                 
                 realizarBusqueda();
             }
+            Base.commitTransaction();
         }
         if (e.getSource() == proveedorGui.getBorrar()) {
-
             System.out.println("Boton borrar pulsado");
+            Base.openTransaction();
             proveedorGui.habilitarCampos(false);
             if (proveedor.getId() != null && !editandoInfo) {
                 Integer resp = JOptionPane.showConfirmDialog(proveedorGui, "¿Desea borrar el proveedor " + proveedorGui.getNombre().getText(), "Confirmar borrado", JOptionPane.YES_NO_OPTION);
@@ -236,9 +237,7 @@ public class ControladorProveedor implements ActionListener {
             } else {
                 JOptionPane.showMessageDialog(proveedorGui, "No se seleccionó un proveedor");
             }
-
-
-
+            Base.commitTransaction();
         }
         if (e.getSource() == proveedorGui.getModificar()) {
             System.out.println("Boton modificar pulsado");
@@ -253,8 +252,8 @@ public class ControladorProveedor implements ActionListener {
 
         if (e.getSource() == proveedorGui.getGuardar() && editandoInfo && !isNuevo) {
             System.out.println("Boton guardar pulsado");
-            if (cargarDatosProv(proveedor)) {
-                
+            Base.openTransaction();
+            if (cargarDatosProv(proveedor)) {                
                 if (abmProveedor.modificar(proveedor)) {
                     proveedorGui.habilitarCampos(false);
                     proveedorGui.limpiarCampos();
@@ -268,22 +267,20 @@ public class ControladorProveedor implements ActionListener {
                 
                 realizarBusqueda();
             }
+            Base.commitTransaction();
         }
         if (e.getSource() == proveedorGui.getRealizarPago()) {
             System.out.println("realizar pago pulsado");
             realizarPagoGui = new RealizarPagoGui(aplicacionGui, true, proveedor);
             realizarPagoGui.setLocationRelativeTo(proveedorGui);
-            realizarPagoGui.setVisible(true);
-            
+            realizarPagoGui.setVisible(true);            
             proveedor= abmProveedor.getProveedor(proveedor);
-            proveedorGui.CargarCampos(proveedor);
-            
-            
-            cargarPagos();
-            
+            proveedorGui.CargarCampos(proveedor);              
+            cargarPagos();            
         }
         if (e.getSource() == proveedorGui.getBorrarPago()) {
             System.out.println("Borrar pago pulsado");
+            Base.openTransaction();
             Integer resp = JOptionPane.showConfirmDialog(proveedorGui, "¿Desea borrar el pago seleccionado? ", "Confirmar borrado", JOptionPane.YES_NO_OPTION);
             if (resp == JOptionPane.YES_OPTION) {
                 String fecha = tablaPagos.getValueAt(tablaPagos.getSelectedRow(), 0).toString(); //Se le pasa la fecha a la que queremos darle formato
@@ -297,6 +294,7 @@ public class ControladorProveedor implements ActionListener {
                 cargarPagos();
 
             }
+            Base.commitTransaction();
         }
 
 //        if (e.getSource() == proveedorGui.getExportar()) {

@@ -262,6 +262,7 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
                 if (compraGui.getProveedorCompra().getText().equals("")) {
                     JOptionPane.showMessageDialog(compraGui, "Proveedor no seleccionado", "Error!", JOptionPane.ERROR_MESSAGE);
                 } else {
+                    Base.openTransaction();
                     Compra v = new Compra();
                     LinkedList<Pair> parDeProductos = new LinkedList();
                     LinkedList<BigDecimal> precioFinales = new LinkedList();
@@ -313,7 +314,9 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
                             prov.saveIt();
                             Base.commitTransaction();
                         }
+                        Base.commitTransaction();
                     } else {
+                        Base.commitTransaction();
                         JOptionPane.showMessageDialog(apgui, "Ocurrió un error inesperado, compra no realizada");
                     }
                 }

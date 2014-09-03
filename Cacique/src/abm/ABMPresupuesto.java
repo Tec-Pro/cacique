@@ -28,8 +28,6 @@ public class ABMPresupuesto {
 
     //FUNCIONA CORRECTAMENTE
     public boolean alta(Presupuesto v) {
-
-        Base.openTransaction();
         boolean resultOp = true;
         if (v == null) {
             resultOp = false;
@@ -41,7 +39,6 @@ public class ABMPresupuesto {
             ultimoIdPresupuesto = idPresupuesto;
             resultOp = resultOp && cargarProductosPresupuestados(idPresupuesto, v.getProductos(), v.getPreciosFinales());//guardo los productos vendidos
         }
-        Base.commitTransaction();
         return resultOp;
     }
 
@@ -50,7 +47,6 @@ public class ABMPresupuesto {
      * ni actualizacion de tablas de adquisicion ni tabla de productos_vendidos
      */
     public boolean baja(Presupuesto v) {
-        Base.openTransaction();
         boolean resultOp = true;
         Integer idVenta = v.getInteger("id");//saco el idVenta
         Presupuesto presupuesto = Presupuesto.findById(idVenta);//la busco en BD y la traigo        
@@ -60,7 +56,6 @@ public class ABMPresupuesto {
             ArticulosPresupuestos.delete("presupuesto_id = ?", idVenta);//elimino todos los productosvendidos
             resultOp = resultOp && presupuesto.delete();//elimino el Presupuesto
         }
-        Base.commitTransaction();
         return resultOp;
     }
 

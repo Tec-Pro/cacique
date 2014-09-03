@@ -224,6 +224,7 @@ public class ControladorCliente implements ActionListener {
             clienteGui.getAutos().setEnabled(false);
             clienteGui.getPresupuestos().setEnabled(false);
             clienteGui.getPagos().setEnabled(false);
+            clienteGui.habilitarCamposVentas(false);
         }
         if (e.getSource() == clienteGui.getGuardar() && editandoInfo && isNuevo) { //Guardar
             System.out.println("Boton guardar pulsado");
@@ -247,6 +248,7 @@ public class ControladorCliente implements ActionListener {
         if (e.getSource() == clienteGui.getBorrar()) { //borrar cliente 
             System.out.println("Boton borrar pulsado");
             Base.openTransaction();
+            clienteGui.habilitarCamposVentas(false);
             clienteGui.habilitarCampos(false);
             if (cliente.getString("id") != null && !editandoInfo) {
                 Integer resp = JOptionPane.showConfirmDialog(clienteGui, "¿Desea borrar el cliente " + clienteGui.getNombre().getText(), "Confirmar borrado", JOptionPane.YES_NO_OPTION);
@@ -265,12 +267,11 @@ public class ControladorCliente implements ActionListener {
                     } else {
                         JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, no se borró el cliente", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
-                    Base.commitTransaction();
                 }
             } else {
-                Base.commitTransaction();
                 JOptionPane.showMessageDialog(clienteGui, "No se seleccionó un cliente");
             }
+            Base.commitTransaction();
         }
         if (e.getSource() == clienteGui.getModificar()) { //modificar cliente
             System.out.println("Boton modificar pulsado");
@@ -284,6 +285,7 @@ public class ControladorCliente implements ActionListener {
             clienteGui.getAutos().setEnabled(false);
             clienteGui.getPresupuestos().setEnabled(false);
             clienteGui.getPagos().setEnabled(false);
+            clienteGui.habilitarCamposVentas(false);
         }
 
         if (e.getSource() == clienteGui.getGuardar() && editandoInfo && !isNuevo) {
@@ -299,7 +301,8 @@ public class ControladorCliente implements ActionListener {
                     clienteGui.getGuardar().setEnabled(false);
                     clienteGui.getAutos().setEnabled(false);
                     clienteGui.getPresupuestos().setEnabled(false);
-                    clienteGui.getPagos().setEnabled(false);
+                     clienteGui.getPagos().setEnabled(false);                     
+                    clienteGui.habilitarCamposVentas(false);
                 } else {
                     JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error,revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -407,7 +410,6 @@ public class ControladorCliente implements ActionListener {
             } else {
                 Base.commitTransaction();
                 JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, el cobro no ha sido registrado", "Error!", JOptionPane.ERROR_MESSAGE);
-
             }
         }
         if (e.getSource() == clienteGui.getPresupuestos()) {
@@ -434,9 +436,7 @@ public class ControladorCliente implements ActionListener {
             aplicacionGui.getContenedor().add(hcg);
             hcg.setVisible(true);
             hcg.toFront();
-        }
-        
-        
+        }       
     }
 
     public void actualizarPrecio() {
@@ -522,11 +522,8 @@ public class ControladorCliente implements ActionListener {
     }
 
     private void realizarBusqueda() {
-
         listClientes = busqueda.buscarCliente(nomcli.getText());
         actualizarLista();
-
-
     }
 
     private boolean cargarDatosCliente(Cliente c) {

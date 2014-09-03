@@ -224,14 +224,17 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
                             System.out.println("el pago id es:  " + pagoId);
                             idPago = Integer.valueOf(pagoId);
                             v.set("pago_id", pagoId);
+                            v.saveIt();
                         } else {
-                            if (Cliente.findById(idCliente).getBigDecimal("cuenta").compareTo(bd) <= 0) {
+                            if (Cliente.findById(idCliente).getBigDecimal("cuenta").compareTo(bd) >= 0) {
                                 Pago pago = Pago.createIt("fecha", laFecha, "monto", bd, "cliente_id", idCliente, "descripcion", "Cobro de factura con nro : " + abmVenta.getUltimoIdVenta());
                                 System.out.println(pago.getId() + " " + laFecha + " " + bd + " " + idCliente);
                                 String pagoId = pago.getString("id");//Pago.findFirst("fecha = ? and monto = ? and cliente_id = ?", laFecha, bd, idCliente).getString("id");
                                 System.out.println("el pago id es:  " + pagoId);
                                 idPago = Integer.valueOf(pagoId);
                                 v.set("pago_id", pagoId);
+                                v.set("pago", true);
+                                v.saveIt();
                                 Cliente.findById(idCliente).setBigDecimal("cuenta",  Cliente.findById(idCliente).getBigDecimal("cuenta").subtract(bd));
                             }
                         }

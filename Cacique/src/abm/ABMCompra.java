@@ -11,9 +11,7 @@ import java.util.LinkedList;
 import modelos.Articulo;
 import modelos.ArticulosCompras;
 import modelos.Compra;
-import modelos.Proveedor;
 import net.sf.jasperreports.engine.util.Pair;
-import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
 
 /**
@@ -28,7 +26,6 @@ public class ABMCompra {
     }
 
     public boolean alta(Compra c) {
-        Base.openTransaction();
         boolean resultOp = true;
         if (c == null) {
             resultOp = false;
@@ -41,8 +38,6 @@ public class ABMCompra {
             resultOp = resultOp && cargarProductosComprass(idCompra, c.getProductos());//guardo los productos vendidos
             resultOp = resultOp && actualizarStock(c.getProductos());//actualizo el stock de productos vendidos
         }
-
-        Base.commitTransaction();
         return resultOp;
     }
 
@@ -68,7 +63,6 @@ public class ABMCompra {
    
     //FUNCIONA CORRECTAMENTE
     public boolean bajaConDevolucion(Compra c) {
-        Base.openTransaction();
         boolean resultOp = true;
         Integer idCompra = c.getInteger("id");//saco el idCompra
         Compra compra = Compra.findById(idCompra);//la busco en BD y la traigo
@@ -80,7 +74,6 @@ public class ABMCompra {
             ArticulosCompras.delete("compra_id = ?", idCompra);//elimino todos los productosvendidos
             resultOp = resultOp && compra.delete(); //elimino la venta
         }
-        Base.commitTransaction();
         return resultOp;
     }
 

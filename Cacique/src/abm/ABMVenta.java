@@ -13,7 +13,6 @@ import modelos.ArticulosVentas;
 import modelos.ClientesArticulos;
 import modelos.Venta;
 import net.sf.jasperreports.engine.util.Pair;
-import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
 
 /**
@@ -29,8 +28,6 @@ public class ABMVenta {
 
     //FUNCIONA CORRECTAMENTE
     public boolean alta(Venta v) {
-
-        Base.openTransaction();
         boolean resultOp = true;
         if (v == null) {
             resultOp = false;
@@ -44,13 +41,11 @@ public class ABMVenta {
             resultOp = resultOp && actualizarAdquisicionCliente(idCliente, v.getProductos());//actualizo la tabla de productos adquiridos por clientes
             resultOp = resultOp && actualizarStock(v.getProductos());//actualizo el stock de productos vendidos
         }
-        Base.commitTransaction();
         return resultOp;
     }
 
     //FUNCIONA CORRECTAMENTE
     public boolean bajaConDevolucion(Venta v) {
-        Base.openTransaction();
         boolean resultOp = true;
         Integer idVenta = v.getInteger("id");//saco el idVenta
         Venta venta = Venta.findById(idVenta);//la busco en BD y la traigo
@@ -64,7 +59,6 @@ public class ABMVenta {
             ArticulosVentas.delete("venta_id = ?", idVenta);//elimino todos los productosvendidos
             resultOp = resultOp && venta.delete(); //elimino la venta
         }
-        Base.commitTransaction();
         return resultOp;
     }
 

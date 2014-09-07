@@ -217,7 +217,7 @@ public class ControladorPresupuestosRealizados implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == presupuestosRealizadosGui.getEliminarPresupuesto()) {
             int r = tablaFacturas.getSelectedRow();
-            Base.openTransaction();
+             
             if (r < 0) {
                 JOptionPane.showMessageDialog(presupuestosRealizadosGui, "No hay ningun presupuesto seleccionada");
                 return;
@@ -227,7 +227,7 @@ public class ControladorPresupuestosRealizados implements ActionListener {
             abmPresupuesto.baja(v);
             actualizarListaFacturas();
             limpiarFactura();
-            Base.commitTransaction();
+             
             JOptionPane.showMessageDialog(presupuestosRealizadosGui, "Presupuesto borrada exitosamente");
         }
     }

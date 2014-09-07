@@ -32,12 +32,14 @@ public class ABMPresupuesto {
         if (v == null) {
             resultOp = false;
         } else {
+            Base.openTransaction();
             Integer idCliente = (Integer) v.get("cliente_id");
             Presupuesto presupuesto = Presupuesto.create("monto", v.get("monto"), "cliente_id", idCliente, "fecha", v.get("fecha"),"patente",v.get("patente"),"realizado",v.get("realizado"));
             resultOp = resultOp && presupuesto.saveIt();//guardo la venta
             int idPresupuesto = presupuesto.getInteger("id");
             ultimoIdPresupuesto = idPresupuesto;
             resultOp = resultOp && cargarProductosPresupuestados(idPresupuesto, v.getProductos(), v.getPreciosFinales());//guardo los productos vendidos
+        Base.commitTransaction();
         }
         return resultOp;
     }
@@ -50,12 +52,15 @@ public class ABMPresupuesto {
         boolean resultOp = true;
         Integer idVenta = v.getInteger("id");//saco el idVenta
         Presupuesto presupuesto = Presupuesto.findById(idVenta);//la busco en BD y la traigo        
+        Base.openTransaction();
         if (presupuesto == null) {
             resultOp = false;
         } else {
             ArticulosPresupuestos.delete("presupuesto_id = ?", idVenta);//elimino todos los productosvendidos
             resultOp = resultOp && presupuesto.delete();//elimino el Presupuesto
+        
         }
+        Base.commitTransaction();
         return resultOp;
     }
 

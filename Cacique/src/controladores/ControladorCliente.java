@@ -43,7 +43,6 @@ import modelos.Cliente;
 import modelos.Pago;
 import modelos.Venta;
 import net.sf.jasperreports.engine.JRException;
-import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
 
 /**
@@ -228,7 +227,7 @@ public class ControladorCliente implements ActionListener {
         }
         if (e.getSource() == clienteGui.getGuardar() && editandoInfo && isNuevo) { //Guardar
             System.out.println("Boton guardar pulsado");
-            Base.openTransaction();
+             
             if (cargarDatosCliente(cliente)) {                
                 if (abmCliente.alta(cliente)) {
                     clienteGui.habilitarCampos(false);
@@ -242,12 +241,12 @@ public class ControladorCliente implements ActionListener {
                 }
                 realizarBusqueda();
             }
-            Base.commitTransaction();
+             
 
         }
         if (e.getSource() == clienteGui.getBorrar()) { //borrar cliente 
             System.out.println("Boton borrar pulsado");
-            Base.openTransaction();
+             
             clienteGui.habilitarCamposVentas(false);
             clienteGui.habilitarCampos(false);
             if (cliente.getString("id") != null && !editandoInfo) {
@@ -271,7 +270,7 @@ public class ControladorCliente implements ActionListener {
             } else {
                 JOptionPane.showMessageDialog(clienteGui, "No se seleccionó un cliente");
             }
-            Base.commitTransaction();
+             
         }
         if (e.getSource() == clienteGui.getModificar()) { //modificar cliente
             System.out.println("Boton modificar pulsado");
@@ -290,7 +289,7 @@ public class ControladorCliente implements ActionListener {
 
         if (e.getSource() == clienteGui.getGuardar() && editandoInfo && !isNuevo) {
             System.out.println("Boton guardar pulsado");
-            Base.openTransaction();
+             
             if (cargarDatosCliente(cliente)) {
                 if (abmCliente.modificar(cliente)) {
                     clienteGui.habilitarCampos(false);
@@ -308,7 +307,7 @@ public class ControladorCliente implements ActionListener {
                 }
                 realizarBusqueda();
             }
-            Base.commitTransaction();
+             
         }
         if (e.getSource() == clienteGui.getRealizarEntrega()) {
             PagoFacturaGui pagoFacturaGui = new PagoFacturaGui();
@@ -322,7 +321,7 @@ public class ControladorCliente implements ActionListener {
         }
         if (e.getSource() == clienteGui.getEliminarVenta()) {
             int row = tablaVentas.getSelectedRow();
-            Base.openTransaction();
+             
             if (row > -1) {
                 String id = (String) tablaVentas.getValueAt(row, 0);
                 Venta v = Venta.findById(id);
@@ -336,7 +335,7 @@ public class ControladorCliente implements ActionListener {
                 calcularCtaCte();
                 calcularCtaCteActual();
             }
-            Base.commitTransaction();
+             
         }
         if (e.getSource() == clienteGui.getVer()) {
             cargarVentas();
@@ -350,7 +349,7 @@ public class ControladorCliente implements ActionListener {
         }
         if (e.getSource() == clienteGui.getCobrarFactura()) {
             int row = tablaVentas.getSelectedRow();
-            Base.openTransaction();
+             
             if (row > -1) {
                 String p = (String) tablaVentas.getValueAt(row, 4);
                 if (p.equals("Si")) {
@@ -381,13 +380,13 @@ public class ControladorCliente implements ActionListener {
                             int idCliente2 = Integer.parseInt(clienteId);
                             Calendar c = Calendar.getInstance();
                             Date d = c.getTime();
-                              Base.openTransaction();
+                               
                             Pago pago = Pago.createIt("fecha", d, "monto", monto, "cliente_id", idCliente2,"descripcion","Cobro de factura con nro : "+v.getString("id"));
                             pago.saveIt();
                             String pagoId = pago.getString("id");//Pago.findFirst("fecha = ? and monto = ? and cliente_id = ?", d, monto, idCliente2).getString("id");
                             v.set("pago_id", pagoId);
                             v.saveIt();
-                              Base.commitTransaction();
+                               
                             JOptionPane.showMessageDialog(clienteGui, "¡Cobro registrado exitosamente!");
                                                         reportePago.mostrarPago(Integer.valueOf(pagoId));
 
@@ -406,9 +405,9 @@ public class ControladorCliente implements ActionListener {
                         JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, el cobro no ha sido registrado", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
                 }
-                Base.commitTransaction();
+                 
             } else {
-                Base.commitTransaction();
+                 
                 JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, el cobro no ha sido registrado", "Error!", JOptionPane.ERROR_MESSAGE);
             }
         }

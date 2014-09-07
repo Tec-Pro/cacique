@@ -12,6 +12,7 @@ import modelos.Articulo;
 import modelos.ArticulosCompras;
 import modelos.Compra;
 import net.sf.jasperreports.engine.util.Pair;
+import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
 
 /**
@@ -30,6 +31,7 @@ public class ABMCompra {
         if (c == null) {
             resultOp = false;
         } else {
+            Base.openTransaction();
             Integer idProveedor = (Integer) c.get("proveedor_id");
             Compra compra = Compra.create("monto", c.get("monto"), "proveedor_id", idProveedor, "fecha", c.get("fecha"), "pago", c.get("pago"));
             resultOp = resultOp && compra.saveIt();//guardo la venta
@@ -37,6 +39,7 @@ public class ABMCompra {
             idCompraAlta = idCompra;//Agregada para solucionar el problema
             resultOp = resultOp && cargarProductosComprass(idCompra, c.getProductos());//guardo los productos vendidos
             resultOp = resultOp && actualizarStock(c.getProductos());//actualizo el stock de productos vendidos
+            Base.commitTransaction();
         }
         return resultOp;
     }
@@ -66,6 +69,7 @@ public class ABMCompra {
         boolean resultOp = true;
         Integer idCompra = c.getInteger("id");//saco el idCompra
         Compra compra = Compra.findById(idCompra);//la busco en BD y la traigo
+        Base.openTransaction();
         if (compra == null) {
             resultOp = false;
         } else {
@@ -74,6 +78,7 @@ public class ABMCompra {
             ArticulosCompras.delete("compra_id = ?", idCompra);//elimino todos los productosvendidos
             resultOp = resultOp && compra.delete(); //elimino la venta
         }
+        Base.commitTransaction();
         return resultOp;
     }
 

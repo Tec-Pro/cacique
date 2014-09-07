@@ -13,6 +13,7 @@ import modelos.ArticulosVentas;
 import modelos.ClientesArticulos;
 import modelos.Venta;
 import net.sf.jasperreports.engine.util.Pair;
+import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
 
 /**
@@ -52,12 +53,14 @@ public class ABMVenta {
         if (venta == null) {
             resultOp = false;
         } else {
+            Base.openTransaction();
             Integer idCliente = (Integer) venta.get("cliente_id");//saco el idcliente de esa venta
             LinkedList<Pair> viejosProductos = buscarProductosVendidos(idVenta); //saco los viejos productos de la venta
             resultOp = resultOp && devolucionStock(viejosProductos);//actualizo el stock por haber sacado los viejos productos
             resultOp = resultOp && eliminarAdquisicionCliente(idCliente, viejosProductos);//actualizo los productos adquiridos quitando los viejos productos
             ArticulosVentas.delete("venta_id = ?", idVenta);//elimino todos los productosvendidos
             resultOp = resultOp && venta.delete(); //elimino la venta
+        Base.commitTransaction();
         }
         return resultOp;
     }
@@ -70,6 +73,7 @@ public class ABMVenta {
         if (v == null) {
             return false;
         } else {
+            Base.openTransaction();
             v.set("pago", true);
             v.set("monto", monto);//seteo el monto de la venta total en el modelo
             LinkedList<BigDecimal> preciosFinales = new LinkedList();
@@ -81,7 +85,10 @@ public class ABMVenta {
                 BigDecimal precioActual = art.getBigDecimal("precio_venta");
                 preciosFinales.add(precioActual);
             }
-            return v.saveIt() && cargarProductosVendidos(v.getInteger("id"), pairList, preciosFinales);
+            boolean ret=v.saveIt() && cargarProductosVendidos(v.getInteger("id"), pairList, preciosFinales);
+            Base.commitTransaction();
+            return ret;
+            
         }
     }
 

@@ -6,6 +6,7 @@ package controladores;
 
 import abm.ABMPresupuesto;
 import busqueda.Busqueda;
+import interfaz.AgregarInexistenteGui;
 import interfaz.AplicacionGui;
 import interfaz.PresupuestoGui;
 import java.awt.event.ActionEvent;
@@ -44,7 +45,7 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
     private List clientelista;
     private Busqueda busqueda;
     private ABMPresupuesto abmPresupuesto;
-    private PresupuestoGui PresupuestoGui;
+    public PresupuestoGui PresupuestoGui;
     private JTable tablap;
     private JTable tablac;
     private DefaultTableModel tablaClientes;
@@ -173,6 +174,9 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
             PresupuestoGui.paraVerVenta(false);
             PresupuestoGui.getRealizarVenta().setEnabled(true);
         }
+        if (e.getSource() == PresupuestoGui.getAgregarInexistente()){
+            AgregarInexistenteGui inexistente = new AgregarInexistenteGui(this);  
+        }
         if (e.getSource() == PresupuestoGui.getRealizarVenta()) {//Boton realizar venta
             if (PresupuestoGui.getClienteFactura().getText().equals("") || PresupuestoGui.getCalenFacturaText().getText().equals("") || PresupuestoGui.getTablaFactura().getRowCount() == 0) {
                 JOptionPane.showMessageDialog(PresupuestoGui, "Fecha, cliente vacio o no hay productos cargados", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -242,7 +246,7 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
         }
     }
 
-    private void actualizarListaProd() {
+    public void actualizarListaProd() {
         tablaProd.setRowCount(0);
         prodlista = Articulo.where("codigo like ? or descripcion like ? or equivalencia_1 like ? or equivalencia_2 like ? or equivalencia_3 like ?", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%");
         Iterator<Articulo> it = prodlista.iterator();

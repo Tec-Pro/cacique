@@ -55,10 +55,8 @@ public class ControladorArticulo implements ActionListener, FocusListener {
         tablaArticulos = articuloGui.getArticulos();
         listArticulos = new LinkedList();
         listProveedores = new LinkedList();
-        abmArticulo = new ABMArticulo();
-        
-        listArticulos = Articulo.findAll();
-        
+        abmArticulo = new ABMArticulo();        
+        listArticulos = Articulo.findAll();        
         actualizarLista();
         reporteArticulos = new ControladorJReport("listadoPrecios.jasper");
         articuloGui.getBusqueda().addKeyListener(new java.awt.event.KeyAdapter() {
@@ -115,8 +113,7 @@ public class ControladorArticulo implements ActionListener, FocusListener {
             articuloGui.getGuardar().setEnabled(false);
             articuloGui.getNuevo().setEnabled(true);
             editandoInfo = false;
-            articuloGui.limpiarCampos();
-            
+            articuloGui.limpiarCampos();            
             articulo = Articulo.findFirst("codigo = ?", tablaArticulos.getValueAt(tablaArticulos.getSelectedRow(), 0));
             articuloGui.CargarCampos(articulo);
             

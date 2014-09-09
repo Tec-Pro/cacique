@@ -211,3 +211,10 @@ ALTER TABLE `cacique`.`trabajos` ADD COLUMN `aceite_usa` VARCHAR(45) NULL  AFTER
 ALTER TABLE `cacique`.`presupuestos` ADD COLUMN `patente` VARCHAR(45) NULL  AFTER `fecha` , ADD COLUMN `realizado` VARCHAR(70) NULL  AFTER `patente` ;
 ALTER TABLE `cacique`.`trabajos` ADD COLUMN `proximo_cambio` VARCHAR(45) NULL  AFTER `auto_id` ;
 ALTER TABLE `cacique`.`pagos` ADD COLUMN `descripcion` VARCHAR(200) NULL  AFTER `cliente_id` ;
+
+CREATE  TABLE `cacique`.`demos` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `fecha` DATE NULL ,
+  `dias` INT NULL DEFAULT 15 ,
+  PRIMARY KEY (`id`) );
+ALTER TABLE `cacique`.`demos` ADD COLUMN `activado` INT(1) NULL  AFTER `dias` ;

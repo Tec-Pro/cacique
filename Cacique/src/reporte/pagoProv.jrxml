@@ -10,7 +10,7 @@
 	<parameter name="logo" class="java.io.InputStream"/>
 	<parameter name="pago" class="java.lang.Integer"/>
 	<queryString>
-		<![CDATA[SELECT p.fecha,p.monto,p.descripcion,c.nombre FROM cacique.pagos as p, cacique.clientes as c where p.cliente_id= c.id and p.id = $P{pago};]]>
+		<![CDATA[SELECT p.fecha,p.monto,p.descripcion FROM cacique.pagos as p where p.id = $P{pago};]]>
 	</queryString>
 	<field name="fecha" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -19,9 +19,6 @@
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="descripcion" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="nombre" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<background>
@@ -65,13 +62,6 @@
 				</textElement>
 				<text><![CDATA[He recibido de]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="106" y="5" width="449" height="29" uuid="e730c74b-6636-4abd-a83f-9774be2a47c2"/>
-				<textElement>
-					<font size="13" isUnderline="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
-			</textField>
 			<rectangle radius="10">
 				<reportElement x="10" y="34" width="532" height="40" uuid="3c9ec0ec-173a-46f9-aaa3-534959eafcad"/>
 			</rectangle>

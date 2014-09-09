@@ -203,10 +203,10 @@ private AplicacionGui appGui;
             trabajoGui.bloquearCampos(false);
             
             
-            if (trabajo.getString("id") != null && !editandoInfo) {
+            if (!trabajoGui.getIdTrabajo().getText().equals("") && !editandoInfo) {
                 Integer resp = JOptionPane.showConfirmDialog(trabajoGui, "¿Desea borrar el trabajo " , "Confirmar borrado", JOptionPane.YES_NO_OPTION);
                 if (resp == JOptionPane.YES_OPTION) {
-                    
+                    trabajo.set("id", trabajoGui.getIdTrabajo().getText());
                     Boolean seBorro = abmTrabajo.baja(trabajo);
                     
                     if (seBorro) {

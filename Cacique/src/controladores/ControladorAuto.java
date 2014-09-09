@@ -144,6 +144,7 @@ public class ControladorAuto  implements ActionListener {
             trabajoGui.getModificar().setEnabled(true);
             trabajoGui.getGuardar().setEnabled(false);
             trabajoGui.getBotImprimir().setEnabled(true);
+            trabajoGui.getBorrar().setEnabled(true);
                         trabajoGui.setVisible(true);
                         
             trabajoGui.toFront();

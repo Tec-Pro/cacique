@@ -276,6 +276,7 @@ public class ControladorApliacion implements ActionListener {
             autoGui.toFront();
         }
         if (ae.getSource() == aplicacionGui.getBotTrabajos()) {
+            controladorTrabajo.cargarTodos();
             trabajoGui.setVisible(true);
             trabajoGui.toFront();
         }

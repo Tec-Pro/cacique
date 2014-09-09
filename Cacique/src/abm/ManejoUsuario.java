@@ -5,6 +5,9 @@
 package abm;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import javax.swing.JOptionPane;
+import modelos.Demo;
 import modelos.Usuario;
 import org.javalite.activejdbc.Base;
 
@@ -17,7 +20,49 @@ public class ManejoUsuario {
     public void crearUsuario() {
         if (Usuario.findAll().isEmpty()) {
             Usuario.createIt();
+            Demo demo = new Demo();
+            demo = Demo.createIt("fecha", Calendar.getInstance().getTime(), "activado", false);
+
+        } else {
+            Base.openTransaction();
+            Demo demo = (Demo) Demo.findAll().get(0);
+            if (!demo.getBoolean("activado")) {
+
+                
+                String cod=JOptionPane.showInputDialog(null,"Ingrese codigo de activación","");
+                
+                if (cod.equals("tecpro_codigo_activacion")) {
+                    demo.setBoolean("activado", true);
+                    demo.saveIt();
+                } else {
+                    JOptionPane.showMessageDialog(null, "codigo incorrecto, se seguirá con la demo");
+                    if (demo.getInteger("dias") == 0) {
+                        int opt = JOptionPane.showConfirmDialog(null, "Demo finalizada, debe activar el programa, se cerrará el programa", "Aviso", JOptionPane.CLOSED_OPTION);
+                        System.exit(0);
+                    } else {
+                      java.sql.Date fechaHoy= new java.sql.Date( Calendar.getInstance().getTime().getTime());
+                      java.sql.Date fechaUlt= demo.getDate("fecha");
+                        if (fechaUlt.before(fechaHoy) && !fechaUlt.toString().equals(fechaHoy.toString())) {
+                            demo.set("dias", demo.getInteger("dias") - 1);
+                            demo.set("fecha", Calendar.getInstance().getTime());
+                        } else {
+                            if (fechaUlt.after(fechaHoy)) {
+                                int opt = JOptionPane.showConfirmDialog(null, "Demo finalizada, debe activar el programa, se cerrará el programa", "Aviso", JOptionPane.CLOSED_OPTION);
+                                 demo.set("dias",0);
+                                 demo.saveIt();
+                                 Base.commitTransaction();
+                                System.exit(0);
+                            }
+                        }
+                    }
+
+                }
+            }
+            demo.saveIt();
+                                Base.commitTransaction();
+
         }
+
     }
 
     public void modificarNombre(String nombre) {

@@ -5,21 +5,26 @@
 package interfaz;
 
 import abm.ManejoIp;
+import controladores.ControladorJReport;
 import controladores.TratamientoString;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import modelos.Compra;
 import modelos.Pago;
 import modelos.Proveedor;
 import modelos.Venta;
+import net.sf.jasperreports.engine.JRException;
 import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
 import org.javalite.activejdbc.Model;
@@ -36,6 +41,7 @@ public class RealizarPagoGui extends javax.swing.JDialog {
     BigDecimal totalConDescuentoFloat = new BigDecimal(0);
     BigDecimal porcentaje = new BigDecimal(0);
     Compra compra;
+    private ControladorJReport controladorReporte;
     //private DecimalFormat formateador = new DecimalFormat("############.##");
 
     /**
@@ -60,6 +66,15 @@ public class RealizarPagoGui extends javax.swing.JDialog {
         proveedor.setText(prov.getString("nombre"));
         fecha.setDate(Calendar.getInstance().getTime());
         monto.requestFocus();
+        try {
+            controladorReporte= new ControladorJReport("pagoProv.jasper");
+        } catch (JRException ex) {
+            Logger.getLogger(RealizarPagoGui.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(RealizarPagoGui.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(RealizarPagoGui.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public RealizarPagoGui(java.awt.Frame parent, boolean modal, Proveedor prov, Compra compra) {
@@ -89,6 +104,15 @@ public class RealizarPagoGui extends javax.swing.JDialog {
         descuento.setText("0");
 
         monto.setEnabled(false);
+        try {
+            controladorReporte= new ControladorJReport("pagoProv.jasper");
+        } catch (JRException ex) {
+            Logger.getLogger(RealizarPagoGui.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(RealizarPagoGui.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(RealizarPagoGui.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
@@ -369,10 +393,13 @@ public class RealizarPagoGui extends javax.swing.JDialog {
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
         
         //try {
+        Base.openTransaction();
         java.sql.Date sqlFecha = new java.sql.Date(fecha.getDate().getTime());
         Pago pago = Pago.createIt("fecha", sqlFecha, "monto", monto.getText().replaceAll(",", "."), "descripcion",descripcion.getText());
         pago.saveIt();
+         Base.commitTransaction();
         prov.add(pago);
+       
         String pagoId = pago.getString("id");
         if (compra == null) {
             BigDecimal entrega = pago.getBigDecimal("monto").setScale(2, RoundingMode.CEILING);//pago
@@ -424,6 +451,16 @@ public class RealizarPagoGui extends javax.swing.JDialog {
 
         
         JOptionPane.showMessageDialog(this, "¡Pago registrado correctamente");
+        try {
+            System.out.println(Integer.valueOf(pagoId));
+            controladorReporte.mostrarPagoProv(Integer.valueOf(pagoId));
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(RealizarPagoGui.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(RealizarPagoGui.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(RealizarPagoGui.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose();
         //} catch (Exception ex) {
         //    JOptionPane.showMessageDialog(this, "Ocurrió un error","Error",JOptionPane.ERROR_MESSAGE);

@@ -190,7 +190,7 @@
                                   <EmptySpace min="-2" max="-2" attributes="0"/>
                                   <Component id="labelBusquedaCodigo" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
-                                  <Component id="busquedaCodigoArticulo" pref="216" max="32767" attributes="0"/>
+                                  <Component id="busquedaCodigoArticulo" pref="185" max="32767" attributes="0"/>
                               </Group>
                               <Component id="jScrollPane6" alignment="0" pref="0" max="32767" attributes="0"/>
                           </Group>
@@ -290,7 +290,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="labelApellido" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
-                                  <Component id="busquedaNombre" pref="256" max="32767" attributes="0"/>
+                                  <Component id="busquedaNombre" pref="225" max="32767" attributes="0"/>
                               </Group>
                               <Component id="jScrollPane7" alignment="0" pref="0" max="32767" attributes="0"/>
                           </Group>
@@ -377,7 +377,7 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane8" alignment="1" pref="471" max="32767" attributes="0"/>
+                          <Component id="jScrollPane8" alignment="1" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="labelCliente" min="-2" max="-2" attributes="0"/>
@@ -390,11 +390,13 @@
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="borrarArticulosSeleccionados" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="agregarInexistente" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="abonaSi" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="labelTotal" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                               <Component id="totalFactura" min="-2" pref="106" max="-2" attributes="0"/>
@@ -413,16 +415,19 @@
                                   <Component id="calendarioFactura" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-                              <Component id="jScrollPane8" pref="168" max="32767" attributes="0"/>
+                              <Component id="jScrollPane8" pref="185" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="103" alignment="1" groupAlignment="3" attributes="0">
                                       <Component id="borrarArticulosSeleccionados" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                                      <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="agregarInexistente" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="1" attributes="0">
-                                          <Component id="abonaSi" min="-2" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="jLabel4" alignment="1" min="-2" max="-2" attributes="0"/>
+                                              <Component id="abonaSi" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          </Group>
                                           <Group type="103" groupAlignment="3" attributes="0">
                                               <Component id="totalFactura" alignment="3" min="-2" max="-2" attributes="0"/>
                                               <Component id="labelTotal" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -493,7 +498,7 @@
                     </Component>
                     <Component class="javax.swing.JButton" name="borrarArticulosSeleccionados">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Borrar articulos seleccionados"/>
+                        <Property name="text" type="java.lang.String" value="Borrar articulo"/>
                         <Property name="toolTipText" type="java.lang.String" value="Borrar articulos seleccionados en la factura"/>
                         <Property name="horizontalAlignment" type="int" value="2"/>
                       </Properties>
@@ -515,6 +520,11 @@
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="abonaSiActionPerformed"/>
                       </Events>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="agregarInexistente">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Agregar manualmente"/>
+                      </Properties>
                     </Component>
                   </SubComponents>
                 </Container>

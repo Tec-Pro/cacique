@@ -190,7 +190,7 @@
                                   <EmptySpace min="-2" max="-2" attributes="0"/>
                                   <Component id="labelBusquedaCodigo" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
-                                  <Component id="busquedaCodigoArticulo" pref="233" max="32767" attributes="0"/>
+                                  <Component id="busquedaCodigoArticulo" pref="234" max="32767" attributes="0"/>
                               </Group>
                               <Component id="jScrollPane6" alignment="0" pref="0" max="32767" attributes="0"/>
                           </Group>
@@ -290,7 +290,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="labelApellido" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
-                                  <Component id="busquedaNombre" pref="273" max="32767" attributes="0"/>
+                                  <Component id="busquedaNombre" pref="274" max="32767" attributes="0"/>
                               </Group>
                               <Component id="jScrollPane7" alignment="0" pref="0" max="32767" attributes="0"/>
                           </Group>
@@ -377,7 +377,7 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane8" alignment="1" pref="454" max="32767" attributes="0"/>
+                          <Component id="jScrollPane8" alignment="1" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="labelCliente" min="-2" max="-2" attributes="0"/>
@@ -547,7 +547,7 @@
                     </Component>
                     <Component class="javax.swing.JButton" name="agregarInexistente">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Agregar Inexistente"/>
+                        <Property name="text" type="java.lang.String" value="Agregar manualmente"/>
                         <Property name="toolTipText" type="java.lang.String" value="Borrar articulos seleccionados en la factura"/>
                         <Property name="horizontalAlignment" type="int" value="2"/>
                       </Properties>

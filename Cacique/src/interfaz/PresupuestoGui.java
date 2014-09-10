@@ -388,7 +388,7 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(labelBusquedaCodigo)
                 .addGap(54, 54, 54)
-                .addComponent(busquedaCodigoArticulo, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE))
+                .addComponent(busquedaCodigoArticulo, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE))
             .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         panelArticulosLayout.setVerticalGroup(
@@ -441,7 +441,7 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
             .addGroup(panelClientesLayout.createSequentialGroup()
                 .addComponent(labelApellido)
                 .addGap(17, 17, 17)
-                .addComponent(busquedaNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE))
+                .addComponent(busquedaNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE))
             .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         panelClientesLayout.setVerticalGroup(
@@ -530,7 +530,7 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
         labelTotal1.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
         labelTotal1.setText("Patente");
 
-        agregarInexistente.setText("Agregar Inexistente");
+        agregarInexistente.setText("Agregar manualmente");
         agregarInexistente.setToolTipText("Borrar articulos seleccionados en la factura");
         agregarInexistente.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
@@ -538,7 +538,7 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
         panelFactura.setLayout(panelFacturaLayout);
         panelFacturaLayout.setHorizontalGroup(
             panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
+            .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(panelFacturaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelCliente)

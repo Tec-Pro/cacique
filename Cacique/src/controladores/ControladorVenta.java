@@ -7,6 +7,7 @@ package controladores;
 import abm.ABMVenta;
 import abm.ManejoIp;
 import busqueda.Busqueda;
+import interfaz.AgregarManualVentaGui;
 import interfaz.AplicacionGui;
 import interfaz.PagoFacturaGui;
 import interfaz.VentaGui;
@@ -50,7 +51,7 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
     private List clientelista;
     private Busqueda busqueda;
     private ABMVenta abmVenta;
-    private VentaGui ventaGui;
+    public VentaGui ventaGui;
     private JTable tablap;
     private JTable tablac;
     private DefaultTableModel tablaClientes;
@@ -180,6 +181,11 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
             ventaGui.limpiarVentana();
             ventaGui.paraVerVenta(false);
             ventaGui.getRealizarVenta().setEnabled(true);
+        }
+        if (e.getSource() == ventaGui.getAgregarInexistente()){
+            AgregarManualVentaGui agre= new AgregarManualVentaGui(apgui, true, this);
+            agre.setLocationRelativeTo(null);
+            agre.setVisible(true);
         }
         if (e.getSource() == ventaGui.getRealizarVenta()) {//Boton realizar venta
             if (ventaGui.getClienteFactura().getText().equals("") || ventaGui.getCalenFacturaText().getText().equals("") || ventaGui.getTablaFactura().getRowCount() == 0) {

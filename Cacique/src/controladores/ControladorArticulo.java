@@ -82,11 +82,11 @@ public class ControladorArticulo implements ActionListener, FocusListener {
     private void realizarBusqueda() {
         
         if (articuloGui.getFiltroEquiv().isSelected()) {// se esta buscando por los equivalentes a este
-                   listArticulos = Articulo.where("equivalencia_1 like ? or equivalencia_2 like ? or equivalencia_3 like ? ", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%");
+                   listArticulos = Articulo.where("es_articulo = 1 and (equivalencia_1 like ? or equivalencia_2 like ? or equivalencia_3 like ? ) ", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%");
 
         }
         else{
-                    listArticulos = Articulo.where("codigo like ? or descripcion like ? or marca like ? or id like ? or nombre like ? or id like ?", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%");
+                    listArticulos = Articulo.where("es_articulo = 1 and (codigo like ? or descripcion like ? or marca like ? or id like ? or nombre like ? or id like ?)", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%");
 
         }
         actualizarLista();

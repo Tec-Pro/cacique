@@ -40,7 +40,7 @@ public class ControladorArticulosAgot {
         tablaArticulos = this.articuloSinStockGui.getArticulos();
         listArticulos = new LinkedList();
         
-        listArticulos = Articulo.where("stock_actual <= stock_minimo", (Object) null);
+        listArticulos = Articulo.where("es_articulo = 1 and stock_actual <= stock_minimo", (Object) null);
         
         articuloSinStockGui.getBusqueda().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -62,7 +62,7 @@ public class ControladorArticulosAgot {
 
     public void realizarBusqueda() {
         
-        listArticulos = Articulo.where("(codigo like ? or descripcion like ? or marca like ? or id like ? or nombre like ? or id like ?) and stock_actual<=stock_minimo", "%" + articuloSinStockGui.getBusqueda().getText() + "%", "%" + articuloSinStockGui.getBusqueda().getText() + "%", "%" + articuloSinStockGui.getBusqueda().getText() + "%", "%" + articuloSinStockGui.getBusqueda().getText() + "%", "%" + articuloSinStockGui.getBusqueda().getText() + "%", "%" + articuloSinStockGui.getBusqueda().getText() + "%");
+        listArticulos = Articulo.where("(codigo like ? or descripcion like ? or marca like ? or id like ? or nombre like ? or id like ?) and stock_actual<=stock_minimo and es_articulo = 1 ", "%" + articuloSinStockGui.getBusqueda().getText() + "%", "%" + articuloSinStockGui.getBusqueda().getText() + "%", "%" + articuloSinStockGui.getBusqueda().getText() + "%", "%" + articuloSinStockGui.getBusqueda().getText() + "%", "%" + articuloSinStockGui.getBusqueda().getText() + "%", "%" + articuloSinStockGui.getBusqueda().getText() + "%");
         actualizarLista();
         
 

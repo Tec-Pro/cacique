@@ -299,7 +299,7 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
     private void actualizarListaProd() {
 
         tablaProd.setRowCount(0);
-        prodlista = Articulo.where("codigo like ? or descripcion like ? or equivalencia_1 like ? or equivalencia_2 like ? or equivalencia_3 like ?", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%");
+        prodlista = Articulo.where("es_articulo = 1 and (codigo like ? or descripcion like ? or equivalencia_1 like ? or equivalencia_2 like ? or equivalencia_3 like ?)", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%");
         Iterator<Articulo> it = prodlista.iterator();
         while (it.hasNext()) {
             Articulo a = it.next();

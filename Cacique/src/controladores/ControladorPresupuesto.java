@@ -6,7 +6,7 @@ package controladores;
 
 import abm.ABMPresupuesto;
 import busqueda.Busqueda;
-import interfaz.AgregarInexistenteGui;
+import interfaz.AgregarManualPresGui;
 import interfaz.AplicacionGui;
 import interfaz.PresupuestoGui;
 import java.awt.event.ActionEvent;
@@ -175,7 +175,9 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
             PresupuestoGui.getRealizarVenta().setEnabled(true);
         }
         if (e.getSource() == PresupuestoGui.getAgregarInexistente()){
-            AgregarInexistenteGui inexistente = new AgregarInexistenteGui(this);  
+            AgregarManualPresGui agre= new AgregarManualPresGui(apgui, true, this);
+            agre.setLocationRelativeTo(null);
+            agre.setVisible(true);
         }
         if (e.getSource() == PresupuestoGui.getRealizarVenta()) {//Boton realizar venta
             if (PresupuestoGui.getClienteFactura().getText().equals("") || PresupuestoGui.getCalenFacturaText().getText().equals("") || PresupuestoGui.getTablaFactura().getRowCount() == 0) {
@@ -248,7 +250,7 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
 
     public void actualizarListaProd() {
         tablaProd.setRowCount(0);
-        prodlista = Articulo.where("codigo like ? or descripcion like ? or equivalencia_1 like ? or equivalencia_2 like ? or equivalencia_3 like ?", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%");
+        prodlista = Articulo.where("es_articulo = 1 and (codigo like ? or descripcion like ? or equivalencia_1 like ? or equivalencia_2 like ? or equivalencia_3 like ?)", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%");
         Iterator<Articulo> it = prodlista.iterator();
         while (it.hasNext()) {
             Articulo a = it.next();

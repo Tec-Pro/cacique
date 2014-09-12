@@ -189,7 +189,7 @@ public class Busqueda {
 
     public List<Articulo> provee(String cuil) {
         Proveedor p = Proveedor.findFirst("nombre= ?", cuil);
-        return Articulo.where("proveedor_id = ?", p.getId());
+        return Articulo.where("es_articulo=1 and proveedor_id = ?", p.getId());
     }
 
     /**
@@ -208,16 +208,16 @@ public class Busqueda {
      */
     public List<Articulo> filtroProducto(String codigo, String fram) {
         List<Articulo> result;
-        result = Articulo.where("codigo like ? and equivalencia_fram like?", "%" + codigo + "%", "%" + fram + "%");
+        result = Articulo.where("es_articulo=1 and codigo like ? and equivalencia_fram like?", "%" + codigo + "%", "%" + fram + "%");
         return result;
     }
 
     public List<Articulo> filtroProducto(String codigo) {
-        return Articulo.where("codigo like ?", "%" + codigo + "%");
+        return Articulo.where("es_articulo=1 and codigo like ?", "%" + codigo + "%");
     }
 
     public List<Articulo> filtroProducto2(String fram) {
-        return Articulo.where("equivalencia_fram like ?", "%" + fram + "%");
+        return Articulo.where("es_articulo=1 and equivalencia_fram like ?", "%" + fram + "%");
     }
        
 }

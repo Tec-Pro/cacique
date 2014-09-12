@@ -132,8 +132,8 @@ public class ControladorAuto  implements ActionListener {
     }
             
               private void tablaMouseClickedAuto(java.awt.event.MouseEvent evt) {
-        if (evt.getClickCount() == 2) {
-            
+            if(evt.getClickCount()==2){
+            System.out.println("trabajo click");
             Trabajo t = Trabajo.findById(tablaTrabajos.getValueAt(tablaTrabajos.getSelectedRow(), 0));
             trabajoGui.setAutoModel(t.parent((Auto.class)));
             trabajoGui.setClienteModel(t.parent(Cliente.class));
@@ -145,10 +145,11 @@ public class ControladorAuto  implements ActionListener {
             trabajoGui.getGuardar().setEnabled(false);
             trabajoGui.getBotImprimir().setEnabled(true);
             trabajoGui.getBorrar().setEnabled(true);
-                        trabajoGui.setVisible(true);
-                        
+            trabajoGui.setVisible(true);
+            autoGui.toBack();
             trabajoGui.toFront();
-        }
+            }
+        
     }
             
              public void tablaMouseClicked(java.awt.event.MouseEvent evt) {

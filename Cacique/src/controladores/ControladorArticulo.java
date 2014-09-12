@@ -56,7 +56,7 @@ public class ControladorArticulo implements ActionListener, FocusListener {
         listArticulos = new LinkedList();
         listProveedores = new LinkedList();
         abmArticulo = new ABMArticulo();        
-        listArticulos = Articulo.findAll();        
+        listArticulos = Articulo.where("es_articulo =? ", 1);
         actualizarLista();
         reporteArticulos = new ControladorJReport("listadoPrecios.jasper");
         articuloGui.getBusqueda().addKeyListener(new java.awt.event.KeyAdapter() {
@@ -96,7 +96,7 @@ public class ControladorArticulo implements ActionListener, FocusListener {
 
     public void cargarTodos() {
         
-        listArticulos = Articulo.findAll();
+        listArticulos = Articulo.where("es_articulo=?",1);
         if (!listArticulos.isEmpty()) {
             realizarBusqueda();
             System.out.println("cargue todo");

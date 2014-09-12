@@ -56,6 +56,7 @@ public class CompraGui extends javax.swing.JInternalFrame {
         this.realizarCompra.addActionListener(lis);
         this.borrarArticulosSeleccionados.addActionListener(lis);
         this.abonaSi.addActionListener(lis);
+        this.agregarInexistente.addActionListener(lis);
     }
 
     /**
@@ -77,6 +78,12 @@ public class CompraGui extends javax.swing.JInternalFrame {
     public JLabel getLabelTotalConDes() {
         return labelTotalConDes;
     }
+
+    public JButton getAgregarInexistente() {
+        return agregarInexistente;
+    }
+    
+    
     
     /**
      * Retorno la tabla compra con tipo TableModelDefault para pdoer realizar
@@ -302,6 +309,7 @@ public class CompraGui extends javax.swing.JInternalFrame {
         abonaSi = new javax.swing.JCheckBox();
         labelTotalConDes = new javax.swing.JLabel();
         descuento = new javax.swing.JLabel();
+        agregarInexistente = new javax.swing.JButton();
         panelControlFactura = new javax.swing.JPanel();
         compraNueva = new javax.swing.JButton();
         realizarCompra = new javax.swing.JButton();
@@ -370,7 +378,7 @@ public class CompraGui extends javax.swing.JInternalFrame {
             .addGroup(panelArticulosLayout.createSequentialGroup()
                 .addComponent(labelNombre1)
                 .addGap(17, 17, 17)
-                .addComponent(codigo, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE))
+                .addComponent(codigo, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE))
         );
         panelArticulosLayout.setVerticalGroup(
             panelArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -422,7 +430,7 @@ public class CompraGui extends javax.swing.JInternalFrame {
             .addGroup(panelProveedoresLayout.createSequentialGroup()
                 .addComponent(labelNombre)
                 .addGap(17, 17, 17)
-                .addComponent(busquedaNombreProveedor, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE))
+                .addComponent(busquedaNombreProveedor, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE))
             .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         panelProveedoresLayout.setVerticalGroup(
@@ -514,6 +522,8 @@ public class CompraGui extends javax.swing.JInternalFrame {
         descuento.setForeground(new java.awt.Color(8, 152, 33));
         descuento.setText("jLabel2");
 
+        agregarInexistente.setText("Agregar manualmente");
+
         javax.swing.GroupLayout panelCompraLayout = new javax.swing.GroupLayout(panelCompra);
         panelCompra.setLayout(panelCompraLayout);
         panelCompraLayout.setHorizontalGroup(
@@ -527,22 +537,25 @@ public class CompraGui extends javax.swing.JInternalFrame {
                 .addComponent(jLabel3)
                 .addGap(4, 4, 4)
                 .addComponent(calendarioCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCompraLayout.createSequentialGroup()
-                .addComponent(borrarArticulosSeleccionados)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
-                .addGap(6, 6, 6)
-                .addComponent(abonaSi)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
-                .addComponent(labelTotal)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(totalCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(panelCompraLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(labelTotalConDes, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(agregarInexistente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(borrarArticulosSeleccionados, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(descuento, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(panelCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelCompraLayout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(6, 6, 6)
+                        .addComponent(abonaSi)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(labelTotal)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(totalCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCompraLayout.createSequentialGroup()
+                        .addComponent(labelTotalConDes, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(descuento, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         panelCompraLayout.setVerticalGroup(
             panelCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -554,7 +567,7 @@ public class CompraGui extends javax.swing.JInternalFrame {
                         .addComponent(jLabel3))
                     .addComponent(calendarioCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(borrarArticulosSeleccionados, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -563,10 +576,11 @@ public class CompraGui extends javax.swing.JInternalFrame {
                         .addComponent(labelTotal)
                         .addComponent(abonaSi)
                         .addComponent(jLabel5)))
-                .addGap(10, 10, 10)
+                .addGap(0, 0, 0)
                 .addGroup(panelCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelTotalConDes)
-                    .addComponent(descuento)))
+                    .addComponent(descuento)
+                    .addComponent(agregarInexistente)))
         );
 
         panelControlFactura.setLayout(new java.awt.GridLayout(1, 0));
@@ -635,6 +649,7 @@ public class CompraGui extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox abonaSi;
+    private javax.swing.JButton agregarInexistente;
     private javax.swing.JButton borrarArticulosSeleccionados;
     private javax.swing.JTextField busquedaNombreProveedor;
     private com.toedter.calendar.JDateChooser calendarioCompra;

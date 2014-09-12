@@ -7,6 +7,8 @@ package controladores;
 import abm.ABMCompra;
 import abm.ManejoIp;
 import busqueda.Busqueda;
+import interfaz.AgregarManualProvGui;
+import interfaz.AgregarManualVentaGui;
 import interfaz.AplicacionGui;
 import interfaz.CompraGui;
 import interfaz.RealizarPagoGui;
@@ -178,7 +180,7 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
             tablaProveedores.addRow(row);
         }
         tablaProd.setRowCount(0);
-        prodlista = Articulo.findAll();
+        prodlista = Articulo.where("es_articulo = ?", 1);
         Iterator<Articulo> it2 = prodlista.iterator();
         while (it2.hasNext()) {
             Articulo a = it2.next();
@@ -212,7 +214,7 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
 
     public void actualizarListaProd() {
         tablaProd.setRowCount(0);
-        prodlista = Articulo.where("codigo like ? or descripcion like ? or equivalencia_1 like ? or equivalencia_2 like ? or equivalencia_3 like ?", "%" + textCodProd.getText() + "%", "%" + textCodProd.getText() + "%", "%" + textCodProd.getText() + "%", "%" + textCodProd.getText() + "%", "%" + textCodProd.getText() + "%");
+        prodlista = Articulo.where("es_articulo=1 and (codigo like ? or descripcion like ? or equivalencia_1 like ? or equivalencia_2 like ? or equivalencia_3 like ?)", "%" + textCodProd.getText() + "%", "%" + textCodProd.getText() + "%", "%" + textCodProd.getText() + "%", "%" + textCodProd.getText() + "%", "%" + textCodProd.getText() + "%");
         Iterator<Articulo> it = prodlista.iterator();
         while (it.hasNext()) {
             Articulo a = it.next();
@@ -328,6 +330,11 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
             compraGui.paraVerCompra(false);
             compraGui.getRealizarCompra().setEnabled(true);
         }
+                if (e.getSource() == compraGui.getAgregarInexistente()){
+            AgregarManualProvGui agre= new AgregarManualProvGui(apgui, true, this);
+            agre.setLocationRelativeTo(null);
+            agre.setVisible(true);
+        }
     }
 
     private boolean existeProdFacc(int id) {
@@ -346,7 +353,7 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
         }
     }
 
-    private void actualizarPrecio() {
+    public void actualizarPrecio() {
         BigDecimal importe;
         BigDecimal total = new BigDecimal(0);
         for (int i = 0; i < tablafac.getRowCount(); i++) {
@@ -379,4 +386,10 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
     public void editingCanceled(ChangeEvent e) {
         //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    public CompraGui getCompraGui() {
+        return compraGui;
+    }
+    
+    
 }

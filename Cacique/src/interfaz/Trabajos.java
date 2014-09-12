@@ -74,6 +74,7 @@ public class Trabajos extends javax.swing.JInternalFrame {
          mecanico.setEnabled(b);
          aceiteUsa.setEnabled(b);
          proxCambio.setEnabled(b);
+         venta.setEnabled(b);
          
          if(b){
             actualizarBateria();

@@ -41,7 +41,6 @@ public class ControladorTrabajo implements ActionListener {
 
     Trabajos trabajoGui;
     Trabajo trabajo;
-
     private java.util.List<Auto> listAutos;
     private ABMTrabajo abmTrabajo;
     private Boolean isNuevo;
@@ -51,21 +50,25 @@ public class ControladorTrabajo implements ActionListener {
     private Auto auto;
     private Cliente cliente;
     private ControladorJReport reporteTrab;
-private AplicacionGui appGui;
+    private AplicacionGui appGui;
+    ControladorVenta cv;
+    VentaGui vtg;
 
-    public ControladorTrabajo(Trabajos trabajoGui, AplicacionGui appGui) {
+    public ControladorTrabajo(Trabajos trabajoGui, AplicacionGui appGui, ControladorVenta cv, VentaGui vt) {
         this.trabajoGui = trabajoGui;
         this.trabajoGui.setActionListener(this);
         isNuevo = true; //para saber si es nuevo o no
         editandoInfo = false; // se esta editando la info
         trabajo = new Trabajo();
-	this.appGui = appGui;
+        this.appGui = appGui;
         tablaAutosDefault = trabajoGui.getAutosDefault();
         tablaAutos = trabajoGui.getTablaAutos();
         listAutos = new LinkedList();
         abmTrabajo = new ABMTrabajo();
-        listAutos=Auto.findAll();
+        listAutos = Auto.findAll();
         actualizarLista();
+        this.vtg = vt;
+        this.cv = cv;
         try {
             reporteTrab = new ControladorJReport("trabajo.jasper");
         } catch (JRException ex) {
@@ -90,9 +93,9 @@ private AplicacionGui appGui;
         });
 
 
-    
-    
-        
+
+
+
 
     }
 
@@ -101,114 +104,114 @@ private AplicacionGui appGui;
         realizarBusqueda();
     }
 
-
-        private void realizarBusqueda() {
-     listAutos=Auto.findBySQL("SELECT a.id, a.patente, a.modelo, a.marca, a.cliente_id, a.ult_cambio_aceite FROM cacique.autos as a,cacique.clientes as c where c.dni like ? or c.nombre like ? or a.patente like ? or a.id like ? group by a.id", "%" + trabajoGui.getBusquedaAuto().getText() + "%", "%" + trabajoGui.getBusquedaAuto().getText() + "%", "%" + trabajoGui.getBusquedaAuto().getText() + "%", "%" + trabajoGui.getBusquedaAuto().getText() + "%");  
+    private void realizarBusqueda() {
+        listAutos = Auto.findBySQL("SELECT a.id, a.patente, a.modelo, a.marca, a.cliente_id, a.ult_cambio_aceite FROM cacique.autos as a,cacique.clientes as c where c.dni like ? or c.nombre like ? or a.patente like ? or a.id like ? group by a.id", "%" + trabajoGui.getBusquedaAuto().getText() + "%", "%" + trabajoGui.getBusquedaAuto().getText() + "%", "%" + trabajoGui.getBusquedaAuto().getText() + "%", "%" + trabajoGui.getBusquedaAuto().getText() + "%");
         actualizarLista();
     }
 
-        public void cargarTodos() {
-        
+    public void cargarTodos() {
+
         listAutos = Auto.findAll();
         if (!listAutos.isEmpty()) {
             realizarBusqueda();
             System.out.println("cargue todo");
         }
-        }
-        
-         public void tablaMouseClicked(java.awt.event.MouseEvent evt) {
+    }
+
+    public void tablaMouseClicked(java.awt.event.MouseEvent evt) {
         if (evt.getClickCount() == 2) {
-            auto= Auto.findById(tablaAutos.getValueAt(tablaAutos.getSelectedRow(), 0));
-            cliente= Cliente.findById(tablaAutos.getValueAt(tablaAutos.getSelectedRow(), 3));
+            auto = Auto.findById(tablaAutos.getValueAt(tablaAutos.getSelectedRow(), 0));
+            cliente = Cliente.findById(tablaAutos.getValueAt(tablaAutos.getSelectedRow(), 3));
             trabajoGui.getDuenio().setText(cliente.getString("nombre"));
             trabajoGui.getAuto().setText(auto.getString("patente"));
         }
-         }
-         
-             private void actualizarLista() {
-        
+    }
+
+    private void actualizarLista() {
+
         tablaAutosDefault.setRowCount(0);
         Iterator<Auto> it = listAutos.iterator();
         System.out.println(listAutos.size());
         while (it.hasNext()) {
             Auto aut = it.next();
-            Cliente cli= aut.parent(Cliente.class);
+            Cliente cli = aut.parent(Cliente.class);
             Object row[] = new String[6];
             row[0] = aut.getString("id");
             row[1] = aut.getString("patente");
             row[2] = aut.getString("modelo");
             row[3] = aut.getString("cliente_id");
-            if(cli!=null){
-            row[4] = cli.getString("nombre");
-            row[5] = cli.getString("dni");
+            if (cli != null) {
+                row[4] = cli.getString("nombre");
+                row[5] = cli.getString("dni");
             }
             tablaAutosDefault.addRow(row);
 
         }
-                
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
-     if (e.getSource() == trabajoGui.getNuevo()) {
+        if (e.getSource() == trabajoGui.getNuevo()) {
             System.out.println("Boton nuevo pulsado");
             trabajoGui.limpiarCampos();
             trabajoGui.bloquearCampos(true);
             isNuevo = true;
             editandoInfo = true;
-            trabajo= new Trabajo();
+            trabajo = new Trabajo();
             trabajoGui.getBorrar().setEnabled(false);
             trabajoGui.getModificar().setEnabled(false);
             trabajoGui.getGuardar().setEnabled(true);
             trabajoGui.getBotImprimir().setEnabled(false);
         }
-      if (e.getSource() == trabajoGui.getGuardar() && editandoInfo && isNuevo) {
+        if (e.getSource() == trabajoGui.getGuardar() && editandoInfo && isNuevo) {
             System.out.println("Boton guardar pulsado");
-                        if(!trabajoGui.getDuenio().getText().equals("")&&!trabajoGui.getAuto().getText().equals("")){
+            if (!trabajoGui.getDuenio().getText().equals("") && !trabajoGui.getAuto().getText().equals("")) {
 
-            if (cargarDatosTrabajo(trabajo)) {
-                
-                if (abmTrabajo.alta(trabajo,auto,cliente)) {
+                if (cargarDatosTrabajo(trabajo)) {
 
-                    trabajoGui.bloquearCampos(false);
-                    trabajoGui.limpiarCampos();
-                    editandoInfo = false;
-                    JOptionPane.showMessageDialog(trabajoGui, "¡trabjo guardado exitosamente!");
-                    trabajoGui.getNuevo().setEnabled(true);
-                    trabajoGui.getGuardar().setEnabled(false);
-                    try {
-                        System.out.println(abmTrabajo.getIdTrab());
-                        reporteTrab.mostrarTrabajo(abmTrabajo.getIdTrab());
-                    } catch (ClassNotFoundException ex) {
-                        Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (JRException ex) {
-                        Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else 
-                    JOptionPane.showMessageDialog(trabajoGui, "ocurrió un error", "Error!", JOptionPane.ERROR_MESSAGE);
-                }
-                
-                        }else{
-                                                               JOptionPane.showMessageDialog(trabajoGui, "Seleccione un auto", "Error!", JOptionPane.ERROR_MESSAGE);
- 
+                    if (abmTrabajo.alta(trabajo, auto, cliente)) {
+
+                        trabajoGui.bloquearCampos(false);
+                        trabajoGui.limpiarCampos();
+                        editandoInfo = false;
+                        JOptionPane.showMessageDialog(trabajoGui, "¡trabjo guardado exitosamente!");
+                        trabajoGui.getNuevo().setEnabled(true);
+                        trabajoGui.getGuardar().setEnabled(false);
+                        try {
+                            System.out.println(abmTrabajo.getIdTrab());
+                            reporteTrab.mostrarTrabajo(abmTrabajo.getIdTrab());
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (JRException ex) {
+                            Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
                         }
+                    } else {
+                        JOptionPane.showMessageDialog(trabajoGui, "ocurrió un error", "Error!", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(trabajoGui, "Seleccione un auto", "Error!", JOptionPane.ERROR_MESSAGE);
+
             }
-      
-      if (e.getSource() == trabajoGui.getBorrar()) {
+        }
+
+        if (e.getSource() == trabajoGui.getBorrar()) {
 
             System.out.println("Boton borrar pulsado");
             trabajoGui.bloquearCampos(false);
-            
-            
+
+
             if (!trabajoGui.getIdTrabajo().getText().equals("") && !editandoInfo) {
-                Integer resp = JOptionPane.showConfirmDialog(trabajoGui, "¿Desea borrar el trabajo " , "Confirmar borrado", JOptionPane.YES_NO_OPTION);
+                Integer resp = JOptionPane.showConfirmDialog(trabajoGui, "¿Desea borrar el trabajo ", "Confirmar borrado", JOptionPane.YES_NO_OPTION);
                 if (resp == JOptionPane.YES_OPTION) {
                     trabajo.set("id", trabajoGui.getIdTrabajo().getText());
                     Boolean seBorro = abmTrabajo.baja(trabajo);
-                    
+
                     if (seBorro) {
                         JOptionPane.showMessageDialog(trabajoGui, "¡Trabajo borrado exitosamente!");
                         trabajoGui.limpiarCampos();
@@ -226,11 +229,11 @@ private AplicacionGui appGui;
 
 
         }
-      
-      if (e.getSource() == trabajoGui.getModificar()) {
+
+        if (e.getSource() == trabajoGui.getModificar()) {
             System.out.println("Boton modificar pulsado");
-            auto= trabajoGui.getAutoModel();
-            cliente= trabajoGui.getClienteModel();
+            auto = trabajoGui.getAutoModel();
+            cliente = trabajoGui.getClienteModel();
             trabajoGui.bloquearCampos(true);
             editandoInfo = true;
             isNuevo = false;
@@ -238,133 +241,119 @@ private AplicacionGui appGui;
             trabajoGui.getBorrar().setEnabled(false);
             trabajoGui.getGuardar().setEnabled(true);
             trabajoGui.getModificar().setEnabled(false);
-             trabajoGui.getBotImprimir().setEnabled(false);
-            
+            trabajoGui.getBotImprimir().setEnabled(false);
+
         }
-      
-      if (e.getSource() == trabajoGui.getGuardar() && editandoInfo && !isNuevo) {
+
+        if (e.getSource() == trabajoGui.getGuardar() && editandoInfo && !isNuevo) {
             System.out.println("Boton guardar pulsado");
-            if(!trabajoGui.getDuenio().getText().equals("")&&!trabajoGui.getAuto().getText().equals("")){
-            if (cargarDatosTrabajo(trabajo)) {
-                trabajo.set("id",trabajoGui.getIdTrabajo().getText());
-                if (abmTrabajo.modificar(trabajo,auto,cliente)) {
-                    
+            if (!trabajoGui.getDuenio().getText().equals("") && !trabajoGui.getAuto().getText().equals("")) {
+                if (cargarDatosTrabajo(trabajo)) {
+                    trabajo.set("id", trabajoGui.getIdTrabajo().getText());
+                    if (abmTrabajo.modificar(trabajo, auto, cliente)) {
 
-                    trabajoGui.bloquearCampos(false);
-                    trabajoGui.limpiarCampos();
-                    editandoInfo = false;
-                    JOptionPane.showMessageDialog(trabajoGui, "¡Trabajo modificado exitosamente!");
-                    trabajoGui.getNuevo().setEnabled(true);
-                    trabajoGui.getGuardar().setEnabled(false);
-                    try {
-                        System.out.println((Integer)abmTrabajo.getIdTrab());
-                        reporteTrab.mostrarTrabajo((Integer)abmTrabajo.getIdTrab());
-                    } catch (ClassNotFoundException ex) {
-                        Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (JRException ex) {
-                        Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
+
+                        trabajoGui.bloquearCampos(false);
+                        trabajoGui.limpiarCampos();
+                        editandoInfo = false;
+                        JOptionPane.showMessageDialog(trabajoGui, "¡Trabajo modificado exitosamente!");
+                        trabajoGui.getNuevo().setEnabled(true);
+                        trabajoGui.getGuardar().setEnabled(false);
+                        try {
+                            System.out.println((Integer) abmTrabajo.getIdTrab());
+                            reporteTrab.mostrarTrabajo((Integer) abmTrabajo.getIdTrab());
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (JRException ex) {
+                            Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(trabajoGui, "Ocurrió un error,revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
-                } else {
-                    JOptionPane.showMessageDialog(trabajoGui, "Ocurrió un error,revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
+
                 }
-                
-            }
-        }else{
-                                    JOptionPane.showMessageDialog(trabajoGui, "Seleccione un auto", "Error!", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(trabajoGui, "Seleccione un auto", "Error!", JOptionPane.ERROR_MESSAGE);
 
             }
-      }
-      if(e.getSource()==trabajoGui.getBotImprimir()){
-          try {
-                        System.out.println((Integer)abmTrabajo.getIdTrab());
-                        reporteTrab.mostrarTrabajo(Integer.parseInt(trabajoGui.getIdTrabajo().getText()));
-                    } catch (ClassNotFoundException ex) {
-                        Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (JRException ex) {
-                        Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-      }
-if (e.getSource() == trabajoGui.getVenta()) {
-            VentaGui hcg = new VentaGui();
-            hcg.getBusquedaNombre().setText(cliente.getString("nombre"));
-            ControladorVenta hcc;
+        }
+        if (e.getSource() == trabajoGui.getBotImprimir()) {
             try {
-                hcc = new ControladorVenta(hcg, appGui);
-                hcc.actualizarListaCliente();
-                appGui.getContenedor().add(hcg);
-                hcg.setVisible(true);
-                hcg.toFront();
-            } catch (JRException ex) {
-                Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println((Integer) abmTrabajo.getIdTrab());
+                reporteTrab.mostrarTrabajo(Integer.parseInt(trabajoGui.getIdTrabajo().getText()));
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
                 Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (JRException ex) {
+                Logger.getLogger(ControladorTrabajo.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
-        
-    
+        if (e.getSource() == trabajoGui.getVenta()) {
+            vtg.getBusquedaNombre().setText(cliente.getString("nombre"));
+            ControladorVenta hcc;
+            cv.actualizarListaCliente();
+            vtg.setVisible(true);
+            vtg.toFront();
+        }
     }
-    
-     private boolean cargarDatosTrabajo(Trabajo trab) {
-         boolean ret = true;
-                  BigDecimal precioBat=new BigDecimal(BigInteger.ZERO);
-                  BigDecimal costo= new BigDecimal(0.0);
-                   try {
+
+    private boolean cargarDatosTrabajo(Trabajo trab) {
+        boolean ret = true;
+        BigDecimal precioBat = new BigDecimal(BigInteger.ZERO);
+        BigDecimal costo = new BigDecimal(0.0);
+        try {
             Double costoD = Double.valueOf(trabajoGui.getCostoTotal().getText());
-            costo=BigDecimal.valueOf(costoD).setScale(2, RoundingMode.CEILING);
+            costo = BigDecimal.valueOf(costoD).setScale(2, RoundingMode.CEILING);
         } catch (NumberFormatException | ClassCastException e) {
             ret = false;
             JOptionPane.showMessageDialog(trabajoGui, "Error en costo total", "Error!", JOptionPane.ERROR_MESSAGE);
         }
 
-         if(trabajoGui.getCambioBateria().isSelected()){
-         
-         try {
-            Double precio = Double.valueOf(trabajoGui.getPrecioBateria().getText());
-            precioBat=BigDecimal.valueOf(precio).setScale(2, RoundingMode.CEILING);
-        } catch (NumberFormatException | ClassCastException e) {
-            ret = false;
-            JOptionPane.showMessageDialog(trabajoGui, "Error en precio de bateria", "Error!", JOptionPane.ERROR_MESSAGE);
+        if (trabajoGui.getCambioBateria().isSelected()) {
+
+            try {
+                Double precio = Double.valueOf(trabajoGui.getPrecioBateria().getText());
+                precioBat = BigDecimal.valueOf(precio).setScale(2, RoundingMode.CEILING);
+            } catch (NumberFormatException | ClassCastException e) {
+                ret = false;
+                JOptionPane.showMessageDialog(trabajoGui, "Error en precio de bateria", "Error!", JOptionPane.ERROR_MESSAGE);
+            }
         }
-         }
-         if(ret){
-             
-trab.set(       
-                "fecha", trabajoGui.getFecha().getDate(),
-"kilometraje",trabajoGui.getKilometraje().getText(),
-"observaciones",trabajoGui.getObservaciones().getText(),
-"aceite_caja",trabajoGui.getAceiteCaja().getSelectedItem(),
-"aceite_diferencial",trabajoGui.getAceiteDif().getSelectedItem(),
-"filtro_aire",trabajoGui.getFiltroAire().getSelectedItem(),
-"filtro_combustible",trabajoGui.getFiltroCombustible().getSelectedItem(),
-"filtro_aceite",trabajoGui.getFiltroAceite().getSelectedItem(),
-"filtro_habitaculo",trabajoGui.getFiltroHabitaculo().getSelectedItem(),
-"liquido_freno",trabajoGui.getLiquidoFreno().getSelectedItem(),
-"anticongelante",trabajoGui.getAnticongelante().getSelectedItem(),
-"correa_multicanal",trabajoGui.getCorreaMulticanal().getSelectedItem(),
-"tensor_correa_multicanal",trabajoGui.getTensorMulticanal().getSelectedItem(),
-"correa_distribucion",trabajoGui.getCorreaDistrib().getSelectedItem(),
-"tensores",trabajoGui.getTensores().getSelectedItem(),
-"bomba_agua",trabajoGui.getBombaAgua().getSelectedItem(),
-"bateria",trabajoGui.getCambioBateria().isSelected(),
-"tipo_bateria",trabajoGui.getTipoBateria().getText(),
-"importe_bateria",precioBat,
-"descripcion_bateria",trabajoGui.getDescripcionBateria().getText(),
-"costo",costo,
-"descripcion_adicional",trabajoGui.getObservGeneral().getText(),
-"aceite_motor",trabajoGui.getAceiteMotor().getSelectedItem(),
-"mecanico",trabajoGui.getMecanico().getText(),
-"proximo_cambio",trabajoGui.getProxCambio().getText(),
-"aceite_usa",trabajoGui.getAceiteUsa().getText());
-         }
-         return ret;
-     }
+        if (ret) {
+
+            trab.set(
+                    "fecha", trabajoGui.getFecha().getDate(),
+                    "kilometraje", trabajoGui.getKilometraje().getText(),
+                    "observaciones", trabajoGui.getObservaciones().getText(),
+                    "aceite_caja", trabajoGui.getAceiteCaja().getSelectedItem(),
+                    "aceite_diferencial", trabajoGui.getAceiteDif().getSelectedItem(),
+                    "filtro_aire", trabajoGui.getFiltroAire().getSelectedItem(),
+                    "filtro_combustible", trabajoGui.getFiltroCombustible().getSelectedItem(),
+                    "filtro_aceite", trabajoGui.getFiltroAceite().getSelectedItem(),
+                    "filtro_habitaculo", trabajoGui.getFiltroHabitaculo().getSelectedItem(),
+                    "liquido_freno", trabajoGui.getLiquidoFreno().getSelectedItem(),
+                    "anticongelante", trabajoGui.getAnticongelante().getSelectedItem(),
+                    "correa_multicanal", trabajoGui.getCorreaMulticanal().getSelectedItem(),
+                    "tensor_correa_multicanal", trabajoGui.getTensorMulticanal().getSelectedItem(),
+                    "correa_distribucion", trabajoGui.getCorreaDistrib().getSelectedItem(),
+                    "tensores", trabajoGui.getTensores().getSelectedItem(),
+                    "bomba_agua", trabajoGui.getBombaAgua().getSelectedItem(),
+                    "bateria", trabajoGui.getCambioBateria().isSelected(),
+                    "tipo_bateria", trabajoGui.getTipoBateria().getText(),
+                    "importe_bateria", precioBat,
+                    "descripcion_bateria", trabajoGui.getDescripcionBateria().getText(),
+                    "costo", costo,
+                    "descripcion_adicional", trabajoGui.getObservGeneral().getText(),
+                    "aceite_motor", trabajoGui.getAceiteMotor().getSelectedItem(),
+                    "mecanico", trabajoGui.getMecanico().getText(),
+                    "proximo_cambio", trabajoGui.getProxCambio().getText(),
+                    "aceite_usa", trabajoGui.getAceiteUsa().getText());
+        }
+        return ret;
+    }
 
     public void setAuto(Auto auto) {
         this.auto = auto;
@@ -373,7 +362,4 @@ trab.set(
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
-     
-     
-
 }

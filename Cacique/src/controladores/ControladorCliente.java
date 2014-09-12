@@ -71,8 +71,12 @@ public class ControladorCliente implements ActionListener {
     private Color Color;
     private JDateChooser nacimiento;
     private ControladorJReport reportePago;
+    PresupuestoRealizadosGui prg;
+    AutoGui ag;
+    ControladorPresupuestosRealizados cpr;
+    ControladorAuto ca;
 
-    public ControladorCliente(ClienteGui clienteGui, AplicacionGui aplicacionGui, VentaGui ventaGui) {
+    public ControladorCliente(ClienteGui clienteGui, AplicacionGui aplicacionGui, VentaGui ventaGui, PresupuestoRealizadosGui prg, AutoGui ag, ControladorPresupuestosRealizados cpr, ControladorAuto ca) {
         try {
             this.aplicacionGui = aplicacionGui;
             this.clienteGui = clienteGui;
@@ -88,10 +92,12 @@ public class ControladorCliente implements ActionListener {
             listClientes = new LinkedList();
             abmCliente = new ABMCliente();
             cliente = new Cliente();
-            
+            this.prg = prg;
             nacimiento = clienteGui.getNacimiento();
             listClientes = Cliente.findAll();
-            
+            this.ag = ag;
+            this.cpr = cpr;
+            this.ca = ca;
             actualizarLista();
             nomcli = clienteGui.getBusqueda();
             nomcli.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -411,24 +417,17 @@ public class ControladorCliente implements ActionListener {
                 JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, el cobro no ha sido registrado", "Error!", JOptionPane.ERROR_MESSAGE);
             }
         }
-        if (e.getSource() == clienteGui.getPresupuestos()) {
-            PresupuestoRealizadosGui hcg = new PresupuestoRealizadosGui();
-            hcg.getFiltroNombre().setText(cliente.getString("nombre"));
-            ControladorPresupuestosRealizados hcc = new ControladorPresupuestosRealizados(aplicacionGui, hcg);
-            hcc.filtroNombre();
-            aplicacionGui.getContenedor().add(hcg);
-            hcg.setVisible(true);
-            hcg.toFront();
+        if (e.getSource() == clienteGui.getPresupuestos()) {            
+            prg.getFiltroNombre().setText(cliente.getString("nombre"));
+            cpr.filtroNombre();
+            prg.setVisible(true);
+            prg.toFront();
         }
         if (e.getSource() == clienteGui.getAutos()) {
-            AutoGui hcg = new AutoGui();
-            hcg.getBusquedaDuenio().setText(cliente.getString("nombre"));
-            Trabajos t = new Trabajos();
-            ControladorAuto hcc = new ControladorAuto(hcg, t);
-            hcc.realizarBusquedaDuenio();
-            aplicacionGui.getContenedor().add(hcg);
-            hcg.setVisible(true);
-            hcg.toFront();
+            ag.getBusquedaDuenio().setText(cliente.getString("nombre"));
+            ca.realizarBusquedaDuenio();
+            ag.setVisible(true);
+            ag.toFront();
         }
         if (e.getSource() == clienteGui.getPagos()) {
             PagosRealizadosClienteGui hcg = new PagosRealizadosClienteGui(cliente);

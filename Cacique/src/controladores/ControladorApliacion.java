@@ -104,10 +104,9 @@ public class ControladorApliacion implements ActionListener {
         controladorVenta = new ControladorVenta(ventaGui, aplicacionGui);
         controladorProveedor = new ControladorProveedor(proveedorGui, aplicacionGui, articuloGui, compraGui);
         controladorArticulo = new ControladorArticulo(articuloGui);
-        controladorCliente = new ControladorCliente(clienteGui, aplicacionGui, ventaGui);
         controladorArtSinStock = new ControladorArticulosAgot(articulosSinStock, articuloGui);
         controladorAuto = new ControladorAuto(autoGui, trabajoGui);
-        controladorTrabajo = new ControladorTrabajo(trabajoGui,aplicacionGui);
+        controladorTrabajo = new ControladorTrabajo(trabajoGui, aplicacionGui,controladorVenta,ventaGui);
         importarGui = new ImportarExcelGui();
         controladorImportarGui = new controladorImportarGui(importarGui);
         presupuestoGui = new PresupuestoGui();
@@ -115,8 +114,9 @@ public class ControladorApliacion implements ActionListener {
         controladorImportarGui = new controladorImportarGui(importarGui);
         presupuestoRealizadosGui = new PresupuestoRealizadosGui();
         controladorPresupuestosRealizados = new ControladorPresupuestosRealizados(aplicacionGui, presupuestoRealizadosGui);
- 	controladorCompra = new ControladorCompra(compraGui,aplicacionGui);
-	tocacambioGui = new tocaCambioGui(aplicacionGui);
+        controladorCompra = new ControladorCompra(compraGui, aplicacionGui);
+        controladorCliente = new ControladorCliente(clienteGui, aplicacionGui, ventaGui, presupuestoRealizadosGui, autoGui, controladorPresupuestosRealizados, controladorAuto);
+        tocacambioGui = new tocaCambioGui(aplicacionGui);
         aplicacionGui.getContenedor().add(tocacambioGui);
         aplicacionGui.getContenedor().add(proveedorGui);
         aplicacionGui.getContenedor().add(articuloGui);
@@ -285,7 +285,7 @@ public class ControladorApliacion implements ActionListener {
             tocacambioGui.toFront();
         }
         if (ae.getSource() == aplicacionGui.getPresupuesto()) {
-           // controladorPresupuesto.cargarTodos();
+            // controladorPresupuesto.cargarTodos();
             presupuestoGui.setVisible(true);
             presupuestoGui.toFront();
         }

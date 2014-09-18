@@ -136,7 +136,7 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="panelBotones" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-              <Component id="contenedor" pref="436" max="32767" attributes="0"/>
+              <Component id="contenedor" pref="428" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -150,9 +150,7 @@
   <SubComponents>
     <Container class="javax.swing.JDesktopPane" name="contenedor">
 
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
-        <Property name="useNullLayout" type="boolean" value="true"/>
-      </Layout>
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout"/>
     </Container>
     <Container class="javax.swing.JPanel" name="panelBotones">
       <Properties>
@@ -270,6 +268,14 @@
               <Image iconType="3" name="/interfaz/Icons/historialPresupuestos.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Presupuestos realizados"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="corriente">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/interfaz/Icons/cuentacorriente.png"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Cuenta corriente"/>
           </Properties>
         </Component>
       </SubComponents>

@@ -53,6 +53,7 @@ public class AplicacionGui extends javax.swing.JFrame {
         this.historialPresupuestos.addActionListener(lis);
         this.presupuesto.addActionListener(lis);
         this.tocaCambio.addActionListener(lis);
+        this.corriente.addActionListener(lis);
     }
 
     public JButton getHistorialPresupuestos() {
@@ -83,6 +84,7 @@ public class AplicacionGui extends javax.swing.JFrame {
         return enviar;
     }
 
+    
     public JMenuItem getModificarUsuario() {
         return modificarUsuario;
     }
@@ -95,6 +97,10 @@ public class AplicacionGui extends javax.swing.JFrame {
         return importar;
     }
 
+    public JButton getCorriente() {
+        return corriente;
+    }
+    
     public JButton getClientes() {
         return clientes;
     }
@@ -159,6 +165,7 @@ public class AplicacionGui extends javax.swing.JFrame {
         tocaCambio = new javax.swing.JButton();
         presupuesto = new javax.swing.JButton();
         historialPresupuestos = new javax.swing.JButton();
+        corriente = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         cambiosEmail = new javax.swing.JMenuItem();
@@ -232,6 +239,10 @@ public class AplicacionGui extends javax.swing.JFrame {
         historialPresupuestos.setToolTipText("Presupuestos realizados");
         panelBotones.add(historialPresupuestos);
 
+        corriente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/cuentacorriente.png"))); // NOI18N
+        corriente.setToolTipText("Cuenta corriente");
+        panelBotones.add(corriente);
+
         jMenu1.setText("Archivo");
 
         cambiosEmail.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/mail.png"))); // NOI18N
@@ -299,7 +310,7 @@ public class AplicacionGui extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE))
+                .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -323,6 +334,7 @@ public class AplicacionGui extends javax.swing.JFrame {
         acercaDe.setLocationRelativeTo(this);
         acercaDe.setVisible(true);
     }//GEN-LAST:event_tecProActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton articulos;
     private javax.swing.JButton botArtSinStock;
@@ -335,6 +347,7 @@ public class AplicacionGui extends javax.swing.JFrame {
     private javax.swing.JButton clientes;
     private javax.swing.JMenuItem configServer;
     private javax.swing.JDesktopPane contenedor;
+    private javax.swing.JButton corriente;
     private javax.swing.JMenuItem crearBackup;
     private javax.swing.JMenuItem enviar;
     private javax.swing.JButton historialPresupuestos;

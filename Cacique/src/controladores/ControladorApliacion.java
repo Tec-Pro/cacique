@@ -14,6 +14,7 @@ import interfaz.CargarDatosEmail;
 import interfaz.ClienteGui;
 import interfaz.CompraGui;
 import interfaz.ConfigurarServerGui;
+import interfaz.CuentaCorrienteGui;
 import interfaz.CumpleaniosGui;
 import interfaz.EnviarManualGui;
 import interfaz.ImportarExcelGui;
@@ -75,6 +76,8 @@ public class ControladorApliacion implements ActionListener {
     private ControladorPresupuestosRealizados controladorPresupuestosRealizados;
     private PresupuestoRealizadosGui presupuestoRealizadosGui;
     private tocaCambioGui tocacambioGui;
+    private ControladorCuentaCorriente controladorCuentaCorriente;
+    private CuentaCorrienteGui cuentaCorrienteGui;
 
     public ControladorApliacion() throws JRException, ClassNotFoundException, SQLException {
         try {
@@ -97,6 +100,8 @@ public class ControladorApliacion implements ActionListener {
         clienteGui = new ClienteGui();
         compraGui = new CompraGui();
         ventaGui = new VentaGui();
+        cuentaCorrienteGui = new CuentaCorrienteGui();
+        controladorCuentaCorriente = new ControladorCuentaCorriente(cuentaCorrienteGui);
         cumpleGui = new CumpleaniosGui(clienteGui);
         autoGui = new AutoGui();
         trabajoGui = new Trabajos();
@@ -106,7 +111,7 @@ public class ControladorApliacion implements ActionListener {
         controladorArticulo = new ControladorArticulo(articuloGui);
         controladorArtSinStock = new ControladorArticulosAgot(articulosSinStock, articuloGui);
         controladorAuto = new ControladorAuto(autoGui, trabajoGui);
-        controladorTrabajo = new ControladorTrabajo(trabajoGui, aplicacionGui,controladorVenta,ventaGui);
+        controladorTrabajo = new ControladorTrabajo(trabajoGui, aplicacionGui, controladorVenta, ventaGui);
         importarGui = new ImportarExcelGui();
         controladorImportarGui = new controladorImportarGui(importarGui);
         presupuestoGui = new PresupuestoGui();
@@ -130,6 +135,7 @@ public class ControladorApliacion implements ActionListener {
         aplicacionGui.getContenedor().add(presupuestoGui);
         aplicacionGui.getContenedor().add(articulosSinStock);
         aplicacionGui.getContenedor().add(presupuestoRealizadosGui);
+        aplicacionGui.getContenedor().add(cuentaCorrienteGui);
         aplicacionGui.setCursor(Cursor.DEFAULT_CURSOR);
 
     }
@@ -175,6 +181,12 @@ public class ControladorApliacion implements ActionListener {
             controladorImportarGui.cargarProveedores();
             importarGui.setVisible(true);
             importarGui.toFront();
+        }
+        if (ae.getSource() == aplicacionGui.getCorriente()) {
+            controladorCuentaCorriente.cargarTodos();
+            cuentaCorrienteGui.setVisible(true);
+            cuentaCorrienteGui.toFront();
+
         }
         if (ae.getSource() == aplicacionGui.getClientes()) {
             controladorCliente.cargarTodos();

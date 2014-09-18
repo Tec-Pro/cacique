@@ -51,8 +51,6 @@ import org.javalite.activejdbc.LazyList;
  */
 public class ControladorCliente implements ActionListener {
 
-    private static BigDecimal iva = new BigDecimal("21");
-    private static BigDecimal cien = new BigDecimal("100");
     private JTextField nomcli;
     private ClienteGui clienteGui;
     private AplicacionGui aplicacionGui;
@@ -204,7 +202,6 @@ public class ControladorCliente implements ActionListener {
             clienteGui.getPagos().setEnabled(true);
             System.out.println("hice doble click en un cliente");
             clienteGui.limpiarCampos();
-
             cliente = busqueda.buscarCliente(tablaCliente.getValueAt(tablaCliente.getSelectedRow(), 0));
             clienteGui.CargarCampos(cliente);
             cargarVentas();

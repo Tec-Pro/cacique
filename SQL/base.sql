@@ -221,3 +221,11 @@ ALTER TABLE `cacique`.`demos` ADD COLUMN `activado` INT(1) NULL  AFTER `dias` ;
 
 ALTER TABLE `cacique`.`articulos` ADD COLUMN `es_articulo` INT(1) NULL DEFAULT 1  AFTER `equivalencia_3` ;
 ALTER TABLE `cacique`.`articulos` CHANGE COLUMN `codigo` `codigo` VARCHAR(45) NULL  ;
+
+CREATE  TABLE `cacique`.`corrientes` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `id_cliente` INT NULL ,
+  `id_venta` INT NULL ,
+  `descripcion` VARCHAR(50000) NULL ,
+  `monto` float NULL ,
+  PRIMARY KEY (`id`) );

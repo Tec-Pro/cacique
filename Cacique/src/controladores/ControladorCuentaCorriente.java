@@ -92,7 +92,7 @@ public class ControladorCuentaCorriente implements ActionListener {
         if (evt.getClickCount() == 2) {
             ctg.limpiarCampos();
             cliente = busqueda.buscarCliente(tablaCliente.getValueAt(tablaCliente.getSelectedRow(), 0));
-            
+
             cargarCuentas();
         }
     }
@@ -169,8 +169,8 @@ public class ControladorCuentaCorriente implements ActionListener {
             }
             cargarCuentas();
         }
-        if(e.getSource()==ctg.getPagar()){
-            new PagarCorrienteGui(aplicacionGui, true, Integer.valueOf((String)tablaCuenta.getValueAt(tablaCuenta.getSelectedRow(),1 )), Integer.valueOf((String)tablaCuenta.getValueAt(tablaCuenta.getSelectedRow(),0 )),this).setVisible(true);
+        if (e.getSource() == ctg.getPagar()) {
+            new PagarCorrienteGui(aplicacionGui, true, Integer.valueOf((String) tablaCuenta.getValueAt(tablaCuenta.getSelectedRow(), 1)), Integer.valueOf((String) tablaCuenta.getValueAt(tablaCuenta.getSelectedRow(), 0)), this).setVisible(true);
         }
 
     }
@@ -183,17 +183,17 @@ public class ControladorCuentaCorriente implements ActionListener {
         while (itr.hasNext()) {
             Corriente v = itr.next();
             Object row[] = new Object[8];
-            BigDecimal haber=BigDecimal.valueOf(v.getFloat("haber")).setScale(2, RoundingMode.CEILING);
-            BigDecimal monto=BigDecimal.valueOf(v.getFloat("monto")).setScale(2, RoundingMode.CEILING);
+            BigDecimal haber = BigDecimal.valueOf(v.getFloat("haber")).setScale(2, RoundingMode.CEILING);
+            BigDecimal monto = BigDecimal.valueOf(v.getFloat("monto")).setScale(2, RoundingMode.CEILING);
             row[0] = v.getString("id");
             row[1] = v.getString("id_cliente");
             row[2] = v.getString("id_venta");
             row[3] = monto.toString();
-            row[4] = v.getString("descripcion"); 
-            row[5]=haber.toString();
-            BigDecimal debe=monto.subtract(haber).setScale(2, RoundingMode.CEILING);
-            row[6]=debe.toString();
-            row[7]= debe.compareTo(BigDecimal.ZERO)<=0;
+            row[4] = v.getString("descripcion");
+            row[5] = haber.toString();
+            BigDecimal debe = monto.subtract(haber).setScale(2, RoundingMode.CEILING);
+            row[6] = debe.toString();
+            row[7] = debe.compareTo(BigDecimal.ZERO) <= 0;
             tablaCuentaDefault.addRow(row);
         }
         actualizarTotalCuenta();
@@ -213,29 +213,27 @@ public class ControladorCuentaCorriente implements ActionListener {
     }
 
     private void actualizarLista() {
-        if (listClientes.size() != 0) {
-            tablaCliDefault.setRowCount(0);
-            Iterator<Cliente> it = listClientes.iterator();
-            while (it.hasNext()) {
-                Cliente c = it.next();
-                Object row[] = new String[6];
-                row[0] = c.getString("id");
-                row[1] = c.getString("nombre");
-                row[2] = c.getString("telefono");
-                row[3] = c.getString("celular");
-                tablaCliDefault.addRow(row);
 
-            }
-        }
-    }
-        public void actualizarTotalCuenta(){
-            Double big=  0.0;
-            for(int i=0; i<tablaCuenta.getRowCount();i++){
-                big+=Double.valueOf((String)tablaCuenta.getValueAt(i, 6));
-                System.out.println(big);
-            }
-            ctg.getTotal().setText(BigDecimal.valueOf(big).setScale(2, RoundingMode.CEILING).toString());
+        tablaCliDefault.setRowCount(0);
+        Iterator<Cliente> it = listClientes.iterator();
+        while (it.hasNext()) {
+            Cliente c = it.next();
+            Object row[] = new String[6];
+            row[0] = c.getString("id");
+            row[1] = c.getString("nombre");
+            row[2] = c.getString("telefono");
+            row[3] = c.getString("celular");
+            tablaCliDefault.addRow(row);
+
         }
     }
 
-
+    public void actualizarTotalCuenta() {
+        Double big = 0.0;
+        for (int i = 0; i < tablaCuenta.getRowCount(); i++) {
+            big += Double.valueOf((String) tablaCuenta.getValueAt(i, 6));
+            System.out.println(big);
+        }
+        ctg.getTotal().setText(BigDecimal.valueOf(big).setScale(2, RoundingMode.CEILING).toString());
+    }
+}

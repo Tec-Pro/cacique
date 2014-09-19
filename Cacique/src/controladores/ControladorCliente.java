@@ -73,6 +73,7 @@ public class ControladorCliente implements ActionListener {
     AutoGui ag;
     ControladorPresupuestosRealizados cpr;
     ControladorAuto ca;
+    PagoFacturaGui pagoFacturaGui;
 
     public ControladorCliente(ClienteGui clienteGui, AplicacionGui aplicacionGui, VentaGui ventaGui, PresupuestoRealizadosGui prg, AutoGui ag, ControladorPresupuestosRealizados cpr, ControladorAuto ca) {
         try {
@@ -96,6 +97,8 @@ public class ControladorCliente implements ActionListener {
             this.ag = ag;
             this.cpr = cpr;
             this.ca = ca;
+            pagoFacturaGui = new PagoFacturaGui();
+            aplicacionGui.getContenedor().add(pagoFacturaGui);
             actualizarLista();
             nomcli = clienteGui.getBusqueda();
             nomcli.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -117,7 +120,7 @@ public class ControladorCliente implements ActionListener {
                 }
             });
             ver = clienteGui.getVer();
-            reportePago= new ControladorJReport("pago.jasper");
+            reportePago = new ControladorJReport("pago.jasper");
         } catch (JRException ex) {
             Logger.getLogger(ControladorCliente.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -230,8 +233,8 @@ public class ControladorCliente implements ActionListener {
         }
         if (e.getSource() == clienteGui.getGuardar() && editandoInfo && isNuevo) { //Guardar
             System.out.println("Boton guardar pulsado");
-             
-            if (cargarDatosCliente(cliente)) {                
+
+            if (cargarDatosCliente(cliente)) {
                 if (abmCliente.alta(cliente)) {
                     clienteGui.habilitarCampos(false);
                     clienteGui.limpiarCampos();
@@ -244,12 +247,12 @@ public class ControladorCliente implements ActionListener {
                 }
                 realizarBusqueda();
             }
-             
+
 
         }
         if (e.getSource() == clienteGui.getBorrar()) { //borrar cliente 
             System.out.println("Boton borrar pulsado");
-             
+
             clienteGui.habilitarCamposVentas(false);
             clienteGui.habilitarCampos(false);
             if (cliente.getString("id") != null && !editandoInfo) {
@@ -273,7 +276,7 @@ public class ControladorCliente implements ActionListener {
             } else {
                 JOptionPane.showMessageDialog(clienteGui, "No se seleccionó un cliente");
             }
-             
+
         }
         if (e.getSource() == clienteGui.getModificar()) { //modificar cliente
             System.out.println("Boton modificar pulsado");
@@ -292,7 +295,7 @@ public class ControladorCliente implements ActionListener {
 
         if (e.getSource() == clienteGui.getGuardar() && editandoInfo && !isNuevo) {
             System.out.println("Boton guardar pulsado");
-             
+
             if (cargarDatosCliente(cliente)) {
                 if (abmCliente.modificar(cliente)) {
                     clienteGui.habilitarCampos(false);
@@ -303,19 +306,17 @@ public class ControladorCliente implements ActionListener {
                     clienteGui.getGuardar().setEnabled(false);
                     clienteGui.getAutos().setEnabled(false);
                     clienteGui.getPresupuestos().setEnabled(false);
-                     clienteGui.getPagos().setEnabled(false);                     
+                    clienteGui.getPagos().setEnabled(false);
                     clienteGui.habilitarCamposVentas(false);
                 } else {
                     JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error,revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
                 realizarBusqueda();
             }
-             
+
         }
         if (e.getSource() == clienteGui.getRealizarEntrega()) {
-            PagoFacturaGui pagoFacturaGui = new PagoFacturaGui();
             RealizarPagoVentaControlador rpvc = new RealizarPagoVentaControlador(pagoFacturaGui, cliente, calcularCtaCte(), calcularCtaCteActual(), aplicacionGui, this);
-            aplicacionGui.getContenedor().add(pagoFacturaGui);
             pagoFacturaGui.setVisible(true);
             pagoFacturaGui.toFront();
             calcularCtaCte();
@@ -324,7 +325,7 @@ public class ControladorCliente implements ActionListener {
         }
         if (e.getSource() == clienteGui.getEliminarVenta()) {
             int row = tablaVentas.getSelectedRow();
-             
+
             if (row > -1) {
                 String id = (String) tablaVentas.getValueAt(row, 0);
                 Venta v = Venta.findById(id);
@@ -338,7 +339,7 @@ public class ControladorCliente implements ActionListener {
                 calcularCtaCte();
                 calcularCtaCteActual();
             }
-             
+
         }
         if (e.getSource() == clienteGui.getVer()) {
             cargarVentas();
@@ -352,7 +353,7 @@ public class ControladorCliente implements ActionListener {
         }
         if (e.getSource() == clienteGui.getCobrarFactura()) {
             int row = tablaVentas.getSelectedRow();
-             
+
             if (row > -1) {
                 String p = (String) tablaVentas.getValueAt(row, 4);
                 if (p.equals("Si")) {
@@ -365,7 +366,7 @@ public class ControladorCliente implements ActionListener {
                             if (reply == JOptionPane.YES_OPTION) {
                                 cobroNuevo = true;
                             }
-                            
+
                             String id = (String) tablaVentas.getValueAt(row, 0);
                             BigDecimal monto = null;
                             if (cobroNuevo) {
@@ -383,15 +384,15 @@ public class ControladorCliente implements ActionListener {
                             int idCliente2 = Integer.parseInt(clienteId);
                             Calendar c = Calendar.getInstance();
                             Date d = c.getTime();
-                               
-                            Pago pago = Pago.createIt("fecha", d, "monto", monto, "cliente_id", idCliente2,"descripcion","Cobro de factura con nro : "+v.getString("id"));
+
+                            Pago pago = Pago.createIt("fecha", d, "monto", monto, "cliente_id", idCliente2, "descripcion", "Cobro de factura con nro : " + v.getString("id"));
                             pago.saveIt();
                             String pagoId = pago.getString("id");//Pago.findFirst("fecha = ? and monto = ? and cliente_id = ?", d, monto, idCliente2).getString("id");
                             v.set("pago_id", pagoId);
                             v.saveIt();
-                               
+
                             JOptionPane.showMessageDialog(clienteGui, "¡Cobro registrado exitosamente!");
-                                                        reportePago.mostrarPago(Integer.valueOf(pagoId));
+                            reportePago.mostrarPago(Integer.valueOf(pagoId));
 
                             cargarVentas();
                             calcularCtaCte();
@@ -408,13 +409,13 @@ public class ControladorCliente implements ActionListener {
                         JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, el cobro no ha sido registrado", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
                 }
-                 
+
             } else {
-                 
+
                 JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, el cobro no ha sido registrado", "Error!", JOptionPane.ERROR_MESSAGE);
             }
         }
-        if (e.getSource() == clienteGui.getPresupuestos()) {            
+        if (e.getSource() == clienteGui.getPresupuestos()) {
             prg.getFiltroNombre().setText(cliente.getString("nombre"));
             cpr.filtroNombre();
             prg.setVisible(true);
@@ -431,7 +432,7 @@ public class ControladorCliente implements ActionListener {
             aplicacionGui.getContenedor().add(hcg);
             hcg.setVisible(true);
             hcg.toFront();
-        }       
+        }
     }
 
     public void actualizarPrecio() {

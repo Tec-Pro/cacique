@@ -8,11 +8,14 @@ import abm.ABMCuentaCorriente;
 import busqueda.Busqueda;
 import interfaz.AplicacionGui;
 import interfaz.CuentaCorrienteGui;
+import interfaz.PagarCorrienteGui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.Iterator;
 import java.util.LinkedList;
 import javax.swing.JComboBox;
@@ -87,8 +90,9 @@ public class ControladorCuentaCorriente implements ActionListener {
 
     private void tablaClienteMouseClicked(MouseEvent evt) {
         if (evt.getClickCount() == 2) {
+            ctg.limpiarCampos();
             cliente = busqueda.buscarCliente(tablaCliente.getValueAt(tablaCliente.getSelectedRow(), 0));
-            listCorriente = Corriente.find("id_cliente like ? ", cliente.getId());
+            
             cargarCuentas();
         }
     }
@@ -165,23 +169,34 @@ public class ControladorCuentaCorriente implements ActionListener {
             }
             cargarCuentas();
         }
+        if(e.getSource()==ctg.getPagar()){
+            new PagarCorrienteGui(aplicacionGui, true, Integer.valueOf((String)tablaCuenta.getValueAt(tablaCuenta.getSelectedRow(),1 )), Integer.valueOf((String)tablaCuenta.getValueAt(tablaCuenta.getSelectedRow(),0 )),this).setVisible(true);
+        }
 
     }
 
     //carga las ventas realizadas al cliente en la tabla
     public void cargarCuentas() {
+        listCorriente = Corriente.find("id_cliente like ? ", cliente.getId());
         tablaCuentaDefault.setRowCount(0);
         Iterator<Corriente> itr = listCorriente.iterator();
         while (itr.hasNext()) {
             Corriente v = itr.next();
-            Object row[] = new String[5];
+            Object row[] = new Object[8];
+            BigDecimal haber=BigDecimal.valueOf(v.getFloat("haber")).setScale(2, RoundingMode.CEILING);
+            BigDecimal monto=BigDecimal.valueOf(v.getFloat("monto")).setScale(2, RoundingMode.CEILING);
             row[0] = v.getString("id");
             row[1] = v.getString("id_cliente");
             row[2] = v.getString("id_venta");
-            row[3] = v.getString("monto");
-            row[4] = v.getString("descripcion");
+            row[3] = monto.toString();
+            row[4] = v.getString("descripcion"); 
+            row[5]=haber.toString();
+            BigDecimal debe=monto.subtract(haber).setScale(2, RoundingMode.CEILING);
+            row[6]=debe.toString();
+            row[7]= debe.compareTo(BigDecimal.ZERO)<=0;
             tablaCuentaDefault.addRow(row);
         }
+        actualizarTotalCuenta();
     }
 
     // Carga todos los clientes
@@ -213,4 +228,14 @@ public class ControladorCuentaCorriente implements ActionListener {
             }
         }
     }
-}
+        public void actualizarTotalCuenta(){
+            Double big=  0.0;
+            for(int i=0; i<tablaCuenta.getRowCount();i++){
+                big+=Double.valueOf((String)tablaCuenta.getValueAt(i, 6));
+                System.out.println(big);
+            }
+            ctg.getTotal().setText(BigDecimal.valueOf(big).setScale(2, RoundingMode.CEILING).toString());
+        }
+    }
+
+

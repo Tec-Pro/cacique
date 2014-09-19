@@ -6,11 +6,14 @@ package interfaz;
 
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import modelos.Cliente;
 import modelos.Corriente;
+import org.javalite.activejdbc.Model;
 
 /**
  *
@@ -35,6 +38,7 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
         this.editar.addActionListener(lis);
         this.eliminar.addActionListener(lis);
         this.nueva.addActionListener(lis);
+        this.pagar.addActionListener(lis);
     }
 
     public DefaultTableModel getClientesDefaul() {
@@ -89,6 +93,10 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
         return nueva;
     }
 
+    public JLabel getTotal() {
+        return total;
+    }
+
     public void nuevaCuenta() {
         guardar.setEnabled(true);
         editar.setEnabled(false);
@@ -140,6 +148,9 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
         montoVenta.setText(" ");
         clienteCuenta.setText(" ");
         idVenta.setText(" ");
+        idCuenta.setText("");
+        nombre.setText("");
+        
 
     }
 
@@ -149,10 +160,15 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
         clienteCuenta.setText(c.getString("id_cliente"));
         idVenta.setText("id_venta");
         idCuenta.setText(c.getString("id"));
+        nombre.setText(Cliente.findById(c.getString("id_cliente")).getString("nombre"));
     }
 
     public JTextField getIdCuenta() {
         return idCuenta;
+    }
+
+    public JButton getPagar() {
+        return pagar;
     }
 
     /**
@@ -183,9 +199,14 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
         eliminar = new javax.swing.JButton();
         labelCliente2 = new javax.swing.JLabel();
         idCuenta = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        nombre = new javax.swing.JLabel();
         panelClientes1 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tablaCuentas = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        total = new javax.swing.JLabel();
+        pagar = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -219,6 +240,7 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaClientes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(tablaClientes);
 
         busqueda.setToolTipText("Búsqueda personalizada");
@@ -228,7 +250,7 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
         panelClientesLayout.setHorizontalGroup(
             panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-            .addComponent(busqueda, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+            .addComponent(busqueda, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
         );
         panelClientesLayout.setVerticalGroup(
             panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -242,7 +264,7 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
         panelFactura.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cuenta Corriente", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Schoolbook L", 3, 18))); // NOI18N
 
         labelCliente.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
-        labelCliente.setText("Cliente");
+        labelCliente.setText("Id Cliente");
 
         clienteCuenta.setEditable(false);
         clienteCuenta.setEnabled(false);
@@ -277,7 +299,7 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
             }
         });
 
-        editar.setText("Ediar");
+        editar.setText("Editar");
         editar.setEnabled(false);
         editar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -299,6 +321,8 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
         idCuenta.setEditable(false);
         idCuenta.setEnabled(false);
 
+        jLabel2.setText("Nombre");
+
         javax.swing.GroupLayout panelFacturaLayout = new javax.swing.GroupLayout(panelFactura);
         panelFactura.setLayout(panelFacturaLayout);
         panelFacturaLayout.setHorizontalGroup(
@@ -312,23 +336,29 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
                 .addComponent(editar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(eliminar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
                 .addComponent(labelTotal)
                 .addGap(18, 18, 18)
                 .addComponent(montoVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(panelFacturaLayout.createSequentialGroup()
-                .addComponent(labelCliente)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(clienteCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(labelCliente1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(idVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(labelCliente2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(idCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelFacturaLayout.createSequentialGroup()
+                        .addComponent(labelCliente)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(clienteCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labelCliente1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(idVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labelCliente2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(idCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelFacturaLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panelFacturaLayout.createSequentialGroup()
@@ -348,7 +378,11 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
                         .addComponent(clienteCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(labelCliente1)
                         .addComponent(idVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(121, 121, 121)
                 .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(montoVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -360,9 +394,9 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
                         .addComponent(eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))))
             .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFacturaLayout.createSequentialGroup()
-                    .addContainerGap(37, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(50, Short.MAX_VALUE)))
+                    .addContainerGap(61, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(36, Short.MAX_VALUE)))
         );
 
         panelClientes1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cuentas corrientes", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Schoolbook L", 3, 15))); // NOI18N
@@ -373,14 +407,14 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "ID", "ID Cliente", "ID Venta", "Monto", "Descripcion"
+                "ID", "ID Cliente", "ID Venta", "Monto", "Descripcion", "Pagado", "Debe", "Pagada"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -391,6 +425,7 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaCuentas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane3.setViewportView(tablaCuentas);
 
         javax.swing.GroupLayout panelClientes1Layout = new javax.swing.GroupLayout(panelClientes1);
@@ -401,21 +436,34 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
         );
         panelClientes1Layout.setVerticalGroup(
             panelClientes1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+            .addGroup(panelClientes1Layout.createSequentialGroup()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+                .addGap(9, 9, 9))
         );
+
+        jLabel1.setFont(new java.awt.Font("Cantarell", 3, 18)); // NOI18N
+        jLabel1.setText("Total cuenta corrientes");
+
+        total.setFont(new java.awt.Font("Cantarell", 3, 18)); // NOI18N
+
+        pagar.setText("Pagar cuenta corriente seleccionada");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(panelClientes1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(panelClientes1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(panelClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelFactura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(pagar, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -425,6 +473,11 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
                     .addComponent(panelClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelClientes1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pagar, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+                    .addComponent(total, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, 0))
         );
 
@@ -455,6 +508,8 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
     private javax.swing.JButton guardar;
     private javax.swing.JTextField idCuenta;
     private javax.swing.JTextField idVenta;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -463,11 +518,14 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
     private javax.swing.JLabel labelCliente2;
     private javax.swing.JLabel labelTotal;
     private javax.swing.JTextField montoVenta;
+    private javax.swing.JLabel nombre;
     private javax.swing.JButton nueva;
+    private javax.swing.JButton pagar;
     private javax.swing.JPanel panelClientes;
     private javax.swing.JPanel panelClientes1;
     private javax.swing.JPanel panelFactura;
     private javax.swing.JTable tablaClientes;
     private javax.swing.JTable tablaCuentas;
+    private javax.swing.JLabel total;
     // End of variables declaration//GEN-END:variables
 }

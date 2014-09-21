@@ -105,7 +105,7 @@ public class ControladorCliente implements ActionListener {
             aplicacionGui.getContenedor().add(pagoFacturaGui);
             actualizarLista();
             hcc = new PagosRealizadosClienteGui();
-            this.aplicacionGui.getContenedor().add(hcg);
+            this.aplicacionGui.getContenedor().add(hcc);
             nomcli = clienteGui.getBusqueda();
             nomcli.addKeyListener(new java.awt.event.KeyAdapter() {
                 @Override

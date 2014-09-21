@@ -20,8 +20,11 @@ public class PagosRealizadosClienteGui extends javax.swing.JInternalFrame {
     /**
      * Creates new form PagosRealizadosClienteGui
      */
-    public PagosRealizadosClienteGui(Cliente c) {
-        initComponents();
+    public PagosRealizadosClienteGui() {
+        initComponents();           
+    }
+
+    public void setCliente(Cliente c){
         Iterator<Pago> it = c.getAll(Pago.class).iterator();
         DefaultTableModel pagosDefault = (DefaultTableModel) pagosRealizados.getModel();
         pagosDefault.setRowCount(0);
@@ -35,9 +38,8 @@ public class PagosRealizadosClienteGui extends javax.swing.JInternalFrame {
             row[2]= pago.getString("descripcion");
             pagosDefault.addRow(row);
         }
-        
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

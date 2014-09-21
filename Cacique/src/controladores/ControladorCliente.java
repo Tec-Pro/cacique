@@ -74,6 +74,8 @@ public class ControladorCliente implements ActionListener {
     ControladorPresupuestosRealizados cpr;
     ControladorAuto ca;
     PagoFacturaGui pagoFacturaGui;
+    HistorialComprasGui hcg;
+    PagosRealizadosClienteGui hcc;
 
     public ControladorCliente(ClienteGui clienteGui, AplicacionGui aplicacionGui, VentaGui ventaGui, PresupuestoRealizadosGui prg, AutoGui ag, ControladorPresupuestosRealizados cpr, ControladorAuto ca) {
         try {
@@ -97,9 +99,13 @@ public class ControladorCliente implements ActionListener {
             this.ag = ag;
             this.cpr = cpr;
             this.ca = ca;
+            hcg = new HistorialComprasGui();
+            this.aplicacionGui.getContenedor().add(hcg);
             pagoFacturaGui = new PagoFacturaGui();
             aplicacionGui.getContenedor().add(pagoFacturaGui);
             actualizarLista();
+            hcc = new PagosRealizadosClienteGui();
+            this.aplicacionGui.getContenedor().add(hcg);
             nomcli = clienteGui.getBusqueda();
             nomcli.addKeyListener(new java.awt.event.KeyAdapter() {
                 @Override
@@ -345,9 +351,7 @@ public class ControladorCliente implements ActionListener {
             cargarVentas();
         }
         if ((e.getSource() == clienteGui.getVerHistorial())) {
-            HistorialComprasGui hcg = new HistorialComprasGui();
             HistorialComprasControlador hcc = new HistorialComprasControlador(aplicacionGui, hcg, clienteGui, cliente);
-            aplicacionGui.getContenedor().add(hcg);
             hcg.setVisible(true);
             hcg.toFront();
         }
@@ -427,11 +431,10 @@ public class ControladorCliente implements ActionListener {
             ag.setVisible(true);
             ag.toFront();
         }
-        if (e.getSource() == clienteGui.getPagos()) {
-            PagosRealizadosClienteGui hcg = new PagosRealizadosClienteGui(cliente);
-            aplicacionGui.getContenedor().add(hcg);
-            hcg.setVisible(true);
-            hcg.toFront();
+        if (e.getSource() == clienteGui.getPagos()) {     
+            hcc.setCliente(cliente);
+            hcc.setVisible(true);
+            hcc.toFront();
         }
     }
 

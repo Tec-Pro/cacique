@@ -56,6 +56,7 @@ public class PresupuestoRealizadosGui extends javax.swing.JInternalFrame {
     public void setActionListener(ActionListener lis) {
         this.eliminarPresupuesto.addActionListener(lis);
         this.imprimir.addActionListener(lis);
+        this.modificar.addActionListener(lis);
     }
 
     public JDateChooser getDesde() {
@@ -74,6 +75,11 @@ public class PresupuestoRealizadosGui extends javax.swing.JInternalFrame {
         return realizado;
     }
 
+    public JButton getModificar() {
+        return modificar;
+    }
+
+    
     
     
     /**
@@ -241,6 +247,7 @@ public class PresupuestoRealizadosGui extends javax.swing.JInternalFrame {
         labelTotal2 = new javax.swing.JLabel();
         panelControlFactura = new javax.swing.JPanel();
         eliminarPresupuesto = new javax.swing.JButton();
+        modificar = new javax.swing.JButton();
         imprimir = new javax.swing.JButton();
 
         setClosable(true);
@@ -466,6 +473,10 @@ public class PresupuestoRealizadosGui extends javax.swing.JInternalFrame {
         eliminarPresupuesto.setToolTipText("Eliminar Presupuesto");
         panelControlFactura.add(eliminarPresupuesto);
 
+        modificar.setText("Modificar");
+        modificar.setToolTipText("Eliminar Presupuesto");
+        panelControlFactura.add(modificar);
+
         imprimir.setText("Imprimir");
         panelControlFactura.add(imprimir);
 
@@ -522,7 +533,7 @@ public class PresupuestoRealizadosGui extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 412, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE))
         );
 
         pack();
@@ -548,6 +559,7 @@ public class PresupuestoRealizadosGui extends javax.swing.JInternalFrame {
     private javax.swing.JLabel labelTotal;
     private javax.swing.JLabel labelTotal1;
     private javax.swing.JLabel labelTotal2;
+    private javax.swing.JButton modificar;
     private javax.swing.JPanel panelClientesAarticulos;
     private javax.swing.JPanel panelControlFactura;
     private javax.swing.JPanel panelFactura;

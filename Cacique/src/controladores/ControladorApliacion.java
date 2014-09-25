@@ -118,7 +118,7 @@ public class ControladorApliacion implements ActionListener {
         controladorPresupuesto = new ControladorPresupuesto(presupuestoGui, aplicacionGui);
         controladorImportarGui = new controladorImportarGui(importarGui);
         presupuestoRealizadosGui = new PresupuestoRealizadosGui();
-        controladorPresupuestosRealizados = new ControladorPresupuestosRealizados(aplicacionGui, presupuestoRealizadosGui);
+        controladorPresupuestosRealizados = new ControladorPresupuestosRealizados(aplicacionGui, presupuestoRealizadosGui,presupuestoGui);
         controladorCompra = new ControladorCompra(compraGui, aplicacionGui);
         controladorCliente = new ControladorCliente(clienteGui, aplicacionGui, ventaGui, presupuestoRealizadosGui, autoGui, controladorPresupuestosRealizados, controladorAuto);
         tocacambioGui = new tocaCambioGui(aplicacionGui);

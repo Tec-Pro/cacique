@@ -171,7 +171,9 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
         }
         if (e.getSource() == PresupuestoGui.getFacturaNueva()) {
             PresupuestoGui.limpiarVentana();
+            PresupuestoGui.getRealizarVenta().setEnabled(true);
             PresupuestoGui.paraVerVenta(false);
+            PresupuestoGui.getModificar().setEnabled(false);
             PresupuestoGui.getRealizarVenta().setEnabled(true);
         }
         if (e.getSource() == PresupuestoGui.getAgregarInexistente()){
@@ -179,11 +181,53 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
             agre.setLocationRelativeTo(null);
             agre.setVisible(true);
         }
+        if (e.getSource() == PresupuestoGui.getModificar()){
+            if (PresupuestoGui.getClienteFactura().getText().equals("") || PresupuestoGui.getCalenFacturaText().getText().equals("") || PresupuestoGui.getTablaFactura().getRowCount() == 0) {
+                JOptionPane.showMessageDialog(PresupuestoGui, "Fecha, cliente vacio o no hay productos cargados", "Error!", JOptionPane.ERROR_MESSAGE);
+            } else                  
+                System.out.println("entre a registrar venta");
+                Presupuesto v = Presupuesto.findById(PresupuestoGui.getIdParaModificar());
+                LinkedList<Pair> parDeProductos = new LinkedList();
+                LinkedList<BigDecimal> preciosFinales = new LinkedList();
+                String laFecha = PresupuestoGui.getCalenFacturaText().getText(); //saco la fecha
+                for (int i = 0; i < PresupuestoGui.getTablaFactura().getRowCount(); i++) {
+
+                    Articulo producto = Articulo.findFirst("id = ?", tablafac.getValueAt(i, 0));
+                    BigDecimal cantidad = ((BigDecimal) tablafac.getValueAt(i, 1)).setScale(2, RoundingMode.CEILING); //saco la cantidad
+                    BigDecimal precioFinal = ((BigDecimal) tablafac.getValueAt(i, 6)).setScale(2, RoundingMode.CEILING);
+                    preciosFinales.add(precioFinal);
+                    Pair par = new Pair(producto, cantidad); //creo el par
+                    parDeProductos.add(par); //meto el par a la lista
+                }                
+                v.set("fecha", laFecha);                
+                v.setPreciosFinales(preciosFinales);
+                v.setProductos(parDeProductos);
+                BigDecimal bd = new BigDecimal(PresupuestoGui.getTotalFactura().getText());
+                v.set("monto", bd);
+                v.set("realizado",PresupuestoGui.getRealizado().getText());
+                v.set("patente",PresupuestoGui.getPatente().getText() );
+                if (abmPresupuesto.modificacion(v)) {
+                    try {
+                        JOptionPane.showMessageDialog(apgui, "Presupuesto modificado con exito.");
+                        PresupuestoGui.limpiarVentana();
+                        reporte.mostrarPresupuesto(abmPresupuesto.getUltimoIdPresupuesto());
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(ControladorPresupuesto.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ControladorPresupuesto.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (JRException ex) {
+                        Logger.getLogger(ControladorPresupuesto.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                     
+                } else {
+                     
+                    JOptionPane.showMessageDialog(apgui, "Ocurrió un error inesperado, presupuesto no realizado");
+                }
+        }
         if (e.getSource() == PresupuestoGui.getRealizarVenta()) {//Boton realizar venta
             if (PresupuestoGui.getClienteFactura().getText().equals("") || PresupuestoGui.getCalenFacturaText().getText().equals("") || PresupuestoGui.getTablaFactura().getRowCount() == 0) {
                 JOptionPane.showMessageDialog(PresupuestoGui, "Fecha, cliente vacio o no hay productos cargados", "Error!", JOptionPane.ERROR_MESSAGE);
-            } else {
-                 
+            } else                  
                 System.out.println("entre a registrar venta");
                 Presupuesto v = new Presupuesto();
                 LinkedList<Pair> parDeProductos = new LinkedList();
@@ -227,7 +271,7 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
                 }
             }
         }
-    }
+    
 
     public void cargarTodos() {
         actualizarListaCliente();

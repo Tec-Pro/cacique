@@ -23,6 +23,7 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
     private DefaultTableModel tablaArticulosDefault;//tabla default de los clientes
     private DefaultTableModel tablaFacturaDefault;
     private DefaultTableModel tablaClientesDefault;
+    private int idParaModificar;
 
     /**
      * Creates new form VentaGui
@@ -54,8 +55,15 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
         this.realizarVenta.addActionListener(lis);
         this.borrarArticulosSeleccionados.addActionListener(lis);
         this.agregarInexistente.addActionListener(lis);
+        this.modificar.addActionListener(lis);
     }
 
+    public JButton getModificar() {
+        return modificar;
+    }
+
+    
+    
 
     public JTextField getBusquedaNombre() {
         return busquedaNombre;
@@ -71,6 +79,14 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
          borrarArticulosSeleccionados.setEnabled(!si);
          realizarVenta.setEnabled(!si);
      }
+
+    public int getIdParaModificar() {
+        return idParaModificar;
+    }
+
+    public void setIdParaModificar(int idParaModificar) {
+        this.idParaModificar = idParaModificar;
+    }
 
 
     
@@ -322,6 +338,7 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
         agregarInexistente = new javax.swing.JButton();
         panelControlFactura = new javax.swing.JPanel();
         facturaNueva = new javax.swing.JButton();
+        modificar = new javax.swing.JButton();
         realizarVenta = new javax.swing.JButton();
 
         setClosable(true);
@@ -604,6 +621,11 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
         facturaNueva.setToolTipText("Realizar una nueva venta");
         panelControlFactura.add(facturaNueva);
 
+        modificar.setText("Guardar modificacion");
+        modificar.setToolTipText("Guardar Modificacion");
+        modificar.setEnabled(false);
+        panelControlFactura.add(modificar);
+
         realizarVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/guardar.png"))); // NOI18N
         realizarVenta.setToolTipText("Guardar Presupuesto");
         panelControlFactura.add(realizarVenta);
@@ -661,7 +683,7 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 412, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE))
         );
 
         pack();
@@ -692,6 +714,7 @@ public class PresupuestoGui extends javax.swing.JInternalFrame {
     private javax.swing.JLabel labelTotal;
     private javax.swing.JLabel labelTotal1;
     private javax.swing.JLabel labelTotal3;
+    private javax.swing.JButton modificar;
     private javax.swing.JPanel panelArticulos;
     private javax.swing.JPanel panelClientes;
     private javax.swing.JPanel panelClientesAarticulos;

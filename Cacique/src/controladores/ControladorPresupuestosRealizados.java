@@ -8,6 +8,7 @@ import abm.ABMPresupuesto;
 import busqueda.Busqueda;
 import com.toedter.calendar.JDateChooser;
 import interfaz.AplicacionGui;
+import interfaz.PresupuestoGui;
 import interfaz.PresupuestoRealizadosGui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,11 +58,13 @@ public class ControladorPresupuestosRealizados implements ActionListener {
     private PresupuestoRealizadosGui presupuestosRealizadosGui;
     private Object idP;
     private ControladorJReport reporte;
-
-    public ControladorPresupuestosRealizados(AplicacionGui apgui, final PresupuestoRealizadosGui presupuestosRealizadosGui) {
+    private PresupuestoGui presupuestoGui;
+    Presupuesto p ;
+    public ControladorPresupuestosRealizados(AplicacionGui apgui, final PresupuestoRealizadosGui presupuestosRealizadosGui,PresupuestoGui presupuestoGui) {
         desde = "0-0-0";
         hasta = "9999-0-0";
         this.apgui = apgui;
+        this.presupuestoGui = presupuestoGui;
         this.presupuestosRealizadosGui = presupuestosRealizadosGui;
         nombre = presupuestosRealizadosGui.getFiltroNombre();
         calenDesde = presupuestosRealizadosGui.getDesde();
@@ -208,9 +211,8 @@ public class ControladorPresupuestosRealizados implements ActionListener {
     }
 
     public void tablaFacturasMouseReleased(java.awt.event.MouseEvent evt) {
-        int r = tablaFacturas.getSelectedRow();
-        
-        Presupuesto p = Presupuesto.findById(tablaFacturas.getValueAt(r, 0));
+        int r = tablaFacturas.getSelectedRow();        
+        p = Presupuesto.findById(tablaFacturas.getValueAt(r, 0));
         presupuestosRealizadosGui.getPatente().setText(p.getString("patente"));
         presupuestosRealizadosGui.getRealizado().setText(p.getString("realizado"));
         Cliente c = buscar.buscarCliente(tablaFacturas.getValueAt(r, 0));
@@ -262,5 +264,31 @@ public class ControladorPresupuestosRealizados implements ActionListener {
             }
             
     }
+        if(e.getSource() == presupuestosRealizadosGui.getModificar()){
+           presupuestoGui.getRealizarVenta().setEnabled(false);
+           presupuestoGui.getModificar().setEnabled(true);
+           presupuestoGui.getClienteFactura().setText(presupuestosRealizadosGui.getClienteFactura().getText());
+           presupuestoGui.getCalendarioFactura().setDate(presupuestosRealizadosGui.getCalendarioFactura().getDate());
+           DefaultTableModel tablaFacturaDefault = presupuestoGui.getTablaFacturaDefault();  
+           tablaFacturaDefault.setRowCount(0);
+           presupuestoGui.setIdParaModificar(p.getInteger("id"));
+           Float total = Float.parseFloat("0.0");
+            for (ArticulosPresupuestos pv : prodPresupuesto) {
+                Articulo p = Articulo.findFirst("id = ?", pv.get("articulo_id"));
+                Object cols[] = new Object[7];
+                cols[0] = p.get("id");
+                cols[1] = pv.getBigDecimal("cantidad");
+                cols[2] = p.get("codigo");
+                cols[3] = p.get("descripcion");
+                cols[4] = BigDecimal.valueOf(pv.getFloat("precio_final")).divide(pv.getBigDecimal("cantidad")).setScale(2, RoundingMode.CEILING);
+                cols[5] = p.getBigDecimal("stock_actual");
+                cols[6] = BigDecimal.valueOf(pv.getFloat("precio_final")).setScale(2, RoundingMode.CEILING);
+                total += pv.getFloat("precio_final");
+                tablaFacturaDefault.addRow(cols);
+            }
+            presupuestoGui.getTotalFactura().setText(total.toString());
+            presupuestoGui.toFront();
+            presupuestoGui.setVisible(true);
+        }
     }
 }

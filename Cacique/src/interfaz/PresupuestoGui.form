@@ -40,7 +40,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <EmptySpace min="0" pref="412" max="32767" attributes="0"/>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-              <Component id="jPanel1" alignment="0" pref="407" max="32767" attributes="0"/>
+              <Component id="jPanel1" alignment="0" pref="412" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -567,6 +567,13 @@
                           <Image iconType="3" name="/interfaz/Icons/agregar.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="Realizar una nueva venta"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="modificar">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Guardar modificacion"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Guardar Modificacion"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JButton" name="realizarVenta">

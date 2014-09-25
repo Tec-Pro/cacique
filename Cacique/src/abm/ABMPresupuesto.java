@@ -135,4 +135,29 @@ public class ABMPresupuesto {
     public int getUltimoIdPresupuesto() {
         return ultimoIdPresupuesto;
     }
+    
+    //FUNCIONA CORRECTAMENTE
+    public boolean modificacion(Presupuesto v) {        
+        boolean resultOp = true;
+        if (v == null) {
+            resultOp = false;
+        } else {
+            Base.openTransaction();
+            Presupuesto p = Presupuesto.findById(v.getId());
+            Integer idCliente = (Integer) v.get("cliente_id");
+            p.set("monto", v.get("monto"));
+            p.set("cliente_id", idCliente);
+            p.set("fecha", v.get("fecha"));
+            p.set("patente",v.get("patente"));
+            p.set("realizado",v.get("realizado"));
+            resultOp = resultOp && p.saveIt();//guardo la venta
+            int idPresupuesto = p.getInteger("id");
+            ultimoIdPresupuesto = idPresupuesto;
+            ArticulosPresupuestos.delete("presupuesto_id = ?", idPresupuesto);
+            resultOp = resultOp && cargarProductosPresupuestados(idPresupuesto, v.getProductos(), v.getPreciosFinales());//guardo los productos vendidos
+        Base.commitTransaction();
+        }
+        return resultOp;
+    }
+    
 }

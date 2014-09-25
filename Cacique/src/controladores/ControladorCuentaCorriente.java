@@ -181,6 +181,7 @@ public class ControladorCuentaCorriente implements ActionListener {
         if(e.getSource()== ctg.getImprimir()){
             imprimirCuentasCorrienges imprimir= new imprimirCuentasCorrienges(aplicacionGui, true,cliente.getInteger("id"));
             imprimir.setVisible(true);
+            imprimir.setLocationRelativeTo(null);
             
         }
 

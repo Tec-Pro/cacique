@@ -33,10 +33,10 @@
               <Component id="panelFactura" max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
-              <Component id="pagar" min="-2" pref="261" max="-2" attributes="0"/>
+              <Component id="pagar" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="imprimir" min="-2" pref="169" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="total" min="-2" pref="123" max="-2" attributes="0"/>
@@ -55,10 +55,10 @@
               <Component id="panelClientes1" max="32767" attributes="0"/>
               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jLabel1" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                      <Component id="pagar" alignment="3" pref="38" max="32767" attributes="0"/>
-                      <Component id="imprimir" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="pagar" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+                      <Component id="imprimir" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
                   </Group>
                   <Component id="total" alignment="0" max="32767" attributes="0"/>
               </Group>

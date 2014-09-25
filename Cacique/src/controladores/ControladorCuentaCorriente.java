@@ -9,6 +9,7 @@ import busqueda.Busqueda;
 import interfaz.AplicacionGui;
 import interfaz.CuentaCorrienteGui;
 import interfaz.PagarCorrienteGui;
+import interfaz.imprimirCuentasCorrienges;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -16,6 +17,7 @@ import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import javax.swing.JComboBox;
@@ -121,6 +123,8 @@ public class ControladorCuentaCorriente implements ActionListener {
             String descripcion = TratamientoString.eliminarTildes(ctg.getDescripcion().getText());
             c.set("descripcion", descripcion);
             c.set("monto", ctg.getMontoVenta().getText());
+            Date date = ctg.getFecha().getDate();
+            c.set("fecha", date); //saco la fecha);
             if (abmCorriente.alta(c)) {
                 ctg.guardarCuenta();
                 listCorriente = Corriente.find("id_cliente like ? ", cliente.getId());
@@ -159,6 +163,8 @@ public class ControladorCuentaCorriente implements ActionListener {
             String descripcion = TratamientoString.eliminarTildes(ctg.getDescripcion().getText());
             c.set("descripcion", descripcion);
             c.set("monto", ctg.getMontoVenta().getText());
+            Date date = ctg.getFecha().getDate();
+            c.set("fecha", date); //saco la fecha);
             if (abmCorriente.modificar(c)) {
                 ctg.guardarCuenta();
                 listCorriente = Corriente.find("id_cliente like ? ", cliente.getId());
@@ -172,6 +178,11 @@ public class ControladorCuentaCorriente implements ActionListener {
         if (e.getSource() == ctg.getPagar()) {
             new PagarCorrienteGui(aplicacionGui, true, Integer.valueOf((String) tablaCuenta.getValueAt(tablaCuenta.getSelectedRow(), 1)), Integer.valueOf((String) tablaCuenta.getValueAt(tablaCuenta.getSelectedRow(), 0)), this).setVisible(true);
         }
+        if(e.getSource()== ctg.getImprimir()){
+            imprimirCuentasCorrienges imprimir= new imprimirCuentasCorrienges(aplicacionGui, true,cliente.getInteger("id"));
+            imprimir.setVisible(true);
+            
+        }
 
     }
 
@@ -182,7 +193,7 @@ public class ControladorCuentaCorriente implements ActionListener {
         Iterator<Corriente> itr = listCorriente.iterator();
         while (itr.hasNext()) {
             Corriente v = itr.next();
-            Object row[] = new Object[8];
+            Object row[] = new Object[9];
             BigDecimal haber = BigDecimal.valueOf(v.getFloat("haber")).setScale(2, RoundingMode.CEILING);
             BigDecimal monto = BigDecimal.valueOf(v.getFloat("monto")).setScale(2, RoundingMode.CEILING);
             row[0] = v.getString("id");
@@ -194,6 +205,7 @@ public class ControladorCuentaCorriente implements ActionListener {
             BigDecimal debe = monto.subtract(haber).setScale(2, RoundingMode.CEILING);
             row[6] = debe.toString();
             row[7] = debe.compareTo(BigDecimal.ZERO) <= 0;
+            row[8]= dateToMySQLDate(v.getDate("fecha"),true);
             tablaCuentaDefault.addRow(row);
         }
         actualizarTotalCuenta();
@@ -235,5 +247,23 @@ public class ControladorCuentaCorriente implements ActionListener {
             System.out.println(big);
         }
         ctg.getTotal().setText(BigDecimal.valueOf(big).setScale(2, RoundingMode.CEILING).toString());
+    }
+    
+        /*va true si se quiere usar para mostrarla por pantalla es decir 12/12/2014 y false si va 
+    para la base de datos, es decir 2014/12/12*/
+    public String dateToMySQLDate(Date fecha, boolean paraMostrar) {
+        if(fecha!=null){
+        if(paraMostrar){
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(fecha);
+        }
+        else{
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(fecha);
+        }
+        }
+        else{
+            return "";
+        }
     }
 }

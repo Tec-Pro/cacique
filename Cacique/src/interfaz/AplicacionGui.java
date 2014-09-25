@@ -223,11 +223,11 @@ public class AplicacionGui extends javax.swing.JFrame {
         botAuto.setToolTipText("Gestión de automóviles");
         panelBotones.add(botAuto);
 
-        botTrabajos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/rsz_oil-change.png"))); // NOI18N
+        botTrabajos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/rsz_1mecanico.png"))); // NOI18N
         botTrabajos.setToolTipText("Realizar trabajos");
         panelBotones.add(botTrabajos);
 
-        tocaCambio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/tocaCambio.png"))); // NOI18N
+        tocaCambio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/rsz_mr-bees_icon_oil-can.png"))); // NOI18N
         tocaCambio.setToolTipText("Autos con más de 6 meses sin cambio de aceite");
         panelBotones.add(tocaCambio);
 
@@ -315,7 +315,7 @@ public class AplicacionGui extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE))
+                .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 674, Short.MAX_VALUE))
         );
 
         pack();

@@ -40,6 +40,10 @@ public class PresupuestoRealizadosGui extends javax.swing.JInternalFrame {
         hasta.setDateFormatString("yyyy-MM-dd");
     }
 
+    public JButton getImprimir() {
+        return imprimir;
+    }
+
     /**
      * Seteo el actionListener para los botones articulosALafactura,
      * clienteALafactura, facturaNueva, imprimir realizarVenta,
@@ -51,6 +55,7 @@ public class PresupuestoRealizadosGui extends javax.swing.JInternalFrame {
      */
     public void setActionListener(ActionListener lis) {
         this.eliminarPresupuesto.addActionListener(lis);
+        this.imprimir.addActionListener(lis);
     }
 
     public JDateChooser getDesde() {
@@ -236,6 +241,7 @@ public class PresupuestoRealizadosGui extends javax.swing.JInternalFrame {
         labelTotal2 = new javax.swing.JLabel();
         panelControlFactura = new javax.swing.JPanel();
         eliminarPresupuesto = new javax.swing.JButton();
+        imprimir = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -442,14 +448,15 @@ public class PresupuestoRealizadosGui extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(totalFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelTotal)
+                .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(patente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(labelTotal2)
                         .addComponent(realizado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(labelTotal1)))
+                        .addComponent(labelTotal1))
+                    .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(totalFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(labelTotal)))
                 .addGap(4, 4, 4))
         );
 
@@ -458,6 +465,9 @@ public class PresupuestoRealizadosGui extends javax.swing.JInternalFrame {
         eliminarPresupuesto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/Icons/borrar.png"))); // NOI18N
         eliminarPresupuesto.setToolTipText("Eliminar Presupuesto");
         panelControlFactura.add(eliminarPresupuesto);
+
+        imprimir.setText("Imprimir");
+        panelControlFactura.add(imprimir);
 
         javax.swing.GroupLayout fondoImagenLayout = new javax.swing.GroupLayout(fondoImagen);
         fondoImagen.setLayout(fondoImagenLayout);
@@ -512,7 +522,7 @@ public class PresupuestoRealizadosGui extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 412, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE))
         );
 
         pack();
@@ -525,6 +535,7 @@ public class PresupuestoRealizadosGui extends javax.swing.JInternalFrame {
     private javax.swing.JTextField filtroNombre;
     private javax.swing.JPanel fondoImagen;
     private com.toedter.calendar.JDateChooser hasta;
+    private javax.swing.JButton imprimir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

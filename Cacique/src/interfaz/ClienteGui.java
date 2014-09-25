@@ -54,6 +54,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         this.autos.addActionListener(lis);
         this.presupuestos.addActionListener(lis);
         this.pagos.addActionListener(lis);
+        this.agregarAuto.addActionListener(lis);
     }
 
     public void habilitarCamposVentas(boolean b) {
@@ -241,6 +242,10 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         return ((JTextField) nacimiento.getDateEditor().getUiComponent());
     }
 
+    public JButton getAgregarAuto() {
+        return agregarAuto;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -299,6 +304,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         verHistorial = new javax.swing.JButton();
         cobrarFactura = new javax.swing.JButton();
         eliminarVenta = new javax.swing.JButton();
+        agregarAuto = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -637,6 +643,10 @@ public class ClienteGui extends javax.swing.JInternalFrame {
         eliminarVenta.setPreferredSize(new java.awt.Dimension(55, 33));
         jPanel5.add(eliminarVenta);
 
+        agregarAuto.setText("Añadir auto");
+        agregarAuto.setEnabled(false);
+        jPanel5.add(agregarAuto);
+
         jPanel1.add(jPanel5);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -689,7 +699,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
                     .addComponent(panelClientes, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
         panelEnteroClientesLayout.setVerticalGroup(
@@ -700,7 +710,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
         );
 
         scroolClientes.setViewportView(panelEnteroClientes);
@@ -747,6 +757,7 @@ public class ClienteGui extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel adeuda;
     private javax.swing.JLabel adeudaActual;
+    private javax.swing.JButton agregarAuto;
     private javax.swing.JButton autos;
     private javax.swing.JButton borrar;
     private javax.swing.JTextField busqueda;

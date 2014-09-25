@@ -4,7 +4,10 @@
  */
 package interfaz;
 
+import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.util.Calendar;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -31,6 +34,12 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
         initComponents();
         clientes = (DefaultTableModel) tablaClientes.getModel(); //convierto la tabla;
         cuentas = (DefaultTableModel) tablaCuentas.getModel();
+        Calendar miCalendario = Calendar.getInstance();
+        java.util.Date eldia = miCalendario.getTime();
+        int diaHoy = miCalendario.get(Calendar.DAY_OF_MONTH);
+        int mes = miCalendario.get(Calendar.MONTH);
+        int anio = miCalendario.get(Calendar.YEAR);
+        fecha.setDate(Date.valueOf(anio + "-" + (mes + 1) + "-" + diaHoy));
     }
 
      public void setActionListener(ActionListener lis) {
@@ -39,10 +48,15 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
         this.eliminar.addActionListener(lis);
         this.nueva.addActionListener(lis);
         this.pagar.addActionListener(lis);
+        this.imprimir.addActionListener(lis);
     }
 
     public DefaultTableModel getClientesDefaul() {
         return clientes;
+    }
+
+    public JButton getImprimir() {
+        return imprimir;
     }
 
     public DefaultTableModel getCuentasDefaul() {
@@ -107,6 +121,7 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
         idVenta.setText(" ");
         montoVenta.setEnabled(true);
         montoVenta.setText(" ");
+        fecha.setEnabled(true);
     }
 
     public void editarCuenta() {
@@ -116,6 +131,7 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
         descripcion.setEnabled(true);
         idVenta.setEnabled(false);
         montoVenta.setEnabled(true);
+        fecha.setEnabled(true);
     }
 
     public void eliminarCuenta() {
@@ -128,6 +144,13 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
         idVenta.setText(" ");
         montoVenta.setEnabled(false);
         montoVenta.setText(" ");
+        fecha.setEnabled(false);
+        Calendar miCalendario = Calendar.getInstance();
+        java.util.Date eldia = miCalendario.getTime();
+        int diaHoy = miCalendario.get(Calendar.DAY_OF_MONTH);
+        int mes = miCalendario.get(Calendar.MONTH);
+        int anio = miCalendario.get(Calendar.YEAR);
+        fecha.setDate(Date.valueOf(anio + "-" + (mes + 1) + "-" + diaHoy));
     }
 
     public void guardarCuenta() {
@@ -141,6 +164,8 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
         montoVenta.setEnabled(false);
         montoVenta.setText(" ");
         clienteCuenta.setText(" ");
+        fecha.setEnabled(false);
+        fecha.setDate(Calendar.getInstance().getTime());
     }
 
     public void limpiarCampos() {
@@ -150,6 +175,12 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
         idVenta.setText(" ");
         idCuenta.setText("");
         nombre.setText("");
+        Calendar miCalendario = Calendar.getInstance();
+        java.util.Date eldia = miCalendario.getTime();
+        int diaHoy = miCalendario.get(Calendar.DAY_OF_MONTH);
+        int mes = miCalendario.get(Calendar.MONTH);
+        int anio = miCalendario.get(Calendar.YEAR);
+        fecha.setDate(Date.valueOf(anio + "-" + (mes + 1) + "-" + diaHoy));
         
 
     }
@@ -161,6 +192,7 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
         idVenta.setText("id_venta");
         idCuenta.setText(c.getString("id"));
         nombre.setText(Cliente.findById(c.getString("id_cliente")).getString("nombre"));
+        fecha.setDate(c.getDate("fecha"));
     }
 
     public JTextField getIdCuenta() {
@@ -170,6 +202,12 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
     public JButton getPagar() {
         return pagar;
     }
+
+    public JDateChooser getFecha() {
+        return fecha;
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -201,12 +239,15 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
         idCuenta = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         nombre = new javax.swing.JLabel();
+        fecha = new com.toedter.calendar.JDateChooser();
+        labelCliente3 = new javax.swing.JLabel();
         panelClientes1 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tablaCuentas = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         total = new javax.swing.JLabel();
         pagar = new javax.swing.JButton();
+        imprimir = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -250,7 +291,7 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
         panelClientesLayout.setHorizontalGroup(
             panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-            .addComponent(busqueda, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
+            .addComponent(busqueda, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
         );
         panelClientesLayout.setVerticalGroup(
             panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -323,6 +364,11 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Nombre");
 
+        fecha.setEnabled(false);
+
+        labelCliente3.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
+        labelCliente3.setText("Fecha");
+
         javax.swing.GroupLayout panelFacturaLayout = new javax.swing.GroupLayout(panelFactura);
         panelFactura.setLayout(panelFacturaLayout);
         panelFacturaLayout.setHorizontalGroup(
@@ -330,19 +376,19 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
             .addGroup(panelFacturaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(nueva)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(0, 0, 0)
                 .addComponent(guardar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(0, 0, 0)
                 .addComponent(editar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(eliminar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(labelTotal)
-                .addGap(18, 18, 18)
+                .addGap(3, 3, 3)
                 .addComponent(montoVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(panelFacturaLayout.createSequentialGroup()
-                .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(panelFacturaLayout.createSequentialGroup()
                         .addComponent(labelCliente)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -358,8 +404,12 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
                     .addGroup(panelFacturaLayout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(labelCliente3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 33, Short.MAX_VALUE))
             .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panelFacturaLayout.createSequentialGroup()
                     .addContainerGap()
@@ -379,10 +429,13 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
                         .addComponent(labelCliente1)
                         .addComponent(idVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(121, 121, 121)
+                .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelCliente3))
+                .addGap(111, 111, 111)
                 .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(montoVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -394,8 +447,8 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
                         .addComponent(eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))))
             .addGroup(panelFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFacturaLayout.createSequentialGroup()
-                    .addContainerGap(61, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(72, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(36, Short.MAX_VALUE)))
         );
 
@@ -407,14 +460,14 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "ID", "ID Cliente", "ID Venta", "Monto", "Descripcion", "Pagado", "Debe", "Pagada"
+                "ID", "ID Cliente", "ID Venta", "Monto", "Descripcion", "Pagado", "Debe", "Pagada", "Fecha"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -437,7 +490,7 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
         panelClientes1Layout.setVerticalGroup(
             panelClientes1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelClientes1Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
                 .addGap(9, 9, 9))
         );
 
@@ -447,6 +500,8 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
         total.setFont(new java.awt.Font("Cantarell", 3, 18)); // NOI18N
 
         pagar.setText("Pagar cuenta corriente seleccionada");
+
+        imprimir.setText("Imprimir cuentas");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -458,7 +513,9 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelFactura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(pagar, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pagar, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(imprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -476,7 +533,9 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
                 .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pagar, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(pagar, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+                        .addComponent(imprimir))
                     .addComponent(total, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, 0))
         );
@@ -505,9 +564,11 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
     private javax.swing.JTextArea descripcion;
     private javax.swing.JButton editar;
     private javax.swing.JButton eliminar;
+    private com.toedter.calendar.JDateChooser fecha;
     private javax.swing.JButton guardar;
     private javax.swing.JTextField idCuenta;
     private javax.swing.JTextField idVenta;
+    private javax.swing.JButton imprimir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -516,6 +577,7 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
     private javax.swing.JLabel labelCliente;
     private javax.swing.JLabel labelCliente1;
     private javax.swing.JLabel labelCliente2;
+    private javax.swing.JLabel labelCliente3;
     private javax.swing.JLabel labelTotal;
     private javax.swing.JTextField montoVenta;
     private javax.swing.JLabel nombre;

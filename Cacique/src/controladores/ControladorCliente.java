@@ -209,6 +209,7 @@ public class ControladorCliente implements ActionListener {
             clienteGui.getAutos().setEnabled(true);
             clienteGui.getPresupuestos().setEnabled(true);
             clienteGui.getPagos().setEnabled(true);
+            clienteGui.getAgregarAuto().setEnabled(true);
             System.out.println("hice doble click en un cliente");
             clienteGui.limpiarCampos();
             cliente = busqueda.buscarCliente(tablaCliente.getValueAt(tablaCliente.getSelectedRow(), 0));
@@ -233,6 +234,7 @@ public class ControladorCliente implements ActionListener {
             clienteGui.getModificar().setEnabled(false);
             clienteGui.getGuardar().setEnabled(true);
             clienteGui.getAutos().setEnabled(false);
+            clienteGui.getAgregarAuto().setEnabled(false);
             clienteGui.getPresupuestos().setEnabled(false);
             clienteGui.getPagos().setEnabled(false);
             clienteGui.habilitarCamposVentas(false);
@@ -275,6 +277,7 @@ public class ControladorCliente implements ActionListener {
                         clienteGui.getAutos().setEnabled(false);
                         clienteGui.getPresupuestos().setEnabled(false);
                         clienteGui.getPagos().setEnabled(false);
+                        clienteGui.getAgregarAuto().setEnabled(false);
                     } else {
                         JOptionPane.showMessageDialog(clienteGui, "Ocurrió un error, no se borró el cliente", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
@@ -296,6 +299,7 @@ public class ControladorCliente implements ActionListener {
             clienteGui.getAutos().setEnabled(false);
             clienteGui.getPresupuestos().setEnabled(false);
             clienteGui.getPagos().setEnabled(false);
+            clienteGui.getAgregarAuto().setEnabled(false);
             clienteGui.habilitarCamposVentas(false);
         }
 
@@ -311,6 +315,7 @@ public class ControladorCliente implements ActionListener {
                     clienteGui.getNuevo().setEnabled(true);
                     clienteGui.getGuardar().setEnabled(false);
                     clienteGui.getAutos().setEnabled(false);
+                    clienteGui.getAgregarAuto().setEnabled(false);
                     clienteGui.getPresupuestos().setEnabled(false);
                     clienteGui.getPagos().setEnabled(false);
                     clienteGui.habilitarCamposVentas(false);
@@ -428,6 +433,11 @@ public class ControladorCliente implements ActionListener {
         if (e.getSource() == clienteGui.getAutos()) {
             ag.getBusquedaDuenio().setText(cliente.getString("nombre"));
             ca.realizarBusquedaDuenio();
+            ag.setVisible(true);
+            ag.toFront();
+        }
+        if(e.getSource()==clienteGui.getAgregarAuto()){
+            ca.apreteNuevo(cliente.getString("id"), cliente.getString("nombre"));
             ag.setVisible(true);
             ag.toFront();
         }

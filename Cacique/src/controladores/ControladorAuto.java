@@ -363,4 +363,17 @@ public class ControladorAuto  implements ActionListener {
         }
     }
     
+        //para llamar desde el otro lado, así evito hacer bardo
+        public void apreteNuevo(String idC, String nombre){
+             System.out.println("Boton nuevo pulsado");
+            autoGui.limpiarCampos();
+            autoGui.habilitarCampos(true);
+            isNuevo = true;
+            editandoInfo = true;
+            autoGui.getBorrar().setEnabled(false);
+            autoGui.getModificar().setEnabled(false);
+            autoGui.getGuardar().setEnabled(true);
+            cargarClientes();
+            autoGui.getDuenio().setSelectedItem(idC+"-"+nombre);
+        }
 }

@@ -16,9 +16,12 @@ import java.beans.PropertyChangeListener;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -27,6 +30,7 @@ import modelos.Articulo;
 import modelos.ArticulosPresupuestos;
 import modelos.Cliente;
 import modelos.Presupuesto;
+import net.sf.jasperreports.engine.JRException;
 import org.javalite.activejdbc.Base;
 
 /**
@@ -51,6 +55,8 @@ public class ControladorPresupuestosRealizados implements ActionListener {
     private LinkedList<ArticulosPresupuestos> prodPresupuesto;
     private ABMPresupuesto abmPresupuesto;
     private PresupuestoRealizadosGui presupuestosRealizadosGui;
+    private Object idP;
+    private ControladorJReport reporte;
 
     public ControladorPresupuestosRealizados(AplicacionGui apgui, final PresupuestoRealizadosGui presupuestosRealizadosGui) {
         desde = "0-0-0";
@@ -115,6 +121,15 @@ public class ControladorPresupuestosRealizados implements ActionListener {
             }
         });
         actualizarListaFacturas();
+        try {
+            reporte = new ControladorJReport("presupuesto.jasper");
+        } catch (JRException ex) {
+            Logger.getLogger(ControladorPresupuestosRealizados.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ControladorPresupuestosRealizados.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorPresupuestosRealizados.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void actualizarListaFacturas() {
@@ -194,6 +209,7 @@ public class ControladorPresupuestosRealizados implements ActionListener {
 
     public void tablaFacturasMouseReleased(java.awt.event.MouseEvent evt) {
         int r = tablaFacturas.getSelectedRow();
+        
         Presupuesto p = Presupuesto.findById(tablaFacturas.getValueAt(r, 0));
         presupuestosRealizadosGui.getPatente().setText(p.getString("patente"));
         presupuestosRealizadosGui.getRealizado().setText(p.getString("realizado"));
@@ -230,5 +246,21 @@ public class ControladorPresupuestosRealizados implements ActionListener {
              
             JOptionPane.showMessageDialog(presupuestosRealizadosGui, "Presupuesto borrada exitosamente");
         }
+        if(e.getSource() == presupuestosRealizadosGui.getImprimir()){
+            if(tablaFacturas.getSelectedRow()>=0){
+            int r = tablaFacturas.getSelectedRow();
+            idP= tablaFacturas.getValueAt(r, 0);
+            try {
+                reporte.mostrarPresupuesto(Integer.valueOf((String)idP));
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ControladorPresupuestosRealizados.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(ControladorPresupuestosRealizados.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (JRException ex) {
+                Logger.getLogger(ControladorPresupuestosRealizados.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            }
+            
+    }
     }
 }

@@ -33,7 +33,9 @@
               <Component id="panelFactura" max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
-              <Component id="pagar" min="-2" pref="260" max="-2" attributes="0"/>
+              <Component id="pagar" min="-2" pref="261" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="imprimir" min="-2" pref="169" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -54,7 +56,10 @@
               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="jLabel1" alignment="0" max="32767" attributes="0"/>
-                  <Component id="pagar" alignment="0" pref="38" max="32767" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                      <Component id="pagar" alignment="3" pref="38" max="32767" attributes="0"/>
+                      <Component id="imprimir" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <Component id="total" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
@@ -78,7 +83,7 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Component id="jScrollPane2" alignment="0" pref="0" max="32767" attributes="0"/>
-              <Component id="busqueda" alignment="0" pref="218" max="32767" attributes="0"/>
+              <Component id="busqueda" alignment="0" pref="230" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -145,21 +150,21 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="nueva" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                   <Component id="guardar" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                   <Component id="editar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="eliminar" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="73" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Component id="labelTotal" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                   <Component id="montoVenta" min="-2" pref="106" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
               <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="102" attributes="0">
                           <Component id="labelCliente" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="clienteCuenta" min="-2" pref="110" max="-2" attributes="0"/>
@@ -172,13 +177,17 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="idCuenta" min="-2" pref="110" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" attributes="0">
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="nombre" min="-2" pref="197" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="labelCliente3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="fecha" min="-2" pref="150" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="33" max="32767" attributes="0"/>
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
@@ -205,11 +214,15 @@
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="nombre" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="nombre" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="fecha" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelCliente3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="121" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="111" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="montoVenta" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -225,8 +238,8 @@
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="61" max="32767" attributes="0"/>
-                      <Component id="jScrollPane1" min="-2" pref="118" max="-2" attributes="0"/>
+                      <EmptySpace pref="72" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="36" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -346,6 +359,19 @@
         </Component>
         <Component class="javax.swing.JLabel" name="nombre">
         </Component>
+        <Component class="com.toedter.calendar.JDateChooser" name="fecha">
+          <Properties>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="labelCliente3">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Century Schoolbook L" size="14" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Fecha"/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="panelClientes1">
@@ -368,7 +394,7 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <Component id="jScrollPane3" pref="173" max="32767" attributes="0"/>
+                  <Component id="jScrollPane3" pref="176" max="32767" attributes="0"/>
                   <EmptySpace min="9" pref="9" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -386,7 +412,7 @@
               <Properties>
                 <Property name="autoCreateRowSorter" type="boolean" value="true"/>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="8" rowCount="0">
+                  <Table columnCount="9" rowCount="0">
                     <Column editable="false" title="ID" type="java.lang.String"/>
                     <Column editable="false" title="ID Cliente" type="java.lang.String"/>
                     <Column editable="false" title="ID Venta" type="java.lang.String"/>
@@ -395,10 +421,16 @@
                     <Column editable="false" title="Pagado" type="java.lang.String"/>
                     <Column editable="false" title="Debe" type="java.lang.String"/>
                     <Column editable="false" title="Pagada" type="java.lang.Boolean"/>
+                    <Column editable="false" title="Fecha" type="java.lang.String"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
@@ -471,6 +503,11 @@
     <Component class="javax.swing.JButton" name="pagar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Pagar cuenta corriente seleccionada"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="imprimir">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Imprimir cuentas"/>
       </Properties>
     </Component>
   </SubComponents>

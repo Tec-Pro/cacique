@@ -40,7 +40,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <EmptySpace min="0" pref="412" max="32767" attributes="0"/>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-              <Component id="jPanel1" alignment="0" pref="412" max="32767" attributes="0"/>
+              <Component id="jPanel1" alignment="0" pref="407" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -361,14 +361,16 @@
                               <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
                               <Component id="jScrollPane8" pref="185" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="totalFactura" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="labelTotal" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Group type="103" alignment="3" groupAlignment="3" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                                       <Component id="patente" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="labelTotal2" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="realizado" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="labelTotal1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="totalFactura" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="labelTotal" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
@@ -479,6 +481,11 @@
                           <Image iconType="3" name="/interfaz/Icons/borrar.png"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="Eliminar Presupuesto"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="imprimir">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Imprimir"/>
                       </Properties>
                     </Component>
                   </SubComponents>

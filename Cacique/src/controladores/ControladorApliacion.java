@@ -116,6 +116,7 @@ public class ControladorApliacion implements ActionListener {
         controladorImportarGui = new controladorImportarGui(importarGui);
         presupuestoGui = new PresupuestoGui();
         controladorPresupuesto = new ControladorPresupuesto(presupuestoGui, aplicacionGui);
+        controladorPresupuesto.setCellEditor();
         controladorImportarGui = new controladorImportarGui(importarGui);
         presupuestoRealizadosGui = new PresupuestoRealizadosGui();
         controladorPresupuestosRealizados = new ControladorPresupuestosRealizados(aplicacionGui, presupuestoRealizadosGui,presupuestoGui);

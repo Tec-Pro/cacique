@@ -237,7 +237,6 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
                 Integer idCliente = Integer.valueOf(cliente.split(" ")[0]); //saco el id cliente
                 v.set("cliente_id", idCliente);
                 for (int i = 0; i < PresupuestoGui.getTablaFactura().getRowCount(); i++) {
-
                     Articulo producto = Articulo.findFirst("id = ?", tablafac.getValueAt(i, 0));
                     BigDecimal cantidad = ((BigDecimal) tablafac.getValueAt(i, 1)).setScale(2, RoundingMode.CEILING); //saco la cantidad
                     BigDecimal precioFinal = ((BigDecimal) tablafac.getValueAt(i, 6)).setScale(2, RoundingMode.CEILING);
@@ -318,8 +317,7 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
     public void setCellEditor() {
         for (int i = 0; i < tablafac.getRowCount(); i++) {
             tablafac.getCellEditor(i, 1).addCellEditorListener(this);
-            tablafac.getCellEditor(i, 4).addCellEditorListener(this);
-            
+            tablafac.getCellEditor(i, 4).addCellEditorListener(this);            
         }
     }
 
@@ -337,7 +335,7 @@ public class ControladorPresupuesto implements ActionListener, CellEditorListene
     }
 
     @Override
-    public void editingStopped(ChangeEvent e) {
+    public void editingStopped(ChangeEvent e) {        
         actualizarPrecio();
     }
 

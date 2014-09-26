@@ -269,6 +269,8 @@ public class ControladorPresupuestosRealizados implements ActionListener {
            presupuestoGui.getModificar().setEnabled(true);
            presupuestoGui.getClienteFactura().setText(presupuestosRealizadosGui.getClienteFactura().getText());
            presupuestoGui.getCalendarioFactura().setDate(presupuestosRealizadosGui.getCalendarioFactura().getDate());
+           presupuestoGui.getPatente().setText(presupuestosRealizadosGui.getPatente().getText());
+           presupuestoGui.getRealizado().setText(presupuestosRealizadosGui.getRealizado().getText());
            DefaultTableModel tablaFacturaDefault = presupuestoGui.getTablaFacturaDefault();  
            tablaFacturaDefault.setRowCount(0);
            presupuestoGui.setIdParaModificar(p.getInteger("id"));

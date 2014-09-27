@@ -31,7 +31,7 @@ public class ManejoUsuario {
                 
                 String cod=JOptionPane.showInputDialog(null,"Ingrese codigo de activación","");
                 
-                if (cod.equals("tecpro_codigo_activacion")) {
+                if (cod.equals("t3cpr0")) {
                     demo.setBoolean("activado", true);
                     demo.saveIt();
                 } else {

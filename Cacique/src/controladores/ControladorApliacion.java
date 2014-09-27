@@ -119,7 +119,7 @@ public class ControladorApliacion implements ActionListener {
         controladorPresupuesto.setCellEditor();
         controladorImportarGui = new controladorImportarGui(importarGui);
         presupuestoRealizadosGui = new PresupuestoRealizadosGui();
-        controladorPresupuestosRealizados = new ControladorPresupuestosRealizados(aplicacionGui, presupuestoRealizadosGui,presupuestoGui);
+        controladorPresupuestosRealizados = new ControladorPresupuestosRealizados(aplicacionGui, presupuestoRealizadosGui,presupuestoGui,controladorPresupuesto);
         controladorCompra = new ControladorCompra(compraGui, aplicacionGui);
         controladorCliente = new ControladorCliente(clienteGui, aplicacionGui, ventaGui, presupuestoRealizadosGui, autoGui, controladorPresupuestosRealizados, controladorAuto);
         tocacambioGui = new tocaCambioGui(aplicacionGui);

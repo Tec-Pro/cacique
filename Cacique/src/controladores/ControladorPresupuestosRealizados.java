@@ -60,10 +60,13 @@ public class ControladorPresupuestosRealizados implements ActionListener {
     private ControladorJReport reporte;
     private PresupuestoGui presupuestoGui;
     Presupuesto p ;
-    public ControladorPresupuestosRealizados(AplicacionGui apgui, final PresupuestoRealizadosGui presupuestosRealizadosGui,PresupuestoGui presupuestoGui) {
+    ControladorPresupuesto controladorPresupuesto;
+    
+    public ControladorPresupuestosRealizados(AplicacionGui apgui, final PresupuestoRealizadosGui presupuestosRealizadosGui,PresupuestoGui presupuestoGui, ControladorPresupuesto controladorPresupuesto) {
         desde = "0-0-0";
         hasta = "9999-0-0";
         this.apgui = apgui;
+        this.controladorPresupuesto = controladorPresupuesto;
         this.presupuestoGui = presupuestoGui;
         this.presupuestosRealizadosGui = presupuestosRealizadosGui;
         nombre = presupuestosRealizadosGui.getFiltroNombre();
@@ -287,6 +290,7 @@ public class ControladorPresupuestosRealizados implements ActionListener {
                 cols[6] = BigDecimal.valueOf(pv.getFloat("precio_final")).setScale(2, RoundingMode.CEILING);
                 total += pv.getFloat("precio_final");
                 tablaFacturaDefault.addRow(cols);
+                controladorPresupuesto.setCellEditor();
             }
             presupuestoGui.getTotalFactura().setText(total.toString());
             presupuestoGui.toFront();

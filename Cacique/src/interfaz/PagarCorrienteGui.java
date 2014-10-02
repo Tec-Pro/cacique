@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
@@ -27,6 +28,7 @@ import modelos.Corriente;
 import modelos.Pago;
 import net.sf.jasperreports.engine.JRException;
 import org.javalite.activejdbc.Base;
+import org.javalite.activejdbc.LazyList;
 import org.javalite.activejdbc.Model;
 
 /**
@@ -39,11 +41,12 @@ public class PagarCorrienteGui extends javax.swing.JDialog {
     ControladorJReport reportePago;
     int idCuenta;
     ControladorCuentaCorriente co;
+    boolean varias;
 
     /**
      * Creates new form PagarCorrienteGui
      */
-    public  PagarCorrienteGui(java.awt.Frame parent, boolean modal, int idCliente, int idCuenta, ControladorCuentaCorriente co) {
+    public  PagarCorrienteGui(java.awt.Frame parent, boolean modal, int idCliente, int idCuenta, ControladorCuentaCorriente co, boolean varias) {
         super(parent, modal);
         initComponents();
         idcliente = idCliente;
@@ -65,6 +68,7 @@ public class PagarCorrienteGui extends javax.swing.JDialog {
             Logger.getLogger(PagarCorrienteGui.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.co= co;
+        this.varias=varias;
     }
 
     public JTextField getCalendarioText() {
@@ -177,6 +181,7 @@ public class PagarCorrienteGui extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
+       if(!varias){
         try {
             if (monto.getText().equals("")) {
                 JOptionPane.showMessageDialog(this, "Por favor ingrese el monto", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -206,11 +211,89 @@ public class PagarCorrienteGui extends javax.swing.JDialog {
                         Logger.getLogger(RealizarPagoVentaControlador.class.getName()).log(Level.SEVERE, null, ex);
                     }
         
+       }
+       else{
+          try {
+            if (monto.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "Por favor ingrese el monto", "Error!", JOptionPane.ERROR_MESSAGE);
+            } else {
+                Base.openTransaction();
+                BigDecimal entrega = new BigDecimal(monto.getText());
+                BigDecimal entregaNoMod= entrega;
+                String texto= "pagó cuentas corrientes: ";
+                Cliente cli= Cliente.findById(idcliente);
+                entrega=entrega.add(cli.getBigDecimal("cuenta_corriente_manual"));
 
+                
+                LazyList<Corriente> cuentasCorrientes= Corriente.where("haber < monto",null ).orderBy("fecha");
+                Iterator<Corriente> it=cuentasCorrientes.iterator();
+                while(it.hasNext() && (entrega.compareTo(BigDecimal.ZERO)>0)){
+                    Corriente corr= it.next();
+                    BigDecimal debe= corr.getBigDecimal("monto").subtract(corr.getBigDecimal("haber"));
+                    if(entrega.subtract(debe).compareTo(BigDecimal.ZERO)>=0){
+                        corr.setBigDecimal("haber", corr.getBigDecimal("haber").add(debe));
+                        System.out.println("debe" +debe);
+                        
+                        corr.set("fecha_pago",dateToMySQLDate(Calendar.getInstance().getTime(), false));
+                        corr.saveIt();
+                        texto=texto.concat(corr.getId().toString());
+                        texto=texto.concat(", ");
+                        entrega=entrega.subtract(debe);
+                    }
+                    else{
+                        corr.setBigDecimal("haber", entrega.add(corr.getBigDecimal("haber")));
+                        entrega=BigDecimal.ZERO;
+                        corr.saveIt();
+
+                    }
+                    
+                }
+                
+                Pago pago = Pago.createIt("fecha", getCalendarioText().getText(),
+                "monto", entregaNoMod,
+                "cliente_id", idcliente,
+                "descripcion", descripcion.getText()+ " "+ texto);
+                cli.set("cuenta_corriente_manual",entrega);
+                cli.saveIt();
+                Base.commitTransaction();
+                
+                JOptionPane.showMessageDialog(this, "¡Cobro registrado exitosamente!");
+                reportePago.mostrarPago( pago.getInteger("id"));
+                co.cargarCuentas();
+                co.actualizarTotalCuenta();
+                this.dispose();
+            }
+            }catch (ClassNotFoundException ex) {
+                        Logger.getLogger(RealizarPagoVentaControlador.class.getName()).log(Level.SEVERE, null, ex);
+                    }catch (SQLException ex) {
+                        Logger.getLogger(RealizarPagoVentaControlador.class.getName()).log(Level.SEVERE, null, ex);
+                    }catch (JRException ex) {
+                        Logger.getLogger(RealizarPagoVentaControlador.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+         
+       }
     
 
     }//GEN-LAST:event_aceptarActionPerformed
 
+    
+    /*va true si se quiere usar para mostrarla por pantalla es decir 12/12/2014 y false si va 
+    para la base de datos, es decir 2014/12/12*/
+    public String dateToMySQLDate(java.util.Date fecha, boolean paraMostrar) {
+        if(fecha!=null){
+        if(paraMostrar){
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(fecha);
+        }
+        else{
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(fecha);
+        }
+        }
+        else{
+            return "";
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

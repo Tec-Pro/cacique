@@ -54,6 +54,7 @@ public class AplicacionGui extends javax.swing.JFrame {
         this.presupuesto.addActionListener(lis);
         this.tocaCambio.addActionListener(lis);
         this.corriente.addActionListener(lis);
+        this.reconectarse.addActionListener(lis);
     }
 
     public JButton getHistorialPresupuestos() {
@@ -66,6 +67,10 @@ public class AplicacionGui extends javax.swing.JFrame {
 
     public JButton getTocaCambio() {
         return tocaCambio;
+    }
+    
+    public JMenuItem getReconectarse(){
+        return reconectarse;
     }
 
     public JMenuItem getCerrarSesion() {
@@ -179,6 +184,8 @@ public class AplicacionGui extends javax.swing.JFrame {
         enviar = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         tecPro = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        reconectarse = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Lubricentro");
@@ -301,6 +308,13 @@ public class AplicacionGui extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu3);
 
+        jMenu4.setText("Reconexión");
+
+        reconectarse.setText("Reconectarse");
+        jMenu4.add(reconectarse);
+
+        jMenuBar1.add(jMenu4);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -315,7 +329,7 @@ public class AplicacionGui extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 674, Short.MAX_VALUE))
+                .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE))
         );
 
         pack();
@@ -355,11 +369,13 @@ public class AplicacionGui extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem modificarUsuario;
     private javax.swing.JPanel panelBotones;
     private javax.swing.JButton presupuesto;
     private javax.swing.JButton proveedores;
+    private javax.swing.JMenuItem reconectarse;
     private javax.swing.JButton registrarCompra;
     private javax.swing.JButton registrarVenta;
     private javax.swing.JMenuItem salir;

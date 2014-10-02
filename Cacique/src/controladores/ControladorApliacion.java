@@ -306,6 +306,9 @@ public class ControladorApliacion implements ActionListener {
             presupuestoRealizadosGui.setVisible(true);
             presupuestoRealizadosGui.toFront();
         }
+        if(ae.getSource()==aplicacionGui.getReconectarse()){
+            abrirBase();
+        }
     }
 
     private static class SQLFilter extends javax.swing.filechooser.FileFilter {
@@ -336,6 +339,16 @@ public class ControladorApliacion implements ActionListener {
         @Override
         public String getDescription() {
             return "Archivos .sql";
+        }
+    }
+    
+        private void abrirBase() {
+        if (!Base.hasConnection()) {
+            try {
+                Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://" + ManejoIp.ipServer + "/cacique", "tecpro", "tecpro");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n " + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 }

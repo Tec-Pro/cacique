@@ -176,13 +176,20 @@ public class ControladorCuentaCorriente implements ActionListener {
             cargarCuentas();
         }
         if (e.getSource() == ctg.getPagar()) {
-            new PagarCorrienteGui(aplicacionGui, true, Integer.valueOf((String) tablaCuenta.getValueAt(tablaCuenta.getSelectedRow(), 1)), Integer.valueOf((String) tablaCuenta.getValueAt(tablaCuenta.getSelectedRow(), 0)), this).setVisible(true);
+            new PagarCorrienteGui(aplicacionGui, true, Integer.valueOf((String) tablaCuenta.getValueAt(tablaCuenta.getSelectedRow(), 1)), Integer.valueOf((String) tablaCuenta.getValueAt(tablaCuenta.getSelectedRow(), 0)), this,false).setVisible(true);
         }
+                if (e.getSource() == ctg.getPagarVarias()) {
+            new PagarCorrienteGui(aplicacionGui, true, Integer.valueOf((String) tablaCuenta.getValueAt(0, 1)),0, this,true).setVisible(true);
+        }
+        
         if(e.getSource()== ctg.getImprimir()){
             imprimirCuentasCorrienges imprimir= new imprimirCuentasCorrienges(aplicacionGui, true,cliente.getInteger("id"));
             imprimir.setVisible(true);
             imprimir.setLocationRelativeTo(null);
             
+        }
+        if(e.getSource()==ctg.getTodasLasCuentas()){
+            cargarTodasCuentas();
         }
 
     }
@@ -190,6 +197,35 @@ public class ControladorCuentaCorriente implements ActionListener {
     //carga las ventas realizadas al cliente en la tabla
     public void cargarCuentas() {
         listCorriente = Corriente.find("id_cliente like ? ", cliente.getId());
+        tablaCuentaDefault.setRowCount(0);
+        Iterator<Corriente> itr = listCorriente.iterator();
+        while (itr.hasNext()) {
+            Corriente v = itr.next();
+            Object row[] = new Object[9];
+            BigDecimal haber = BigDecimal.valueOf(v.getFloat("haber")).setScale(2, RoundingMode.CEILING);
+            BigDecimal monto = BigDecimal.valueOf(v.getFloat("monto")).setScale(2, RoundingMode.CEILING);
+            row[0] = v.getString("id");
+            row[1] = v.getString("id_cliente");
+            row[2] = v.getString("id_venta");
+            row[3] = monto.toString();
+            row[4] = v.getString("descripcion");
+            row[5] = haber.toString();
+            BigDecimal debe = monto.subtract(haber).setScale(2, RoundingMode.CEILING);
+            row[6] = debe.toString();
+            row[7] = debe.compareTo(BigDecimal.ZERO) <= 0;
+            row[8]= dateToMySQLDate(v.getDate("fecha"),true);
+            tablaCuentaDefault.addRow(row);
+        }
+        actualizarTotalCuenta();
+    }
+    
+    
+    
+    
+    
+    //carga las ventas realizadas al cliente en la tabla
+    public void cargarTodasCuentas() {
+        listCorriente = Corriente.findAll();
         tablaCuentaDefault.setRowCount(0);
         Iterator<Corriente> itr = listCorriente.iterator();
         while (itr.hasNext()) {
@@ -247,6 +283,7 @@ public class ControladorCuentaCorriente implements ActionListener {
             big += Double.valueOf((String) tablaCuenta.getValueAt(i, 6));
             System.out.println(big);
         }
+        big-= cliente.getDouble("cuenta_corriente_manual");
         ctg.getTotal().setText(BigDecimal.valueOf(big).setScale(2, RoundingMode.CEILING).toString());
     }
     

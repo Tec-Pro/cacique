@@ -103,6 +103,18 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="jMenu4">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Reconexi&#xf3;n"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="reconectarse">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Reconectarse"/>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
       </SubComponents>
     </Menu>
   </NonVisualComponents>
@@ -142,7 +154,7 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="panelBotones" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-              <Component id="contenedor" pref="674" max="32767" attributes="0"/>
+              <Component id="contenedor" pref="676" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

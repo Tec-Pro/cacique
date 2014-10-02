@@ -144,6 +144,10 @@ public class ConfigurarServerGui extends javax.swing.JDialog {
         if (res) {
             JOptionPane.showMessageDialog(this, "Cambios realizados con éxito", null, JOptionPane.INFORMATION_MESSAGE);
             manejo.conseguirDatos();
+            if(Base.hasConnection())
+                Base.close();
+            Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://" + ManejoIp.ipServer + "/cacique", "tecpro", "tecpro");
+
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Ocurrió un error, intente nuevamente", null, JOptionPane.ERROR_MESSAGE);
@@ -152,7 +156,9 @@ public class ConfigurarServerGui extends javax.swing.JDialog {
     }//GEN-LAST:event_guardarActionPerformed
 
     private void conexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_conexionActionPerformed
-                            if (!Base.hasConnection()) {
+        if(Base.hasConnection())
+            Base.close();
+        if (!Base.hasConnection()) {
                         try{
             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://"+ip.getText()+"/cacique", "tecpro", "tecpro");
             JOptionPane.showMessageDialog(null, "Se ha establecido la conexión con éxito ",null,JOptionPane.INFORMATION_MESSAGE);                    

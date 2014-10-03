@@ -51,7 +51,9 @@ public class PagarCorrienteGui extends javax.swing.JDialog {
         initComponents();
         idcliente = idCliente;
         this.idCuenta= idCuenta;
+         Base.openTransaction();
         cliente.setText(Cliente.findById(idCliente).getString("nombre"));
+        Base.commitTransaction();
         Calendar miCalendario = Calendar.getInstance();
         java.util.Date eldia = miCalendario.getTime();
         int diaHoy = miCalendario.get(Calendar.DAY_OF_MONTH);
@@ -192,7 +194,9 @@ public class PagarCorrienteGui extends javax.swing.JDialog {
                 "monto", entrega,
                 "cliente_id", idcliente,
                 "descripcion", descripcion.getText());
+                 Base.openTransaction();
                 Corriente cuenta= Corriente.findById(idCuenta);
+                Base.commitTransaction();
                 cuenta.setBigDecimal("haber", entrega.add(cuenta.getBigDecimal("haber")));
                 cuenta.saveIt();
                 Base.commitTransaction();
@@ -221,11 +225,14 @@ public class PagarCorrienteGui extends javax.swing.JDialog {
                 BigDecimal entrega = new BigDecimal(monto.getText());
                 BigDecimal entregaNoMod= entrega;
                 String texto= "pagó cuentas corrientes: ";
+                 Base.openTransaction();
                 Cliente cli= Cliente.findById(idcliente);
+                Base.commitTransaction();
                 entrega=entrega.add(cli.getBigDecimal("cuenta_corriente_manual"));
 
-                
+                 Base.openTransaction();
                 LazyList<Corriente> cuentasCorrientes= Corriente.where("haber < monto",null ).orderBy("fecha");
+                Base.commitTransaction();
                 Iterator<Corriente> it=cuentasCorrientes.iterator();
                 while(it.hasNext() && (entrega.compareTo(BigDecimal.ZERO)>0)){
                     Corriente corr= it.next();

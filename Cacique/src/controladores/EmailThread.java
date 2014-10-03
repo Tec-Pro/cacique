@@ -24,9 +24,13 @@ public class EmailThread extends Thread {
     public void run() {
         
         EnvioEmailControlador enviar = new EnvioEmailControlador();
+         Base.openTransaction();
         LazyList<Envio> list = Envio.findAll();
+        Base.commitTransaction();
         if (!list.isEmpty()) {
+             Base.openTransaction();
             Envio fechaUltEnvio = (Envio) Envio.findAll().get(0);
+             Base.commitTransaction();
             Date fechaEnviado = fechaUltEnvio.getDate("fecha");
             Calendar fechaActualMenosMes = Calendar.getInstance();
             fechaActualMenosMes.add(Calendar.MONTH, -1);

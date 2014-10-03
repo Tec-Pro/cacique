@@ -405,7 +405,9 @@ public class RealizarPagoGui extends javax.swing.JDialog {
             BigDecimal entrega = pago.getBigDecimal("monto").setScale(2, RoundingMode.CEILING);//pago
             BigDecimal cuentaCorriente = prov.getBigDecimal("cuenta_corriente").setScale(2, RoundingMode.CEILING);//CC
             //entrega = entrega + cuentaCorriente; //4+(-6)=-2
+             Base.openTransaction();
             LazyList<Compra> compras = Compra.where("pago = ? and proveedor_id = ?", 0, prov.getId()).orderBy("fecha");
+           Base.commitTransaction();
             BigDecimal deuda=calcularDeuda(compras);
             BigDecimal dif= deuda.add(cuentaCorriente);
             Iterator<Compra> it = compras.iterator();

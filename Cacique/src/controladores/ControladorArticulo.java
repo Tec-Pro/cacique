@@ -55,8 +55,10 @@ public class ControladorArticulo implements ActionListener, FocusListener {
         tablaArticulos = articuloGui.getArticulos();
         listArticulos = new LinkedList();
         listProveedores = new LinkedList();
-        abmArticulo = new ABMArticulo();        
+        abmArticulo = new ABMArticulo();
+        Base.openTransaction();
         listArticulos = Articulo.where("es_articulo =? ", 1);
+        Base.commitTransaction();
         actualizarLista();
         reporteArticulos = new ControladorJReport("listadoPrecios.jasper");
         articuloGui.getBusqueda().addKeyListener(new java.awt.event.KeyAdapter() {
@@ -80,7 +82,7 @@ public class ControladorArticulo implements ActionListener, FocusListener {
     }
 
     private void realizarBusqueda() {
-        
+        Base.openTransaction();
         if (articuloGui.getFiltroEquiv().isSelected()) {// se esta buscando por los equivalentes a este
                    listArticulos = Articulo.where("es_articulo = 1 and (equivalencia_1 like ? or equivalencia_2 like ? or equivalencia_3 like ? ) ", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%");
 
@@ -89,18 +91,20 @@ public class ControladorArticulo implements ActionListener, FocusListener {
                     listArticulos = Articulo.where("es_articulo = 1 and (codigo like ? or descripcion like ? or marca like ? or id like ? or nombre like ? or id like ?)", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%", "%" + articuloGui.getBusqueda().getText() + "%");
 
         }
+        Base.openTransaction();
         actualizarLista();
         
 
     }
 
     public void cargarTodos() {
-        
+        Base.openTransaction();
         listArticulos = Articulo.where("es_articulo=?",1);
         if (!listArticulos.isEmpty()) {
             realizarBusqueda();
             System.out.println("cargue todo");
         }
+        Base.commitTransaction(); 
         
     }
 
@@ -113,8 +117,10 @@ public class ControladorArticulo implements ActionListener, FocusListener {
             articuloGui.getGuardar().setEnabled(false);
             articuloGui.getNuevo().setEnabled(true);
             editandoInfo = false;
-            articuloGui.limpiarCampos();            
+            articuloGui.limpiarCampos();
+            Base.openTransaction();
             articulo = Articulo.findFirst("codigo = ?", tablaArticulos.getValueAt(tablaArticulos.getSelectedRow(), 0));
+            Base.commitTransaction();
             articuloGui.CargarCampos(articulo);
             
 
@@ -380,7 +386,9 @@ public class ControladorArticulo implements ActionListener, FocusListener {
     private void cargarProveedores() {
         
         articuloGui.getProveedores().removeAllItems();
+        Base.openTransaction();
         listProveedores = Proveedor.findAll();
+        Base.commitTransaction();
         Iterator<Proveedor> it = listProveedores.iterator();
         while (it.hasNext()) {
             Proveedor prov = it.next();

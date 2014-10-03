@@ -24,8 +24,9 @@ public class CambiarUsuarioGui extends javax.swing.JDialog {
     public CambiarUsuarioGui(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-       
+        Base.openTransaction();
         Usuario usuario = Usuario.findById(1);
+        Base.commitTransaction();
         this.user.setText(usuario.getString("nombre"));
         if (Base.hasConnection()) {
             

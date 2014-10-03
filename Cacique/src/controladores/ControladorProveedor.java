@@ -80,9 +80,9 @@ public class ControladorProveedor implements ActionListener {
         proveedor = new Proveedor();
         this.articuloGui= articuloGui;
         //reporteProveedor = new ControladorJReport("listadoProveedores.jasper");
-        
+        Base.openTransaction();
         listProveedores = Proveedor.findAll();
-        
+        Base.commitTransaction();
         actualizarLista();
         proveedorGui.getBusqueda().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -108,13 +108,13 @@ public class ControladorProveedor implements ActionListener {
     }
 
     public void cargarTodos() {
-        
+        Base.openTransaction();
         listProveedores = Proveedor.findAll();
+                Base.commitTransaction();
+
         if (!listProveedores.isEmpty() ) {
         realizarBusqueda();
         }
-        
-
     }
 
    
@@ -132,10 +132,11 @@ public class ControladorProveedor implements ActionListener {
     }
 
     private void realizarBusqueda() {
-        
+        Base.openTransaction();
         listProveedores = Proveedor.where("id like ? or nombre like ? or cuit like ? ", "%" + proveedorGui.getBusqueda().getText() + "%", "%" + proveedorGui.getBusqueda().getText() + "%", "%" + proveedorGui.getBusqueda().getText() + "%");
+                Base.commitTransaction();
+
         actualizarLista();
-        
 
     }
 
@@ -153,10 +154,11 @@ public class ControladorProveedor implements ActionListener {
             proveedorGui.getComprasRealizadas().setEnabled(true);
             System.out.println("hice doble click en un proveedor");
             proveedorGui.limpiarCampos();
-            
+            Base.openTransaction();
             proveedor = Proveedor.findFirst("id = ?", tablaProveedor.getValueAt(tablaProveedor.getSelectedRow(), 0));
+                        Base.commitTransaction();
+
             proveedorGui.CargarCampos(proveedor);
-            
             
             
             cargarPagos();
@@ -288,9 +290,9 @@ public class ControladorProveedor implements ActionListener {
                 String mes = fecha.substring(3, 5);
                 String anio = fecha.substring(6, 10);
                 String fechaSql = anio + mes + dia;
-                
+                Base.openTransaction();
                 Pago.findFirst("fecha = ? and monto = ? and proveedor_id = ?", fechaSql, tablaPagos.getValueAt(tablaPagos.getSelectedRow(), 1), proveedorGui.getId().getText()).delete();
-                
+                Base.commitTransaction();
                 cargarPagos();
 
             }

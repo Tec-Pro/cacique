@@ -25,6 +25,7 @@ import modelos.ArticulosVentas;
 import modelos.Cliente;
 import modelos.Pago;
 import modelos.Venta;
+import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
 
 /**
@@ -147,11 +148,15 @@ public class HistorialComprasControlador implements ActionListener {
 
     private void cargarArtV(Venta v, int countRow) {
         tablaHistorialDef.setRowCount(countRow);
+         Base.openTransaction();
         LazyList<ArticulosVentas> pr = ArticulosVentas.find("venta_id = ?", v.getInteger("id"));
+        Base.commitTransaction();
         Iterator<ArticulosVentas> it = pr.iterator();
         while (it.hasNext()) {
             ArticulosVentas prod = it.next();
+             Base.openTransaction();
             Articulo producto = Articulo.findFirst("id = ?", prod.get("articulo_id"));
+            Base.commitTransaction();
             if (producto != null) {
                 BigDecimal cantidad = prod.getBigDecimal("cantidad").setScale(2, RoundingMode.CEILING);
                 String row[] = new String[6];

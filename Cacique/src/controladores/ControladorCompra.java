@@ -144,7 +144,9 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
         if (rows.length > 0) {
             for (int i = 0; i < rows.length; i++) {
                 if (!existeProdFacc(Integer.valueOf((String) tablaprod.getValueAt(rows[i], 0)))) {
+                    Base.openTransaction();
                     Articulo p = Articulo.findFirst("id = ?", (tablaprod.getValueAt(rows[i], 0)));
+                    Base.commitTransaction();
                     Object cols[] = new Object[7];
                     BigDecimal bd = new BigDecimal(1);
                     cols[0] = p.get("id");
@@ -180,7 +182,9 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
             tablaProveedores.addRow(row);
         }
         tablaProd.setRowCount(0);
+        Base.openTransaction();
         prodlista = Articulo.where("es_articulo = ?", 1);
+        Base.commitTransaction();
         Iterator<Articulo> it2 = prodlista.iterator();
         while (it2.hasNext()) {
             Articulo a = it2.next();
@@ -214,7 +218,9 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
 
     public void actualizarListaProd() {
         tablaProd.setRowCount(0);
+        Base.openTransaction();
         prodlista = Articulo.where("es_articulo=1 and (codigo like ? or descripcion like ? or equivalencia_1 like ? or equivalencia_2 like ? or equivalencia_3 like ?)", "%" + textCodProd.getText() + "%", "%" + textCodProd.getText() + "%", "%" + textCodProd.getText() + "%", "%" + textCodProd.getText() + "%", "%" + textCodProd.getText() + "%");
+        Base.commitTransaction();
         Iterator<Articulo> it = prodlista.iterator();
         while (it.hasNext()) {
             Articulo a = it.next();
@@ -275,8 +281,9 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
                         v.set("proveedor_id", idCliente);
                     }
                     for (int i = 0; i < compraGui.getTablaCompra().getRowCount(); i++) {
-
+                        Base.openTransaction();
                         Articulo producto = Articulo.findFirst("id = ?", tablafac.getValueAt(i, 0));
+                        Base.commitTransaction();
                         BigDecimal cantidad = ((BigDecimal) tablafac.getValueAt(i, 1)).setScale(2, RoundingMode.CEILING); //saco la cantidad
                         BigDecimal precioFinal = ((BigDecimal) tablafac.getValueAt(i, 4)).setScale(2, RoundingMode.CEILING);
                         BigDecimal precioVentaFinal = ((BigDecimal) tablafac.getValueAt(i, 5)).setScale(2, RoundingMode.CEILING);
@@ -301,11 +308,16 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
                     if (abmCompra.alta(v)) {
                         JOptionPane.showMessageDialog(apgui, "Compra realizada con exito.");
                         compraGui.limpiarVentana();
+                        Base.openTransaction();
                         Proveedor prov = Proveedor.findById(v.get("proveedor_id"));
+                        Base.commitTransaction();
                         if (!(prov == null) && (compraGui.getAbonaSi().isSelected())) {
                             BigDecimal cuentaCorriente = prov.getBigDecimal("cuenta_corriente").subtract(v.getBigDecimal("monto"));
                             prov.set("cuenta_corriente", cuentaCorriente);
+                            Base.openTransaction();
                             v = Compra.findById(ABMCompra.idCompraAlta);
+                            Base.commitTransaction();
+                            
                             realizarPagoGui = new RealizarPagoGui(apgui, true, prov, v);
                             realizarPagoGui.setLocationRelativeTo(compraGui);
                             realizarPagoGui.setVisible(true);
@@ -370,7 +382,9 @@ public class ControladorCompra implements ActionListener, CellEditorListener {
     public void editingStopped(ChangeEvent e) {
         actualizarPrecio();
         for (int i = 0; i < tablafac.getRowCount(); i++) {
+            Base.openTransaction();
             Articulo a = Articulo.findById(tablafac.getValueAt(i, 0));
+            Base.commitTransaction();
 //            if (!(a.getBigDecimal("precio_compra").equals(tablafac.getValueAt(i, 4)))) {
 //                a.setBigDecimal("precio_compra", tablafac.getValueAt(i, 4));
 //                a.saveIt();

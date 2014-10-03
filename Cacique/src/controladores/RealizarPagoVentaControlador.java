@@ -107,7 +107,9 @@ public class RealizarPagoVentaControlador implements ActionListener {
                         pago.set("cliente_id", idCliente);
                         pago.set("descripcion", pagoFacturaGui.getDescripcion().getText());
                         pago.saveIt();
+                         Base.openTransaction();
                         String pagoId = Pago.findFirst("fecha = ? and monto = ? and cliente_id = ?", pagoFacturaGui.getCalendarioText().getText(), entrega, idCliente).getString("id");
+                        Base.commitTransaction();
                         BigDecimal cuentaCliente = new BigDecimal(cli.getString("cuenta"));
                         entrega = entrega.add(cuentaCliente);
                         Iterator<Venta> itrVenta = cargarDeuda(clienteId).iterator();
@@ -129,7 +131,9 @@ public class RealizarPagoVentaControlador implements ActionListener {
                                 if (entrega.compareTo(aux) >= 0) {
                                     sePuedePagar = true;
                                     if (montoVentaAPagar.compareTo(aux) <= 0) {
+                                         Base.openTransaction();
                                         ventaAPagar = Venta.findById(ventaId);
+                                        Base.commitTransaction();
                                         montoVentaAPagar = new BigDecimal(aux.toString());
                                     }
                                 }
@@ -192,7 +196,9 @@ public class RealizarPagoVentaControlador implements ActionListener {
         Iterator<ArticulosVentas> itr2 = busqueda.filtroVendidos(id).iterator();
         while (itr2.hasNext()) {
             ArticulosVentas arvs = itr2.next();
+             Base.openTransaction();
             Articulo art = Articulo.findById(arvs.getInteger("articulo_id"));
+            Base.commitTransaction();
             cuenta = (art.getBigDecimal("precio_venta")).multiply(arvs.getBigDecimal("cantidad")).setScale(2, RoundingMode.CEILING);
             if (montox == null) {
                 montox = new BigDecimal(String.valueOf((cuenta).setScale(2, RoundingMode.CEILING)));

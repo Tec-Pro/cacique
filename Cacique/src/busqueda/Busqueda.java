@@ -17,6 +17,7 @@ import modelos.Compra;
 import modelos.Presupuesto;
 import modelos.Proveedor;
 import modelos.Venta;
+import org.javalite.activejdbc.Base;
 
 /**
  *
@@ -33,13 +34,17 @@ public class Busqueda {
      * @return Cliente asociado a esa id.
      */
     public Cliente buscarCliente(Object id) {
+        Base.openTransaction();
         Cliente result = Cliente.findById(id);
+        Base.commitTransaction();
         return result;
     }
 
     public List<Cliente> buscarCliente(String nombre) {
+        Base.openTransaction();
         List<Cliente> result;
         result = Cliente.where("nombre like ?", "%" + nombre + "%");
+        Base.commitTransaction();
         return result;
     }
 
@@ -51,7 +56,9 @@ public class Busqueda {
      */
     public List<Cliente> filtroCliente(String nombre, String codigo) {
         List<Cliente> result;
+        Base.openTransaction();
         result = Cliente.where("nombre like ? and id like ?", "%" + nombre + "%", codigo + "%");
+        Base.commitTransaction();
         return result;
     }
 
@@ -64,15 +71,19 @@ public class Busqueda {
      */
     public List<Venta> filtroVenta(String idcliente, String desde, String hasta) {
         List<Venta> result;
+        Base.openTransaction();
         result = Venta.where("cliente_id like ? and (fecha between ? and ?)", idcliente, desde, hasta);
         System.out.println(idcliente+ " "+ desde +" "+hasta);
+        Base.commitTransaction();
         return result;
     }
 
        public List<Presupuesto> filtroPresupuesto(String idcliente, String desde, String hasta) {
         List<Presupuesto> result;
+        Base.openTransaction();
         result = Presupuesto.where("cliente_id like ? and (fecha between ? and ?)", idcliente, desde, hasta);
         System.out.println(idcliente+ " "+ desde +" "+hasta);
+        Base.commitTransaction();
         return result;
     }
     
@@ -85,8 +96,11 @@ public class Busqueda {
      */
     public List<Compra> filtroCompra(String idproveedor, String desde, String hasta) {
         List<Compra> result;
+        Base.openTransaction();
         result = Compra.where("proveedor_id like ? and fecha between ? and ?", idproveedor + "%", desde, hasta);
+        Base.commitTransaction();
         return result;
+        
     }
 
     /**
@@ -96,8 +110,10 @@ public class Busqueda {
      * @return lista filtrada de proveedores.
      */
     public List<Proveedor> filtroProveedor(String nombre, String codigo) {
+        Base.openTransaction();
         List<Proveedor> result;
         result = Proveedor.where("nombre like ? and id like ?", "%" + nombre + "%", "%" + codigo + "%");
+        Base.commitTransaction();
         return result;
     }
 
@@ -108,8 +124,10 @@ public class Busqueda {
      * @returns lista filtrada de productos comprados.
      */
     public List<ArticulosCompras> filtroComprados(String idcompra, String idproducto) {
+        Base.openTransaction();
         List<ArticulosCompras> result;
         result = ArticulosCompras.where("compra_id like ? and producto_id like ?", idcompra + "%", idproducto + "%");
+        Base.commitTransaction();
         return result;
     }
 
@@ -121,12 +139,15 @@ public class Busqueda {
      */
     public List<ArticulosVentas> filtroVendidos(String idventa, String idproducto) {
         List<ArticulosVentas> result;
+        Base.openTransaction();
         result = ArticulosVentas.where("venta_id like ? and producto_id like ?", idventa + "%", idproducto + "%");
+        Base.commitTransaction();
         return result;
     }
     
      public LinkedList<ArticulosPresupuestos> filtroPresupuestados(String idventa, String idproducto) {
         List<ArticulosPresupuestos> result;
+        Base.openTransaction();
         result = ArticulosPresupuestos.where("presupuesto_id like ? and articulo_id like ?", idventa + "%", idproducto + "%");
         Iterator it = result.iterator();
         LinkedList<ArticulosPresupuestos> result2 = new LinkedList<ArticulosPresupuestos>();
@@ -134,14 +155,16 @@ public class Busqueda {
             ArticulosPresupuestos ap = (ArticulosPresupuestos) it.next();
             result2.add(ap);
         }
-        
+        Base.commitTransaction();
         return result2;
     }
 
 
     public List<ArticulosVentas> filtroVendidos(String idventa) {
+        Base.openTransaction();
         List<ArticulosVentas> result;
         result = ArticulosVentas.where("venta_id like ?", idventa);
+        Base.commitTransaction();
         return result;
     }
 
@@ -153,7 +176,9 @@ public class Busqueda {
      */
     public List<ClientesArticulos> filtroAdquiridos(String idcliente, String idproducto) {
         List<ClientesArticulos> result;
+        Base.openTransaction();
         result = ClientesArticulos.where("cliente_id like ? and producto_id like ?", idcliente + "%", idproducto + "%");
+        Base.commitTransaction();
         return result;
     }
 
@@ -162,6 +187,7 @@ public class Busqueda {
      * @returns lista filtrada de productos.
      */
     public List<Articulo> productosAdquiridos(String idcliente) {
+        Base.openTransaction();
         List<ClientesArticulos> adquiridos;
         List<Articulo> result = new LinkedList<Articulo>();
         adquiridos = ClientesArticulos.where("cliente_id like ?", "%" + idcliente + "%");
@@ -171,11 +197,13 @@ public class Busqueda {
             Articulo p = Articulo.first("codigo = ?", a.get("producto_id"));
             result.add(p);
         }
+        Base.commitTransaction();
         return result;
     }
 
     public List<Articulo> productosVendidos(String idventa) {
         List<ArticulosVentas> vendidos;
+        Base.openTransaction();
         List<Articulo> result = new LinkedList<Articulo>();
         vendidos = ArticulosVentas.where("venta_id like ?", "%" + idventa + "%");
         Iterator<ArticulosVentas> it = vendidos.iterator();
@@ -184,12 +212,16 @@ public class Busqueda {
             Articulo p = Articulo.first("codigo = ?", pv.get("producto_id"));
             result.add(p);
         }
+        Base.commitTransaction();
         return result;
     }
 
     public List<Articulo> provee(String cuil) {
+        Base.openTransaction();
         Proveedor p = Proveedor.findFirst("nombre= ?", cuil);
-        return Articulo.where("es_articulo=1 and proveedor_id = ?", p.getId());
+        List<Articulo> ret=Articulo.where("es_articulo=1 and proveedor_id = ?", p.getId());
+        Base.commitTransaction();
+        return ret;
     }
 
     /**
@@ -197,7 +229,10 @@ public class Busqueda {
      * @returns lista de todos los proveedores.
      */
     public List<Proveedor> proveedores() {
-        return Proveedor.findAll();
+        Base.openTransaction();
+        List<Proveedor> ret=Proveedor.findAll();
+        Base.commitTransaction();
+        return ret;
     }
 
     /**
@@ -208,16 +243,24 @@ public class Busqueda {
      */
     public List<Articulo> filtroProducto(String codigo, String fram) {
         List<Articulo> result;
+        Base.openTransaction();
         result = Articulo.where("es_articulo=1 and codigo like ? and equivalencia_fram like?", "%" + codigo + "%", "%" + fram + "%");
+        Base.commitTransaction();
         return result;
     }
 
     public List<Articulo> filtroProducto(String codigo) {
-        return Articulo.where("es_articulo=1 and codigo like ?", "%" + codigo + "%");
+        Base.openTransaction();
+        List<Articulo> ret=Articulo.where("es_articulo=1 and codigo like ?", "%" + codigo + "%");
+        Base.commitTransaction();
+        return ret;
     }
 
     public List<Articulo> filtroProducto2(String fram) {
-        return Articulo.where("es_articulo=1 and equivalencia_fram like ?", "%" + fram + "%");
+        Base.openTransaction();
+        List<Articulo> ret=Articulo.where("es_articulo=1 and equivalencia_fram like ?", "%" + fram + "%");
+        Base.commitTransaction();
+        return ret;
     }
        
 }

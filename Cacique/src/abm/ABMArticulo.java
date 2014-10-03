@@ -4,6 +4,9 @@
  */
 package abm;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelos.Articulo;
 import modelos.Proveedor;
 import org.javalite.activejdbc.Base;
@@ -25,7 +28,9 @@ public class ABMArticulo {
     }
 
     public boolean alta(Articulo art) {
+        System.out.println(ManejoIp.ipServer);
         if (!findArticulo(art)) {
+   
             Base.openTransaction();
             Articulo nuevo = Articulo.create(
                     "codigo", art.get("codigo"),

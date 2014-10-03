@@ -73,15 +73,16 @@ public class ArticulosProvee extends javax.swing.JDialog {
 
     private void tablaArticulosClicked(java.awt.event.MouseEvent evt) {
         if (evt.getClickCount() == 2) {
-            
+             Base.openTransaction();
             Articulo articulo = Articulo.findFirst("codigo = ?", tablaArticulos.getValueAt(tablaArticulos.getSelectedRow(), 0));
             Proveedor papacito = articulo.parent(Proveedor.class);
+                        Base.commitTransaction();
+
             if (papacito == null) {
                 articulo.setNombreProv("");
             } else {
                 articulo.setNombreProv(papacito.getString("nombre"));
             }
-            
 
             articuloGui.CargarCampos(articulo);
             articuloGui.setVisible(true);

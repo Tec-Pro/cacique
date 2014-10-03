@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import modelos.Cliente;
 import modelos.Corriente;
+import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.Model;
 
 /**
@@ -197,7 +198,9 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
         clienteCuenta.setText(c.getString("id_cliente"));
         idVenta.setText("id_venta");
         idCuenta.setText(c.getString("id"));
+         Base.openTransaction();
         nombre.setText(Cliente.findById(c.getString("id_cliente")).getString("nombre"));
+         Base.commitTransaction();
         fecha.setDate(c.getDate("fecha"));
     }
 

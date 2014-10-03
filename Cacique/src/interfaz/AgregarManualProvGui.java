@@ -118,8 +118,9 @@ public class AgregarManualProvGui extends javax.swing.JDialog {
             "es_articulo",0);
 
         Base.commitTransaction();
-
+ Base.openTransaction();
         Articulo p = Articulo.findFirst("id = ?", nuevo.getId());
+        Base.commitTransaction();
         Object cols[] = new Object[7];
         cols[0] =p.getId();
         cols[1] = BigDecimal.valueOf(1).setScale(2, RoundingMode.CEILING);

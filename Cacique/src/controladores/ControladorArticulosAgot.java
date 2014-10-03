@@ -39,9 +39,9 @@ public class ControladorArticulosAgot {
          tablaArtDefault = this.articuloSinStockGui.getTablaArticulosDefault();
         tablaArticulos = this.articuloSinStockGui.getArticulos();
         listArticulos = new LinkedList();
-        
+        Base.openTransaction();
         listArticulos = Articulo.where("es_articulo = 1 and stock_actual <= stock_minimo", (Object) null);
-        
+        Base.commitTransaction();
         articuloSinStockGui.getBusqueda().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -61,10 +61,10 @@ public class ControladorArticulosAgot {
     }
 
     public void realizarBusqueda() {
-        
+        Base.openTransaction();
         listArticulos = Articulo.where("(codigo like ? or descripcion like ? or marca like ? or id like ? or nombre like ? or id like ?) and stock_actual<=stock_minimo and es_articulo = 1 ", "%" + articuloSinStockGui.getBusqueda().getText() + "%", "%" + articuloSinStockGui.getBusqueda().getText() + "%", "%" + articuloSinStockGui.getBusqueda().getText() + "%", "%" + articuloSinStockGui.getBusqueda().getText() + "%", "%" + articuloSinStockGui.getBusqueda().getText() + "%", "%" + articuloSinStockGui.getBusqueda().getText() + "%");
+                Base.commitTransaction();
         actualizarLista();
-        
 
     }
     
@@ -115,7 +115,7 @@ public class ControladorArticulosAgot {
     
     private void tablaArticulosClicked(java.awt.event.MouseEvent evt) {
         if (evt.getClickCount() == 2) {
-            
+            Base.openTransaction();
             Articulo articulo = Articulo.findFirst("codigo = ?", tablaArticulos.getValueAt(tablaArticulos.getSelectedRow(), 0));
             Proveedor papacito = articulo.parent(Proveedor.class);
             if (papacito == null) {
@@ -124,7 +124,7 @@ public class ControladorArticulosAgot {
                 articulo.setNombreProv(papacito.getString("nombre"));
             }
             
-
+Base.commitTransaction();
             articuloGui.CargarCampos(articulo);
             articuloGui.setVisible(true);
             articuloGui.toFront();

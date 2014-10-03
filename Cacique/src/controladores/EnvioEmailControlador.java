@@ -82,9 +82,9 @@ public class EnvioEmailControlador {
 
     public boolean enviarMail(String email, String passw, boolean envio) throws MessagingException {
         boolean ret = false;
-        
+         Base.openTransaction();
         LazyList<Email> emailsModel = Email.findAll();
-
+        Base.commitTransaction();
         if (!emailsModel.isEmpty() || !envio) {
             
             if (envio) {

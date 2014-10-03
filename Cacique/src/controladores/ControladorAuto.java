@@ -22,6 +22,7 @@ import modelos.Auto;
 import modelos.Cliente;
 import modelos.Proveedor;
 import modelos.Trabajo;
+import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
 import org.javalite.activejdbc.Model;
 
@@ -61,7 +62,9 @@ public class ControladorAuto  implements ActionListener {
        //listTrabajos= new LinkedList();
         listClientes= new LinkedList();
         abmAuto= new ABMAuto();
+        Base.openTransaction();
         listAutos=Auto.findAll();
+        Base.commitTransaction();
         actualizarLista();
         autoGui.getBusqueda().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -105,7 +108,10 @@ public class ControladorAuto  implements ActionListener {
     }
      
      public void realizarBusquedaDuenio() {
+         Base.openTransaction();
                     LazyList<Cliente> duenios= Cliente.where("nombre like  ?", "%"+autoGui.getBusquedaDuenio().getText()+"%");
+                                        Base.commitTransaction();
+
                     Iterator<Cliente> it = duenios.iterator();
                     listAutos=new LinkedList<>();
                     while(it.hasNext()){
@@ -116,13 +122,18 @@ public class ControladorAuto  implements ActionListener {
             }
     
         private void realizarBusqueda() {
+            Base.openTransaction();
                     listAutos = Auto.where("id like ? or patente like ? or marca like ? or modelo like ? ", "%" + autoGui.getBusqueda().getText() + "%", "%" + autoGui.getBusqueda().getText() + "%", "%" + autoGui.getBusqueda().getText() + "%", "%" + autoGui.getBusqueda().getText() + "%");
+                                        Base.commitTransaction();
+
                     actualizarLista();
             }
 
             public void cargarTodos() {
-        
+        Base.openTransaction();
         listAutos = Auto.findAll();
+                Base.commitTransaction();
+
         if (!listAutos.isEmpty()) {
             realizarBusqueda();
             System.out.println("cargue todo");
@@ -134,11 +145,12 @@ public class ControladorAuto  implements ActionListener {
               private void tablaMouseClickedAuto(java.awt.event.MouseEvent evt) {
             if(evt.getClickCount()==2){
             System.out.println("trabajo click");
+            Base.openTransaction();
             Trabajo t = Trabajo.findById(tablaTrabajos.getValueAt(tablaTrabajos.getSelectedRow(), 0));
             trabajoGui.setAutoModel(t.parent((Auto.class)));
             trabajoGui.setClienteModel(t.parent(Cliente.class));
             trabajoGui.cargarTrabajo(t);
-            
+            Base.commitTransaction();
             trabajoGui.bloquearCampos(false);
             
             trabajoGui.getModificar().setEnabled(true);
@@ -162,11 +174,10 @@ public class ControladorAuto  implements ActionListener {
             autoGui.getNuevo().setEnabled(true);
             editandoInfo = false;
             autoGui.limpiarCampos();
-            
+            Base.openTransaction();
             auto = Auto.findFirst("patente = ?", tablaAutos.getValueAt(tablaAutos.getSelectedRow(), 0));
             autoGui.CargarCampos(auto);
-            
-
+            Base.commitTransaction();
         }
     }
              
@@ -353,14 +364,20 @@ public class ControladorAuto  implements ActionListener {
     }
     
         private void cargarClientes() {
-        
+        Base.openTransaction();
         autoGui.getDuenio().removeAllItems();
         listClientes = Cliente.findAll();
+                Base.commitTransaction();
+
         Iterator<Cliente> it = listClientes.iterator();
         while (it.hasNext()) {
             Cliente cli = it.next();
+            Base.openTransaction();
             autoGui.getDuenio().addItem(cli.getId().toString()+"-"+cli.get("nombre"));
+                    Base.commitTransaction();
+
         }
+        
     }
     
         //para llamar desde el otro lado, así evito hacer bardo

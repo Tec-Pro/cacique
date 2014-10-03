@@ -100,8 +100,9 @@ public class controladorImportarGui implements ActionListener {
 
     public void cargarProveedores() {
         importarGui.getProveedor().removeAllItems();
-        
+         Base.openTransaction();
         List<Proveedor> proveedores = Proveedor.findAll();
+        Base.commitTransaction();
         Iterator<Proveedor> it = proveedores.iterator();
         while (it.hasNext()) {
             prov = it.next();

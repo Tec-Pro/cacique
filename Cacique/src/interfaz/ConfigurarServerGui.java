@@ -5,6 +5,9 @@
 package interfaz;
 
 import abm.ManejoIp;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.javalite.activejdbc.Base;
 
@@ -132,8 +135,12 @@ public class ConfigurarServerGui extends javax.swing.JDialog {
     }//GEN-LAST:event_isServerActionPerformed
 
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
+        if(Base.hasConnection())
+                Base.close();
         if (!Base.hasConnection()) {
             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/cacique", "tecpro", "tecpro");
+         
+
         }
         boolean res;
         if (isServer.isSelected()) {
@@ -147,6 +154,11 @@ public class ConfigurarServerGui extends javax.swing.JDialog {
             if(Base.hasConnection())
                 Base.close();
             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://" + ManejoIp.ipServer + "/cacique", "tecpro", "tecpro");
+            try {
+                Base.connection().setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(ConfigurarServerGui.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
             this.dispose();
         } else {
@@ -161,6 +173,7 @@ public class ConfigurarServerGui extends javax.swing.JDialog {
         if (!Base.hasConnection()) {
                         try{
             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://"+ip.getText()+"/cacique", "tecpro", "tecpro");
+
             JOptionPane.showMessageDialog(null, "Se ha establecido la conexión con éxito ",null,JOptionPane.INFORMATION_MESSAGE);                    
             }catch(Exception e){
                 System.out.println("da");

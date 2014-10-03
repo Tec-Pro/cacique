@@ -31,6 +31,7 @@ import modelos.Cliente;
 import modelos.Proveedor;
 import modelos.Trabajo;
 import net.sf.jasperreports.engine.JRException;
+import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
 
 /**
@@ -65,7 +66,9 @@ public class ControladorTrabajo implements ActionListener {
         tablaAutos = trabajoGui.getTablaAutos();
         listAutos = new LinkedList();
         abmTrabajo = new ABMTrabajo();
+        Base.openTransaction();
         listAutos = Auto.findAll();
+        Base.openTransaction();
         actualizarLista();
         this.vtg = vt;
         this.cv = cv;
@@ -105,13 +108,19 @@ public class ControladorTrabajo implements ActionListener {
     }
 
     private void realizarBusqueda() {
+        Base.openTransaction();
         listAutos = Auto.findBySQL("SELECT a.id, a.patente, a.modelo, a.marca, a.cliente_id, a.ult_cambio_aceite FROM cacique.autos as a,cacique.clientes as c where c.dni like ? or c.nombre like ? or a.patente like ? or a.id like ? group by a.id", "%" + trabajoGui.getBusquedaAuto().getText() + "%", "%" + trabajoGui.getBusquedaAuto().getText() + "%", "%" + trabajoGui.getBusquedaAuto().getText() + "%", "%" + trabajoGui.getBusquedaAuto().getText() + "%");
+                Base.commitTransaction();
+
+        
         actualizarLista();
     }
 
     public void cargarTodos() {
-
+Base.openTransaction();
         listAutos = Auto.findAll();
+                Base.commitTransaction();
+
         if (!listAutos.isEmpty()) {
             realizarBusqueda();
             System.out.println("cargue todo");
@@ -120,8 +129,11 @@ public class ControladorTrabajo implements ActionListener {
 
     public void tablaMouseClicked(java.awt.event.MouseEvent evt) {
         if (evt.getClickCount() == 2) {
+            Base.openTransaction();
             auto = Auto.findById(tablaAutos.getValueAt(tablaAutos.getSelectedRow(), 0));
             cliente = Cliente.findById(tablaAutos.getValueAt(tablaAutos.getSelectedRow(), 3));
+                        Base.commitTransaction();
+
             trabajoGui.getDuenio().setText(cliente.getString("nombre"));
             trabajoGui.getAuto().setText(auto.getString("patente"));
         }

@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import modelos.Articulo;
 import modelos.Cliente;
 import modelos.Proveedor;
+import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
 import org.javalite.activejdbc.Model;
 
@@ -53,8 +54,10 @@ public class CumpleaniosGui extends javax.swing.JInternalFrame {
     public void cargarCumple(){
         cumpleHoyDefault.setRowCount(0);
         cumpleSemanaDefault.setRowCount(0);
+         Base.openTransaction();
              LazyList<Cliente> clientes= Cliente.where("nacimiento = ?", dateToMySQLDate(Calendar.getInstance().getTime(),false));
-                Iterator<Cliente> it= clientes.iterator();
+             Base.commitTransaction();
+             Iterator<Cliente> it= clientes.iterator();
                 while(it.hasNext()){
                     Cliente cli= it.next();
                     String cols[] = new String[8];
@@ -72,8 +75,10 @@ public class CumpleaniosGui extends javax.swing.JInternalFrame {
                 Date date= Calendar.getInstance().getTime();
                 date.setDate(date.getDate()+7);
                 clientes=null;
+                 Base.openTransaction();
                                 clientes= Cliente.where("nacimiento > ? and nacimiento <?", dateToMySQLDate(Calendar.getInstance().getTime(),false),dateToMySQLDate(date,false));
-                it= clientes.iterator();
+                Base.commitTransaction();
+                                it= clientes.iterator();
                 while(it.hasNext()){
                     Cliente cli= it.next();
                     String cols[] = new String[8];
@@ -107,8 +112,9 @@ public class CumpleaniosGui extends javax.swing.JInternalFrame {
     
     private void tablaHoy(java.awt.event.MouseEvent evt) {
         if (evt.getClickCount() == 2) {
+             Base.openTransaction();
             Cliente cliente= Cliente.findById(cumpleHoy.getValueAt(cumpleHoy.getSelectedRow(), 7));
-                    
+                 Base.commitTransaction();
             clienteGui.CargarCampos(cliente);
             clienteGui.setVisible(true);
             clienteGui.toFront();
@@ -118,8 +124,9 @@ public class CumpleaniosGui extends javax.swing.JInternalFrame {
     
         private void tablaSemana(java.awt.event.MouseEvent evt) {
         if (evt.getClickCount() == 2) {
+             Base.openTransaction();
             Cliente cliente= Cliente.findById(cumpleSemana.getValueAt(cumpleSemana.getSelectedRow(), 7));
-                    
+                   Base.commitTransaction();
             clienteGui.CargarCampos(cliente);
             clienteGui.setVisible(true);
             clienteGui.toFront();

@@ -161,7 +161,9 @@ public class ControladorPresupuestosRealizados implements ActionListener {
     private void actualizarFactura() {
         factDefault.setRowCount(0);
         for (ArticulosPresupuestos pv : prodPresupuesto) {
+            Base.openTransaction();
             Articulo p = Articulo.findFirst("id = ?", pv.get("articulo_id"));
+            Base.commitTransaction();
             Object cols[] = new Object[7];
             cols[0] = p.get("id");
             cols[1] = pv.getBigDecimal("cantidad");
@@ -214,8 +216,10 @@ public class ControladorPresupuestosRealizados implements ActionListener {
     }
 
     public void tablaFacturasMouseReleased(java.awt.event.MouseEvent evt) {
-        int r = tablaFacturas.getSelectedRow();        
+        int r = tablaFacturas.getSelectedRow();      
+        Base.openTransaction();
         p = Presupuesto.findById(tablaFacturas.getValueAt(r, 0));
+        Base.commitTransaction();
         presupuestosRealizadosGui.getPatente().setText(p.getString("patente"));
         presupuestosRealizadosGui.getRealizado().setText(p.getString("realizado"));
         Cliente c = buscar.buscarCliente(tablaFacturas.getValueAt(r, 0));
@@ -279,7 +283,9 @@ public class ControladorPresupuestosRealizados implements ActionListener {
            presupuestoGui.setIdParaModificar(p.getInteger("id"));
            Float total = Float.parseFloat("0.0");
             for (ArticulosPresupuestos pv : prodPresupuesto) {
+                Base.openTransaction();
                 Articulo p = Articulo.findFirst("id = ?", pv.get("articulo_id"));
+                Base.commitTransaction();
                 Object cols[] = new Object[7];
                 cols[0] = p.get("id");
                 cols[1] = pv.getBigDecimal("cantidad");

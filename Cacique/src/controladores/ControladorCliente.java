@@ -43,6 +43,7 @@ import modelos.Cliente;
 import modelos.Pago;
 import modelos.Venta;
 import net.sf.jasperreports.engine.JRException;
+import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
 
 /**
@@ -95,7 +96,9 @@ public class ControladorCliente implements ActionListener {
             cliente = new Cliente();
             this.prg = prg;
             nacimiento = clienteGui.getNacimiento();
+            Base.openTransaction();
             listClientes = Cliente.findAll();
+            Base.commitTransaction();
             this.ag = ag;
             this.cpr = cpr;
             this.ca = ca;
@@ -144,22 +147,33 @@ public class ControladorCliente implements ActionListener {
     private void tablaVentasMouseClicked(MouseEvent evt) {
         if (evt.getClickCount() == 2) {
             Integer idFac = Integer.valueOf((String) clienteGui.getVentasRealizadas().getValueAt(clienteGui.getVentasRealizadas().getSelectedRow(), 0));
-
+            Base.openTransaction();
             Venta factura = Venta.findById(idFac);
+                        Base.commitTransaction();
+
             Object idCliente = factura.get("cliente_id");
             DefaultTableModel tablita = ventaGui.getTablaFacturaDefault();
             tablita.setRowCount(0);
+            Base.openTransaction();
             Cliente cli = Cliente.findById(idCliente);
+                        Base.commitTransaction();
+
             System.out.println(cli.getId());
             if (cli != null) {
                 String nombre = idCliente + " " + cli.getString("nombre");
                 ventaGui.getClienteFactura().setText(nombre);
+                Base.openTransaction();
                 LazyList<ArticulosVentas> pr = ArticulosVentas.find("venta_id = ?", idFac);
+                            Base.commitTransaction();
+
                 Iterator<ArticulosVentas> it = pr.iterator();
                 BigDecimal porcentaje;
                 while (it.hasNext()) {
                     ArticulosVentas prod = it.next();
+                    Base.openTransaction();
                     Articulo producto = Articulo.findFirst("id = ?", prod.get("articulo_id"));
+                                Base.commitTransaction();
+
                     if (producto != null) {
                         BigDecimal precio;
                         precio = prod.getBigDecimal("precio_final").setScale(2, RoundingMode.CEILING);
@@ -189,8 +203,11 @@ public class ControladorCliente implements ActionListener {
 
     // Carga todos los clientes
     public void cargarTodos() {
-
+        Base.openTransaction();
+     
         listClientes = Cliente.findAll();
+                Base.commitTransaction();
+
         if (!listClientes.isEmpty()) {
             realizarBusqueda();
         }
@@ -339,7 +356,9 @@ public class ControladorCliente implements ActionListener {
 
             if (row > -1) {
                 String id = (String) tablaVentas.getValueAt(row, 0);
+                Base.openTransaction();
                 Venta v = Venta.findById(id);
+                Base.commitTransaction();
                 ABMVenta abmV = new ABMVenta();
                 if (abmV.bajaConDevolucion(v)) {
                     JOptionPane.showMessageDialog(clienteGui, "¡Venta eliminada exitosamente!");
@@ -383,7 +402,9 @@ public class ControladorCliente implements ActionListener {
                             } else {
                                 monto = new BigDecimal((String) tablaVentas.getValueAt(row, 2));
                             }
+                            Base.openTransaction();
                             Venta v = Venta.findById(id);
+                            Base.commitTransaction();
                             ABMVenta ambV = new ABMVenta();
                             v.set("pago", true);
                             v.set("monto", monto);
@@ -610,7 +631,9 @@ public class ControladorCliente implements ActionListener {
                 while (itr2.hasNext()) {
                     ArticulosVentas arvs = itr2.next();
                     System.out.println(arvs.getInteger("articulo_id"));
+                    Base.openTransaction();
                     Articulo art = Articulo.findById(arvs.getInteger("articulo_id"));
+                    Base.openTransaction();
                     if (art != null) {
                         System.out.println(art == null);
                         cuenta = (art.getBigDecimal("precio_venta")).multiply(arvs.getBigDecimal("cantidad")).setScale(2, RoundingMode.CEILING);
@@ -665,7 +688,9 @@ public class ControladorCliente implements ActionListener {
         Iterator<ArticulosVentas> itr2 = busqueda.filtroVendidos(id).iterator();
         while (itr2.hasNext()) {
             ArticulosVentas arvs = itr2.next();
+            Base.openTransaction();
             Articulo art = Articulo.findById(arvs.getInteger("articulo_id"));
+            Base.commitTransaction();
             cuenta = (art.getBigDecimal("precio_venta")).multiply(arvs.getBigDecimal("cantidad")).setScale(2, RoundingMode.CEILING);
             if (montox == null) {
                 montox = new BigDecimal(String.valueOf((cuenta).setScale(2, RoundingMode.CEILING)));

@@ -20,14 +20,12 @@ public class ManejoIp {
     
     public void crearIp() {
         if (Ip.findAll().isEmpty()) {
-            Base.openTransaction();
-                    Base.commitTransaction();
                     new ConfigurarServerGui(null, true).setVisible(true);
         }
     }
 
     public void modificarIp(String ipNueva) {
-        Ip ip = Ip.findById(1);
+        Ip ip = (Ip)Ip.findAll().get(0);;
         Base.openTransaction();
         ip.set("remoto", ipNueva);
         ip.save();
@@ -35,7 +33,7 @@ public class ManejoIp {
     }
 
     public void modificarIsServidor(boolean si) {
-        Ip ip = Ip.findById(1);
+        Ip ip =(Ip)Ip.findAll().get(0);;
         Base.openTransaction();
         ip.setBoolean("servidor", si);
         ip.save();
@@ -43,13 +41,16 @@ public class ManejoIp {
     }
 
     public boolean modificarDatos(String ipNueva, boolean isServer) {
-        Ip u = Ip.findById(1);
+        Ip u = (Ip)Ip.findAll().get(0);;
         if(u!=null){
         Base.openTransaction();
+        System.out.println(ipNueva);
         u.set("remoto", ipNueva, "servidor", isServer);
-        boolean ret = u.save();
+        boolean ret = u.saveIt();
+        System.out.println(ret);
+        System.out.println(ManejoIp.ipServer);
         Base.commitTransaction();
-        return ret;
+        return true;
         }
         else{
           Base.openTransaction();
@@ -61,7 +62,7 @@ public class ManejoIp {
     }
 
     public void conseguirDatos(){
-        Ip u = Ip.findById(1);
+        Ip u = (Ip)Ip.findAll().get(0);
         ipServer= u.getString("remoto");
         servidor= u.getBoolean("servidor");
     }

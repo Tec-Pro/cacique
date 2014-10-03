@@ -99,16 +99,20 @@ private DefaultTableModel tablaComprasDefault;
             
             compraGui.limpiarVentana();
             compraGui.paraVerCompra(true);
+             Base.openTransaction();
             Compra compra = Compra.findById(tablaCompras.getValueAt(tablaCompras.getSelectedRow(), 0));
-            
+            Base.commitTransaction();
             //PODRÍA HACERSE UNA FUNCION EN COMPRAGUI PARA CARGAR LA COMPRA
             compraGui.getProveedorCompra().setText(proveedor.getString("nombre"));
-            
+             Base.openTransaction();
             LazyList<ArticulosCompras> artCom = ArticulosCompras.find("compra_id = ?", compra.getId());
+            Base.commitTransaction();
             Iterator<ArticulosCompras> it = artCom.iterator();
             while (it.hasNext()) {
                 ArticulosCompras prodCom = it.next();
+                 Base.openTransaction();
                 Articulo art = Articulo.findById(prodCom.get("articulo_id"));
+                Base.commitTransaction();
                 if (art != null) {
                     Integer numeroProducto = art.getInteger("id");
                     String codigo = art.getString("codigo");
@@ -239,11 +243,11 @@ private DefaultTableModel tablaComprasDefault;
 
     private void pagarFacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pagarFacActionPerformed
 System.out.println("realizar pago pulsado");
-            
+             Base.openTransaction();
             realizarPagoGui = new RealizarPagoGui(papa, true, proveedor, (Compra)Compra.findById(tablaCompras.getValueAt(tablaCompras.getSelectedRow(), 0)));
             realizarPagoGui.setLocationRelativeTo(this);
             realizarPagoGui.setVisible(true);
-            
+            Base.commitTransaction();
             
             cargarCompras();
             pagarFac.setEnabled(false);
@@ -252,10 +256,11 @@ System.out.println("realizar pago pulsado");
     private void borrarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarCompraActionPerformed
         int row = tablaCompras.getSelectedRow();
             if (row > -1) {
-                
+                 Base.openTransaction();
                Object id =  tablaCompras.getValueAt(row, 0);
                 Compra comp = Compra.findById(id);
                 ABMCompra abmC = new ABMCompra();
+                Base.commitTransaction();
 //                if (abmC.baja(comp)) { anular después jeeee   
 //                    JOptionPane.showMessageDialog(this, "¡Compra eliminada exitosamente!");
 //                    cargarCompras();

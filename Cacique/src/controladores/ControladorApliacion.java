@@ -85,9 +85,9 @@ public class ControladorApliacion implements ActionListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
         if (!Base.hasConnection()) {
             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://" + ManejoIp.ipServer + "/cacique", "tecpro", "tecpro");
-
         }
         aplicacionGui = new AplicacionGui();
         log = new ControladorLogin(aplicacionGui);
@@ -138,6 +138,7 @@ public class ControladorApliacion implements ActionListener {
         aplicacionGui.getContenedor().add(presupuestoRealizadosGui);
         aplicacionGui.getContenedor().add(cuentaCorrienteGui);
         aplicacionGui.setCursor(Cursor.DEFAULT_CURSOR);
+        
 
     }
 
@@ -145,6 +146,7 @@ public class ControladorApliacion implements ActionListener {
 
         if (!Base.hasConnection()) {
             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/cacique", "tecpro", "tecpro");
+        
         }
         ManejoIp manejoIp = new ManejoIp();
         manejoIp.crearIp();
@@ -345,7 +347,10 @@ public class ControladorApliacion implements ActionListener {
         private void abrirBase() {
         if (!Base.hasConnection()) {
             try {
+                
                 Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://" + ManejoIp.ipServer + "/cacique", "tecpro", "tecpro");
+                            Base.connection().setAutoCommit(true);
+
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Ocurrió un error, no se realizó la conexión con el servidor, verifique la conexión \n " + e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
             }

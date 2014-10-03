@@ -124,7 +124,9 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
         if (rows.length > 0) {
             for (int i = 0; i < rows.length; i++) {
                 if (!existeProdFacc(Integer.valueOf((String) tablap.getValueAt(rows[i], 0)))) {
+                    Base.openTransaction();
                     Articulo p = Articulo.findFirst("id = ?", (tablap.getValueAt(rows[i], 0)));
+                    Base.commitTransaction();
                     Object cols[] = new Object[7];
                     cols[0] = p.get("id");
                     cols[1] = BigDecimal.valueOf(1).setScale(2, RoundingMode.CEILING);
@@ -201,7 +203,9 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
                 Integer idCliente = Integer.valueOf(cliente.split(" ")[0]); //saco el id cliente
                 v.set("cliente_id", idCliente);
                 for (int i = 0; i < ventaGui.getTablaFactura().getRowCount(); i++) {
+                    Base.openTransaction();
                     Articulo producto = Articulo.findFirst("id = ?", tablafac.getValueAt(i, 0));
+                    Base.commitTransaction();
                     BigDecimal cantidad = ((BigDecimal) tablafac.getValueAt(i, 1)).setScale(2, RoundingMode.CEILING); //saco la cantidad
                     BigDecimal precioFinal = ((BigDecimal) tablafac.getValueAt(i, 4)).setScale(2, RoundingMode.CEILING);
                     preciosFinales.add(precioFinal);
@@ -231,13 +235,17 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
                             String pagoId = pago.getString("id");//Pago.findFirst("fecha = ? and monto = ? and cliente_id = ?", laFecha, bd, idCliente).getString("id");
                             System.out.println("el pago id es:  " + pagoId);
                             idPago = Integer.valueOf(pagoId);
+                            Base.openTransaction();
                             v= Venta.findById(abmVenta.getUltimoIdVenta());
+                            Base.commitTransaction();
                             v.set("pago_id", pagoId);
                             Base.openTransaction();
                             v.saveIt();
                             Base.commitTransaction();
                         } else {
+                             Base.openTransaction();
                             if (Cliente.findById(idCliente).getBigDecimal("cuenta").compareTo(bd) >= 0) {
+                                Base.commitTransaction();
                                 Base.openTransaction();
                                 Pago pago = Pago.createIt("fecha", laFecha, "monto", bd, "cliente_id", idCliente, "descripcion", "Cobro de factura con nro : " + abmVenta.getUltimoIdVenta());
                                 Base.commitTransaction();
@@ -305,7 +313,9 @@ public class ControladorVenta implements ActionListener, CellEditorListener {
     private void actualizarListaProd() {
 
         tablaProd.setRowCount(0);
+         Base.openTransaction();
         prodlista = Articulo.where("es_articulo = 1 and (codigo like ? or descripcion like ? or equivalencia_1 like ? or equivalencia_2 like ? or equivalencia_3 like ?)", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%", "%" + textcodprod.getText() + "%");
+        Base.commitTransaction();
         Iterator<Articulo> it = prodlista.iterator();
         while (it.hasNext()) {
             Articulo a = it.next();

@@ -27,6 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import modelos.Cliente;
 import modelos.Corriente;
+import org.javalite.activejdbc.Base;
 
 /**
  *
@@ -62,8 +63,10 @@ public class ControladorCuentaCorriente implements ActionListener {
         tablaCuenta = ctg.getTablaCuentas();
         tablaCliente = ctg.getTablaClientes();
         abmCorriente = new ABMCuentaCorriente();
+        Base.openTransaction();
         listCorriente = Corriente.findAll();
         listClientes = Cliente.findAll();
+        Base.commitTransaction();
         nomcli = ctg.getBusqueda();
         nomcli.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -101,7 +104,9 @@ public class ControladorCuentaCorriente implements ActionListener {
 
     private void tablaCuentaMouseClicked(MouseEvent evt) {
         ctg.limpiarCampos();
+        Base.openTransaction();
         c = Corriente.findById(tablaCuenta.getValueAt(tablaCuenta.getSelectedRow(), 0));
+        Base.commitTransaction();
         ctg.CargarCampos(c);
         ctg.getEditar().setEnabled(true);
         ctg.getEliminar().setEnabled(true);
@@ -127,7 +132,9 @@ public class ControladorCuentaCorriente implements ActionListener {
             c.set("fecha", date); //saco la fecha);
             if (abmCorriente.alta(c)) {
                 ctg.guardarCuenta();
+                Base.openTransaction();
                 listCorriente = Corriente.find("id_cliente like ? ", cliente.getId());
+                Base.commitTransaction();
                 editandoInfo = false;
                 cargarCuentas();
                 JOptionPane.showMessageDialog(ctg, "¡Cuenta guardada exitosamente!");
@@ -135,8 +142,10 @@ public class ControladorCuentaCorriente implements ActionListener {
                 JOptionPane.showMessageDialog(ctg, "Ocurrió un error, revise los datos", "Error!", JOptionPane.ERROR_MESSAGE);
             }
         }
-        if (e.getSource() == ctg.getEliminar()) { //borrar             
+        if (e.getSource() == ctg.getEliminar()) { //borrar          
+            Base.openTransaction();
             Corriente c = Corriente.findById(tablaCuenta.getValueAt(tablaCuenta.getSelectedRow(), 0));
+            Base.commitTransaction();
             if (ctg.getIdCuenta() != null && !editandoInfo) {
                 Integer resp = JOptionPane.showConfirmDialog(ctg, "¿Desea borrar la cuenta?", "Confirmar borrado", JOptionPane.YES_NO_OPTION);
                 if (resp == JOptionPane.YES_OPTION) {
@@ -144,7 +153,9 @@ public class ControladorCuentaCorriente implements ActionListener {
                     if (seBorro) {
                         JOptionPane.showMessageDialog(ctg, "¡Cuenta borrada exitosamente!");
                         ctg.eliminarCuenta();
+                        Base.openTransaction();
                         listCorriente = Corriente.find("id_cliente like ? ", cliente.getId());
+                        Base.commitTransaction();
                         cargarCuentas();
                     } else {
                         JOptionPane.showMessageDialog(ctg, "Ocurrió un error, no se borró la cuenta", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -167,7 +178,9 @@ public class ControladorCuentaCorriente implements ActionListener {
             c.set("fecha", date); //saco la fecha);
             if (abmCorriente.modificar(c)) {
                 ctg.guardarCuenta();
+                Base.openTransaction();
                 listCorriente = Corriente.find("id_cliente like ? ", cliente.getId());
+                Base.commitTransaction();
                 editandoInfo = false;
                 JOptionPane.showMessageDialog(ctg, "¡Cuenta modificada exitosamente!");
             } else {
@@ -196,7 +209,9 @@ public class ControladorCuentaCorriente implements ActionListener {
 
     //carga las ventas realizadas al cliente en la tabla
     public void cargarCuentas() {
+        Base.openTransaction();
         listCorriente = Corriente.find("id_cliente like ? ", cliente.getId());
+        Base.commitTransaction();
         tablaCuentaDefault.setRowCount(0);
         Iterator<Corriente> itr = listCorriente.iterator();
         while (itr.hasNext()) {
@@ -225,7 +240,9 @@ public class ControladorCuentaCorriente implements ActionListener {
     
     //carga las ventas realizadas al cliente en la tabla
     public void cargarTodasCuentas() {
+        Base.openTransaction();
         listCorriente = Corriente.findAll();
+        Base.commitTransaction();
         tablaCuentaDefault.setRowCount(0);
         Iterator<Corriente> itr = listCorriente.iterator();
         while (itr.hasNext()) {
@@ -250,10 +267,12 @@ public class ControladorCuentaCorriente implements ActionListener {
 
     // Carga todos los clientes
     public void cargarTodos() {
+        Base.openTransaction();
         listClientes = Cliente.findAll();
         if (!listClientes.isEmpty()) {
             realizarBusqueda();
         }
+        Base.commitTransaction();
     }
 
     private void realizarBusqueda() {

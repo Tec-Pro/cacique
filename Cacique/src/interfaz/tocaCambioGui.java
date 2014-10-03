@@ -14,6 +14,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import modelos.Auto;
 import modelos.Cliente;
+import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
 
 /**
@@ -67,11 +68,15 @@ public class tocaCambioGui extends javax.swing.JInternalFrame {
         Calendar c = Calendar.getInstance();
         c.setTime(referenceDate);
         c.add(Calendar.MONTH, -6);
+         Base.openTransaction();
         LazyList<Auto> auto = Auto.where("ult_cambio_aceite <= ?", c.getTime());
+        Base.commitTransaction();
         Iterator<Auto> it = auto.iterator();
         while (it.hasNext()) {
             Auto au = it.next();
+             Base.openTransaction();
             Cliente cli = Cliente.findById(au.get("cliente_id"));
+            Base.commitTransaction();
             String cols[] = new String[8];
             cols[0] = au.getString("id");
             cols[1] = au.getString("patente");

@@ -190,9 +190,11 @@ public class ControladorCuentaCorriente implements ActionListener {
         }
         if (e.getSource() == ctg.getPagar()) {
             new PagarCorrienteGui(aplicacionGui, true, Integer.valueOf((String) tablaCuenta.getValueAt(tablaCuenta.getSelectedRow(), 1)), Integer.valueOf((String) tablaCuenta.getValueAt(tablaCuenta.getSelectedRow(), 0)), this,false).setVisible(true);
+            cargarCuentas();
         }
                 if (e.getSource() == ctg.getPagarVarias()) {
-            new PagarCorrienteGui(aplicacionGui, true, Integer.valueOf((String) tablaCuenta.getValueAt(0, 1)),0, this,true).setVisible(true);
+            new PagarCorrienteGui(aplicacionGui, true, cliente.getInteger("id"),0, this,true).setVisible(true);
+            cargarCuentas();
         }
         
         if(e.getSource()== ctg.getImprimir()){
@@ -217,8 +219,10 @@ public class ControladorCuentaCorriente implements ActionListener {
         while (itr.hasNext()) {
             Corriente v = itr.next();
             Object row[] = new Object[9];
-            BigDecimal haber = BigDecimal.valueOf(v.getFloat("haber")).setScale(2, RoundingMode.CEILING);
-            BigDecimal monto = BigDecimal.valueOf(v.getFloat("monto")).setScale(2, RoundingMode.CEILING);
+
+             
+            BigDecimal haber = BigDecimal.valueOf(v.getFloat("haber")).setScale(2, RoundingMode.DOWN);
+            BigDecimal monto = BigDecimal.valueOf(v.getFloat("monto")).setScale(2, RoundingMode.DOWN);
             row[0] = v.getString("id");
             row[1] = v.getString("id_cliente");
             row[2] = v.getString("id_venta");
@@ -248,8 +252,8 @@ public class ControladorCuentaCorriente implements ActionListener {
         while (itr.hasNext()) {
             Corriente v = itr.next();
             Object row[] = new Object[9];
-            BigDecimal haber = BigDecimal.valueOf(v.getFloat("haber")).setScale(2, RoundingMode.CEILING);
-            BigDecimal monto = BigDecimal.valueOf(v.getFloat("monto")).setScale(2, RoundingMode.CEILING);
+            BigDecimal haber = BigDecimal.valueOf(v.getFloat("haber")).setScale(2, RoundingMode.DOWN);
+            BigDecimal monto = BigDecimal.valueOf(v.getFloat("monto")).setScale(2, RoundingMode.DOWN);
             row[0] = v.getString("id");
             row[1] = v.getString("id_cliente");
             row[2] = v.getString("id_venta");
@@ -297,12 +301,12 @@ public class ControladorCuentaCorriente implements ActionListener {
     }
 
     public void actualizarTotalCuenta() {
-        Double big = 0.0;
+        float big = 0;
         for (int i = 0; i < tablaCuenta.getRowCount(); i++) {
-            big += Double.valueOf((String) tablaCuenta.getValueAt(i, 6));
-            System.out.println(big);
+            big += Float.valueOf((String) tablaCuenta.getValueAt(i, 6));
+            
         }
-        big-= cliente.getDouble("cuenta_corriente_manual");
+        big-= cliente.getFloat("cuenta_corriente_manual");
         ctg.getTotal().setText(BigDecimal.valueOf(big).setScale(2, RoundingMode.CEILING).toString());
     }
     

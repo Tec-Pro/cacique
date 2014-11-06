@@ -493,7 +493,7 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        tablaCuentas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tablaCuentas.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         jScrollPane3.setViewportView(tablaCuentas);
 
         javax.swing.GroupLayout panelClientes1Layout = new javax.swing.GroupLayout(panelClientes1);
@@ -514,7 +514,7 @@ public class CuentaCorrienteGui extends javax.swing.JInternalFrame {
 
         total.setFont(new java.awt.Font("Cantarell", 3, 18)); // NOI18N
 
-        jPanel1.setLayout(new java.awt.GridLayout());
+        jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
         pagar.setText("Pagar UNICA");
         jPanel1.add(pagar);

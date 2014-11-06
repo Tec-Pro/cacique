@@ -189,7 +189,7 @@ public class PagarCorrienteGui extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(this, "Por favor ingrese el monto", "Error!", JOptionPane.ERROR_MESSAGE);
             } else {
                 Base.openTransaction();
-                BigDecimal entrega = new BigDecimal(monto.getText());
+                float entrega = Float.valueOf(monto.getText());
                 Pago pago = Pago.createIt("fecha", getCalendarioText().getText(),
                 "monto", entrega,
                 "cliente_id", idcliente,
@@ -197,7 +197,25 @@ public class PagarCorrienteGui extends javax.swing.JDialog {
                  Base.openTransaction();
                 Corriente cuenta= Corriente.findById(idCuenta);
                 Base.commitTransaction();
-                cuenta.setBigDecimal("haber", entrega.add(cuenta.getBigDecimal("haber")));
+                Base.openTransaction();
+                Cliente cli= Cliente.findById(idcliente);
+                
+                entrega+=cli.getFloat("cuenta_corriente_manual");
+                Base.commitTransaction();
+                float debe= cuenta.getFloat("monto")-(cuenta.getFloat("haber"));
+                if(entrega>=debe){
+                    cuenta.setFloat("haber", debe+cuenta.getFloat("haber"));
+                    entrega= entrega-debe;
+                     cli.set("cuenta_corriente_manual",entrega);
+                    cli.saveIt();   
+                }
+                else{
+                    cuenta.setFloat("haber", entrega+cuenta.getFloat("haber"));
+                    entrega= 0;
+                    cli.set("cuenta_corriente_manual",entrega);
+                    cli.saveIt();   
+                }
+                    
                 cuenta.saveIt();
                 Base.commitTransaction();
                 
@@ -222,40 +240,44 @@ public class PagarCorrienteGui extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(this, "Por favor ingrese el monto", "Error!", JOptionPane.ERROR_MESSAGE);
             } else {
                 Base.openTransaction();
-                BigDecimal entrega = new BigDecimal(monto.getText());
-                BigDecimal entregaNoMod= entrega;
+                float entrega = Float.valueOf(monto.getText());
+                float entregaNoMod= entrega;
                 String texto= "pagó cuentas corrientes: ";
                  Base.openTransaction();
                 Cliente cli= Cliente.findById(idcliente);
+                
+                entrega+=cli.getFloat("cuenta_corriente_manual");
                 Base.commitTransaction();
-                entrega=entrega.add(cli.getBigDecimal("cuenta_corriente_manual"));
-
                  Base.openTransaction();
-                LazyList<Corriente> cuentasCorrientes= Corriente.where("haber < monto",null ).orderBy("fecha");
+                LazyList<Corriente> cuentasCorrientes= Corriente.where("haber < monto and id_cliente = ? ", idcliente).orderBy("fecha");
                 Base.commitTransaction();
                 Iterator<Corriente> it=cuentasCorrientes.iterator();
-                while(it.hasNext() && (entrega.compareTo(BigDecimal.ZERO)>0)){
+                Base.openTransaction();
+                while(it.hasNext() ){
+                    
                     Corriente corr= it.next();
-                    BigDecimal debe= corr.getBigDecimal("monto").subtract(corr.getBigDecimal("haber"));
-                    if(entrega.subtract(debe).compareTo(BigDecimal.ZERO)>=0){
-                        corr.setBigDecimal("haber", corr.getBigDecimal("haber").add(debe));
+                    if(entrega>=0){
+                    float debe= corr.getFloat("monto")-(corr.getFloat("haber"));
+                    if(entrega-debe>=0){
+                        corr.setBigDecimal("haber", corr.getFloat("haber")+(debe));
                         System.out.println("debe" +debe);
                         
                         corr.set("fecha_pago",dateToMySQLDate(Calendar.getInstance().getTime(), false));
                         corr.saveIt();
                         texto=texto.concat(corr.getId().toString());
                         texto=texto.concat(", ");
-                        entrega=entrega.subtract(debe);
+                        entrega=entrega-(debe);
                     }
                     else{
-                        corr.setBigDecimal("haber", entrega.add(corr.getBigDecimal("haber")));
-                        entrega=BigDecimal.ZERO;
+                        corr.setFloat("haber", entrega+(corr.getFloat("haber")));
+                        entrega=0;
                         corr.saveIt();
 
                     }
-                    
+                }  
                 }
-                
+                Base.commitTransaction();
+                Base.openTransaction();
                 Pago pago = Pago.createIt("fecha", getCalendarioText().getText(),
                 "monto", entregaNoMod,
                 "cliente_id", idcliente,
@@ -267,7 +289,6 @@ public class PagarCorrienteGui extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(this, "¡Cobro registrado exitosamente!");
                 reportePago.mostrarPago( pago.getInteger("id"));
                 co.cargarCuentas();
-                co.actualizarTotalCuenta();
                 this.dispose();
             }
             }catch (ClassNotFoundException ex) {

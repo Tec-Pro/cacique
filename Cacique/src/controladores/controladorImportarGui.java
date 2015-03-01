@@ -173,6 +173,7 @@ public class controladorImportarGui implements ActionListener {
         final javax.swing.SwingWorker worker = new javax.swing.SwingWorker() {
             @Override
             protected Void doInBackground() throws Exception {
+                Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://" + ManejoIp.ipServer + "/cacique", "tecpro", "tecpro");
                 boolean precioVentaAuto= importarGui.getPorcenAutomatico().isSelected();
                 if (importarGui.getSelectorArchivos().getSelectedFile().getName().contains("xlsx")) {
                     importando = true;
@@ -181,7 +182,8 @@ public class controladorImportarGui implements ActionListener {
                     if (hoja == null) {
                         JOptionPane.showMessageDialog(null, "No se encontró la hoja IMPORTARHOJA, renombrela e intente nuevamente");
                     } else {
-                        Iterator iterarFilas = hoja.rowIterator();
+                        int numRows=hoja.getPhysicalNumberOfRows();
+                        //Iterator<Row> iterarFilas = hoja.iterator();
                         XSSFCell celdaCodigo;
                         XSSFCell celdaDescripcion;
                         XSSFCell celdaMarca;
@@ -200,9 +202,13 @@ public class controladorImportarGui implements ActionListener {
                         
                         agregados = 0;
                         modificados = 0;
-                        iterarFilas.next();
-                        while (iterarFilas.hasNext() && importando) {
-                            XSSFRow row = (XSSFRow) iterarFilas.next();
+                        //terarFilas.next();
+                        int i=1;
+                        System.out.println(numRows);
+                        try{
+                        while (i<=numRows && importando ) {
+                            
+                            XSSFRow row = (XSSFRow)hoja.getRow(i);
                             celdaCodigo = (XSSFCell) row.getCell(0);
                             celdaDescripcion = (XSSFCell) row.getCell(1);
                             celdaMarca = (XSSFCell) row.getCell(2);
@@ -235,17 +241,25 @@ public class controladorImportarGui implements ActionListener {
                                     if (celdaPrecioCompra != null) {
                                         celdaPrecioCompra.setCellType(Cell.CELL_TYPE_STRING);
                                         precioString = celdaPrecioCompra.toString();
+                                        if(!precioString.isEmpty()){
                                         precioFloat = Float.parseFloat(precioString);
                                         precioCompraBig = BigDecimal.valueOf(precioFloat).setScale(2, RoundingMode.CEILING);
-
+                                        }
+                                        else{
+                                            precioCompraBig= new BigDecimal(-1.0);
+                                        }
                                     }
                                     if(!precioVentaAuto){
                                     if (celdaPrecioVenta != null) {
                                         celdaPrecioVenta.setCellType(Cell.CELL_TYPE_STRING);
                                         precioStringVenta = celdaPrecioVenta.toString();
+                                        if(!precioStringVenta.isEmpty()){
                                         precioFloat = Float.parseFloat(precioStringVenta);
                                         precioVenta = BigDecimal.valueOf(precioFloat).setScale(2, RoundingMode.CEILING);
-
+                                        }
+                                        else{
+                                            precioCompraBig= new BigDecimal(-1.0);
+                                        }
                                     }
                                     }
                                     else{
@@ -256,6 +270,7 @@ public class controladorImportarGui implements ActionListener {
                                     }
 
                                     articulo.set("codigo", codigoString, "descripcion", descripcionString, "marca", marcaString, "precio_compra", precioCompraBig, "precio_venta", precioVenta, "nombre", nombreString, "stock_actual", 0, "stock_minimo", 0);
+                                    
                                     if (abmArticulo.findArticulo(articulo)) {
                                         System.out.println(abmArticulo.modificar(articulo));
                                         if (!importarGui.getProveedor().getSelectedItem().equals("")) {
@@ -277,9 +292,17 @@ public class controladorImportarGui implements ActionListener {
                                         System.out.println("nuevo articulo");
                                         agregados++;
                                     }
+
+                                   
+  
                                 }
                             }
+                            
+                            i++;
                         }
+                         } catch (Exception e) {
+                                        System.err.println(e);
+                                    }
                     }
                 } else if (importarGui.getSelectorArchivos().getSelectedFile().getName().contains("xls")) {
                     importando = true;
@@ -289,7 +312,8 @@ public class controladorImportarGui implements ActionListener {
                     if (sheet == null) {
                         JOptionPane.showMessageDialog(null, "No se encontró la hoja IMPORTARHOJA, renombrela e intente nuevamente");
                     } else {
-                        Iterator<Row> iterarFilas = sheet.iterator();
+                        
+                        int numRows = sheet.getPhysicalNumberOfRows();
                         Cell celdaCodigo;
                         Cell celdaDescripcion;
                         Cell celdaMarca;
@@ -304,15 +328,14 @@ public class controladorImportarGui implements ActionListener {
                         double precioFloat;
                         BigDecimal precioCompraBig;
                         BigDecimal precioVenta;
-                        
+                        int i=1;
                         agregados = 0;
                         modificados = 0;
-                        iterarFilas.next();
                         int j=0;
-                        while (iterarFilas.hasNext() && importando) {
+                        
+                        while (i<=numRows && importando) {
                             
-                            Row row = iterarFilas.next();
-                            j++;
+                            Row row = sheet.getRow(i);
                             celdaCodigo = row.getCell(0);
                             celdaDescripcion = row.getCell(1);
                             celdaMarca = row.getCell(2);
@@ -392,6 +415,7 @@ public class controladorImportarGui implements ActionListener {
                                     }
                                 }
                             }
+                            i++;
                         }
                     }
                 }

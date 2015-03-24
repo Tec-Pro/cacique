@@ -214,7 +214,7 @@ ALTER TABLE `cacique`.`pagos` ADD COLUMN `descripcion` VARCHAR(200) NULL  AFTER 
 CREATE  TABLE `cacique`.`demos` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `fecha` DATE NULL ,
-  `dias` INT NULL DEFAULT 15 ,
+  `dias` INT NULL DEFAULT 7 ,
   PRIMARY KEY (`id`) );
 ALTER TABLE `cacique`.`demos` ADD COLUMN `activado` INT(1) NULL  AFTER `dias` ;
 

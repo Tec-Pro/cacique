@@ -29,7 +29,7 @@ public class ManejoUsuario {
             if (!demo.getBoolean("activado")) {
 
                 
-                String cod=JOptionPane.showInputDialog(null,"Ingrese codigo de activación","");
+                String cod=JOptionPane.showInputDialog(null,"Ingrese codigo de activación","DEMO: QUEDAN "+demo.getInteger("dias")+" DÍAS");
                 
                 if (cod.equals("t3cpr0")) {
                     demo.setBoolean("activado", true);

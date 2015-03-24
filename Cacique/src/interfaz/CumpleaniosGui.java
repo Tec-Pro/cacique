@@ -55,7 +55,7 @@ public class CumpleaniosGui extends javax.swing.JInternalFrame {
         cumpleHoyDefault.setRowCount(0);
         cumpleSemanaDefault.setRowCount(0);
          Base.openTransaction();
-             LazyList<Cliente> clientes= Cliente.where("nacimiento = ?", dateToMySQLDate(Calendar.getInstance().getTime(),false));
+             LazyList<Cliente> clientes= Cliente.findBySQL("select * FROM clientes WHERE DATE_FORMAT(nacimiento, '%m%d') = DATE_FORMAT(?,'%m%d')",dateToMySQLDate(Calendar.getInstance().getTime(),false));
              Base.commitTransaction();
              Iterator<Cliente> it= clientes.iterator();
                 while(it.hasNext()){
@@ -76,7 +76,7 @@ public class CumpleaniosGui extends javax.swing.JInternalFrame {
                 date.setDate(date.getDate()+7);
                 clientes=null;
                  Base.openTransaction();
-                                clientes= Cliente.where("nacimiento > ? and nacimiento <?", dateToMySQLDate(Calendar.getInstance().getTime(),false),dateToMySQLDate(date,false));
+                                clientes= Cliente.findBySQL("select * from clientes where DATE_FORMAT(nacimiento,'%m %d') <> DATE_FORMAT( ?,'%m %d') AND DATE_FORMAT(nacimiento, '%m%d') <> DATE_FORMAT(?,'%m%d')", dateToMySQLDate(Calendar.getInstance().getTime(),false),dateToMySQLDate(Calendar.getInstance().getTime(),false));
                 Base.commitTransaction();
                                 it= clientes.iterator();
                 while(it.hasNext()){

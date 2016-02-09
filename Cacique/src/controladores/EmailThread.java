@@ -33,7 +33,7 @@ public class EmailThread extends Thread {
              Base.commitTransaction();
             Date fechaEnviado = fechaUltEnvio.getDate("fecha");
             Calendar fechaActualMenosMes = Calendar.getInstance();
-            fechaActualMenosMes.add(Calendar.MONTH, -1);
+            fechaActualMenosMes.add(Calendar.DAY_OF_MONTH, -1);
             java.sql.Date sqlFecha = new java.sql.Date(fechaActualMenosMes.getTime().getTime());
             System.out.println("sqlFecha " + sqlFecha + "  enviado " + fechaEnviado);
             System.out.println("after " + sqlFecha.after(fechaEnviado));

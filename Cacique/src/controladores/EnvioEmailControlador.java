@@ -151,6 +151,7 @@ public class EnvioEmailControlador {
             ret = t.isConnected();
             if (envio) {
                 try {
+                    Thread.currentThread().setContextClassLoader( getClass().getClassLoader() );
                     t.sendMessage(message, message.getAllRecipients());
                 } catch (javax.mail.MessagingException ex) {
                     ret = false;
@@ -242,6 +243,7 @@ public class EnvioEmailControlador {
         }
 
         if (t.isConnected()) {
+            Thread.currentThread().setContextClassLoader( getClass().getClassLoader() );
             t.sendMessage(message, message.getAllRecipients());
             ret = t.isConnected();
         }

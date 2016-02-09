@@ -29,13 +29,13 @@ public class ManejoUsuario {
             if (!demo.getBoolean("activado")) {
 
                 
-                String cod=JOptionPane.showInputDialog(null,"Ingrese codigo de activación","DEMO: QUEDAN "+demo.getInteger("dias")+" DÍAS");
+                String cod=JOptionPane.showInputDialog(null,"Ingrese codigo de activación","");
                 
                 if (cod.equals("t3cpr0")) {
                     demo.setBoolean("activado", true);
                     demo.saveIt();
                 } else {
-                    JOptionPane.showMessageDialog(null, "codigo incorrecto, se seguirá con la demo");
+                    JOptionPane.showMessageDialog(null, "codigo incorrecto, se seguirá con la demo, ");
                     if (demo.getInteger("dias") == 0) {
                         int opt = JOptionPane.showConfirmDialog(null, "Demo finalizada, debe activar el programa, se cerrará el programa", "Aviso", JOptionPane.CLOSED_OPTION);
                         System.exit(0);
@@ -45,6 +45,8 @@ public class ManejoUsuario {
                         if (fechaUlt.before(fechaHoy) && !fechaUlt.toString().equals(fechaHoy.toString())) {
                             demo.set("dias", demo.getInteger("dias") - 1);
                             demo.set("fecha", Calendar.getInstance().getTime());
+                            JOptionPane.showMessageDialog(null, "DEMO: QUEDAN "+demo.getInteger("dias")+" DÍAS");
+                            
                         } else {
                             if (fechaUlt.after(fechaHoy)) {
                                 int opt = JOptionPane.showConfirmDialog(null, "Demo finalizada, debe activar el programa, se cerrará el programa", "Aviso", JOptionPane.CLOSED_OPTION);

@@ -80,12 +80,14 @@ public class tocaCambioGui extends javax.swing.JInternalFrame {
             String cols[] = new String[8];
             cols[0] = au.getString("id");
             cols[1] = au.getString("patente");
-            cols[2] = dateToMySQLDate(au.getDate("ult_cambio_aceite"), true);;
-            cols[3] = cli.getString("nombre");
-            cols[4] = cli.getString("telefono");
-            cols[5] = cli.getString("celular");
-            cols[6] = cli.getString("email");
-            cols[7] = cli.getString("facebook");
+            cols[2] = dateToMySQLDate(au.getDate("ult_cambio_aceite"), true);
+            if(cli != null){
+                cols[3] = cli.getString("nombre");
+                cols[4] = cli.getString("telefono");
+                cols[5] = cli.getString("celular");
+                cols[6] = cli.getString("email");
+                cols[7] = cli.getString("facebook");
+            }
             tocaCambioDefault.addRow(cols);
 
         }

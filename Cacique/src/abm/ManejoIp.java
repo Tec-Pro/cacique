@@ -8,6 +8,7 @@ import interfaz.ConfigurarServerGui;
 import java.util.Arrays;
 import modelos.Ip;
 import org.javalite.activejdbc.Base;
+import org.javalite.activejdbc.LazyList;
 
 /**
  *
@@ -41,8 +42,11 @@ public class ManejoIp {
     }
 
     public boolean modificarDatos(String ipNueva, boolean isServer) {
-        Ip u = (Ip)Ip.findAll().get(0);;
-        if(u!=null){
+        LazyList<Ip> ips =Ip.findAll();
+        if(!ips.isEmpty()){
+            Ip u= ips.get(0);
+        
+        
         Base.openTransaction();
         System.out.println(ipNueva);
         u.set("remoto", ipNueva, "servidor", isServer);
@@ -53,12 +57,15 @@ public class ManejoIp {
         return true;
         }
         else{
+            Ip u;
           Base.openTransaction();
         u= Ip.create("remoto", ipNueva, "servidor", isServer);
         boolean ret = u.save();
         Base.commitTransaction();
         return ret;  
         }
+        
+       
     }
 
     public void conseguirDatos(){
